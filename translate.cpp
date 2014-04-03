@@ -18,12 +18,17 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 		Interpreter in(sl);
 		AProgram program = ast.getPProgram().cast<AProgram>();
 		AProcedure mainproc = program.getProcedure().front().cast<AProcedure>();
+		if (mainproc.getParams().size() != 0) {
+			throw CompileException(mainproc.getName(), "Entry procedure must not have any parameters");
+		}
 		plots = in.interpret(mainproc, max_time);
 		colors = in.get_colors(program);
 	} catch (const CompileException& exc) {
 		printf("%s:%d:%d: %s\n", filename, exc.getToken().getLine(), exc.getToken().getPos(), exc.getMessage().c_str());
+		fflush(stdout);
 	} catch (const Exception& exc) {
 		printf("%s: %s\n", filename, exc.getMessage().c_str());
+		fflush(stdout);
 	}
 
 	return std::make_pair(std::move(plots), std::move(colors));

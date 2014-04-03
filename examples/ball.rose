@@ -1,0 +1,16 @@
+
+plan
+	0:234 1:53C
+
+proc main
+	turn 64
+	move 140
+	turn ~64
+	fork ball
+
+proc ball
+	tint 1 size 30 draw
+	tint 0 size 35 draw
+	move 5
+	wait 1
+	fork ball

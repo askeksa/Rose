@@ -69,7 +69,7 @@ public:
 			var_kind[var] = VarKind::PROCEDURE;
 			var_proc[var] = proc_map[name];
 		} else {
-			throw CompileException(var.getName(), std::string("Unknown variable " + name));
+			throw CompileException(var.getName(), "Unknown variable " + name);
 		}
 	}
 

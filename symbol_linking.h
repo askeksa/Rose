@@ -12,15 +12,21 @@ enum class VarKind {
 	PROCEDURE
 };
 
+enum class GlobalKind {
+	X, Y, DIRECTION
+};
+
 class SymbolLinking : public DepthFirstAdapter {
 	std::unordered_map<std::string,AProcedure> proc_map;
 	std::unordered_map<std::string,ALocal> local_map;
+	std::unordered_map<std::string,GlobalKind> global_map;
 	int current_local_index;
 
 public:
 	nodemap<int> proc_index;
 	nodemap<int> local_index;
 	nodemap<VarKind> var_kind;
+	nodemap<GlobalKind> var_global;
 	nodemap<ALocal> var_local;
 	nodemap<AProcedure> var_proc;
 	nodemap<int> literal_number;
@@ -32,10 +38,14 @@ public:
 			proc_map[proc.getName().getText()] = proc;
 			proc_index[proc] = current_proc_index++;
 		}
+		global_map["x"] = GlobalKind::X;
+		global_map["y"] = GlobalKind::Y;
+		global_map["dir"] = GlobalKind::DIRECTION;
 	}
 
 	void outAProgram(AProgram prog) {
 		proc_map.clear();
+		global_map.clear();
 	}
 
 	void inAProcedure(AProcedure proc) {
@@ -60,8 +70,9 @@ public:
 
 	void inAVarExpression(AVarExpression var) {
 		std::string name = var.getName().getText();
-		if (name == "x" || name == "y" || name == "angle") {
+		if (global_map.count(name)) {
 			var_kind[var] = VarKind::GLOBAL;
+			var_global[var] = global_map[name];
 		} else if (local_map.count(name)) {
 			var_kind[var] = VarKind::LOCAL;
 			var_local[var] = local_map[name];

@@ -4,20 +4,23 @@ Rose - a programming language for temporal turtle graphics
 INTRODUCTION
 
 A Rose program produces an animation drawn by a number of "turtles"
-moving around on the canvas. Each turtle has the following state:
+moving around on a canvas. Each turtle has the following state:
 
 - Position (x and y)
 - Direction
-- Size
+- Pen size
 - Color index, called "tint"
 
-Except where specific otherwise, all numeric values in Rose are 16.16 bits
+Unless specific otherwise, all numeric values in Rose are 16.16 bits
 fixed-point values.
 
 The position and direction are available as global variables x, y and dir.
 
 
 SYNTAX
+
+Rose is whitespace-agnostic: line breaks can be inserted or omitted anywhere
+between tokens.
 
 Just for the fun of it, and because I enjoy using a thesaurus, all keywords
 in Rose have four letters.
@@ -47,7 +50,7 @@ where <name> and <param> are identifiers, and <statement> is one of:
 - face <expression>
   Turn to a number of 256-on-a-circle degrees clockwise from horizontal right.
 - size <expression>
-  Set pen radius (rounded to nearest integer-and-a-half).
+  Set pen radius in pixels (rounded to nearest integer-and-a-half).
 - tint <expression>
   Set the current tint (rounded down to an integer).
 - draw
@@ -59,7 +62,7 @@ where <name> and <param> are identifiers, and <statement> is one of:
   given procedure with the given arguments. This turtle continues executing
   the rest of the current procedure in parallel.
 - temp <variable> = <expression>
-  Assign a value to a variable.
+  Assign a value to a local variable.
 - when <expression> <statement>* done
   Run the block of statements if the expression evaluates to non-zero.
 - when <expression> <statement>* else <statement>* done
@@ -78,19 +81,22 @@ An <expression> is one of:
   fixed-point adjustment to match fixed-point multiplication and division.
 - ~ <expression>
   Negate value. Used instead of - to enable airy, delimiter-sparse syntax.
+- ( <expression> )
+  For grouping.
 
 Procedures can be assigned to temporaries and passed as arguments to
 procedures. The procedure part of a fork statement can refer directly to
-a procedure or to a parameter or temporary containing a procedure.
+a procedure or to a parameter or local variable containing a procedure.
 
 And just to mention it one more time, because this could be a common
-pitfall: Remember to use ~ and not - for negation!
+pitfall: Remember to use ~ and not - for negation, including for
+writing negative numbers!
 
 
 THE VISUALIZER
 
-Run the visualizer with a rose program as argument. It will continuously
-monitor the file and reload it whenever its modification date changes.
+Run the visualizer with a Rose program as argument. It will continuously
+monitor the file and reload it whenever its modification time changes.
 
 Keyboard shortcuts:
 - SPACE: start/stop animation.

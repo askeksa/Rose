@@ -92,7 +92,7 @@ static int rargs50[] = {0};
 static int rargs51[] = {1, 2, 3};
 static int rargs52[] = {0};
 static int rargs53[] = {1, 2, 3};
-static int rargs54[] = {0};
+static int rargs54[] = {0, 1};
 static int rargs55[] = {0};
 static int rargs56[] = {0};
 
@@ -550,9 +550,10 @@ static reduce_command rcmd46[] = {
 static reduce_command rcmd47[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_POP, 1, -1, -1, 0, 0}, 
-  {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs54, &ANegExpression::type_info}, 
-  {CMD_RETURNNODE, -1, 1, -1, 0, 0}
+  {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
+  {CMD_FETCHNODE, 1, 0, 0, 0, 0}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs54, &ANegExpression::type_info}, 
+  {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
 static reduce_command rcmd48[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
@@ -711,7 +712,7 @@ static struct {
   {3, 11, rcmd44},
   {9, 11, rcmd45},
   {9, 11, rcmd46},
-  {5, 12, rcmd47},
+  {6, 12, rcmd47},
   {4, 12, rcmd48},
   {4, 12, rcmd49},
   {5, 12, rcmd50},

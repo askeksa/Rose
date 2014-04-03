@@ -263,6 +263,7 @@ void rose::DepthFirstAdapter::inANegExpression (ANegExpression node) { defaultIn
 void rose::DepthFirstAdapter::caseANegExpression (ANegExpression node)
 {
   inANegExpression (node);
+  if ( node.getToken() ) node.getToken().apply(*this);
   if ( node.getExpression() ) node.getExpression().apply(*this);
   outANegExpression (node);
 }
@@ -546,6 +547,7 @@ void rose::ReversedDepthFirstAdapter::caseANegExpression (ANegExpression node)
 {
   inANegExpression (node);
   if ( node.getExpression() ) node.getExpression().apply(*this);
+  if ( node.getToken() ) node.getToken().apply(*this);
   outANegExpression (node);
 }
 void rose::ReversedDepthFirstAdapter::outANegExpression (ANegExpression node) { defaultOut(node); }

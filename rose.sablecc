@@ -167,7 +167,7 @@ Productions
 
 	unaryexp	{-> expression} =
 					{neg}	neg unaryexp
-							{-> New expression.neg(unaryexp.expression)}
+							{-> New expression.neg(neg, unaryexp.expression)}
 				|	{var}	identifier
 							{-> New expression.var(identifier)}
 				|	{num}	number
@@ -206,7 +206,7 @@ Abstract Syntax Tree
 					{number}	number
 				|	{var}		[name]:identifier
 				|	{binary}	[op]:binop [left]:expression [right]:expression
-				|	{neg}		expression
+				|	{neg}		[token]:neg expression
 				;
 
 	binop		=	

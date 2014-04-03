@@ -73,7 +73,7 @@ public:
 				float u = corners[c][0];
 				float v = corners[c][1];
 				CircleVertex vert = {
-					(x + u*r) / WIDTH * 2 - 1, (y + v*r) / HEIGHT * 2 - 1, u, v, (float) p.c
+					(x + u*r) / WIDTH * 2 - 1, (y + v*r) / HEIGHT * -2 + 1, u, v, (float) p.c
 				};
 				vertex_data.push_back(vert);
 			}

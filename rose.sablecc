@@ -1,0 +1,227 @@
+
+Package rose;
+
+Helpers
+
+    all = [0 .. 0xFFFF];
+	digit = ['0' .. '9'];
+	hexdigit = digit | ['A' .. 'F'] | ['a' .. 'f'];
+	letter = ['A' .. 'Z'] | ['a' .. 'z'] | '_';
+	tab = 9;
+	cr = 13;
+	lf = 10;
+	eol = cr lf | cr | lf;
+	blank = (' ' | tab | eol)+;
+
+Tokens
+
+	done = 'done';
+	draw = 'draw';
+	else = 'else';
+	face = 'face';
+	fork = 'fork';
+	move = 'move';
+	plan = 'plan';
+	proc = 'proc';
+	size = 'size';
+	temp = 'temp';
+	tint = 'tint';
+	turn = 'turn';
+	wait = 'wait';
+	when = 'when';
+
+	l_par = '(';
+	r_par = ')';
+	plus = '+';
+	minus = '-';
+	mul = '*';
+	div = '/';
+	eq = '--';
+	ne = '!=';
+	lt = '<';
+	le = '<=';
+	gt = '>';
+	ge = '>=';
+	and = '&';
+	or = '|';
+	assign = '=';
+	neg = '~';
+
+	number = digit+ ('.' digit+) ?;
+	identifier = letter (letter | digit)*;
+	color = digit+ ':' hexdigit hexdigit hexdigit;
+
+	blank = blank;
+	comment = '#' [all - [cr + lf]]* eol;
+
+Ignored Tokens
+
+	blank, comment;
+
+Productions
+
+	program		=			script? decl*
+							{-> New program ([script.event], [decl.procedure])}
+				;
+
+	script		{-> event*} =
+							plan ev*
+							{-> [ev.event]}
+				;
+
+	ev			{-> event} =
+					{wait}	wait exp
+							{-> New event.wait(exp.expression)}
+				|	{color}	color
+							{-> New event.color(color)}
+				;
+
+	decl		{-> procedure} =
+							proc [name]:identifier param* stmt*
+							{-> New procedure(name, [param.local], [stmt.statement])}
+				;
+
+	param		{-> local} =
+							identifier
+							{-> New local(identifier)}
+				;
+
+	stmt		{-> statement} =
+					{draw}	draw
+							{-> New statement.draw(draw)}
+				|	{move}	move exp
+							{-> New statement.move(move, exp.expression)}
+				|	{turn}	turn exp
+							{-> New statement.turn(turn, exp.expression)}
+				|	{face}	face exp
+							{-> New statement.face(face, exp.expression)}
+				|	{tint}	tint exp
+							{-> New statement.tint(tint, exp.expression)}
+				|	{size}	size exp
+							{-> New statement.size(size, exp.expression)}
+				|	{wait}	wait exp
+							{-> New statement.wait(wait, exp.expression)}
+				|	{fork}	fork identifier exp*
+							{-> New statement.fork(fork, New expression.var(identifier), [exp.expression])}
+				|	{temp}	temp identifier assign exp
+							{-> New statement.temp(New local(identifier), exp.expression)}
+				|	{when}	when exp stmt* done
+							{-> New statement.when(when, exp.expression, [stmt.statement], [])}
+				|	{else}	when exp [s1]:stmt* else [s2]:stmt* done
+							{-> New statement.when(when, exp.expression, [s1.statement], [s2.statement])}
+				;
+
+	exp			{-> expression} =
+							orexp
+							{-> orexp.expression}
+				;
+
+	orexp		{-> expression} =
+					{next}	andexp
+							{-> andexp.expression}
+				|	{or}	orexp or andexp
+							{-> New expression.binary(New binop.or(or), orexp.expression, andexp.expression)}
+				;
+
+	andexp		{-> expression} =
+					{next}	compexp
+							{-> compexp.expression}
+				|	{and}	andexp and compexp
+							{-> New expression.binary(New binop.and(and), andexp.expression, compexp.expression)}
+				;
+
+	compexp		{-> expression} =
+					{next}	addsubexp
+							{-> addsubexp.expression}
+				|	{eq}	[left]:addsubexp eq [right]:addsubexp
+							{-> New expression.binary(New binop.eq(eq), left.expression, right.expression)}
+				|	{ne}	[left]:addsubexp ne [right]:addsubexp
+							{-> New expression.binary(New binop.ne(ne), left.expression, right.expression)}
+				|	{lt}	[left]:addsubexp lt [right]:addsubexp
+							{-> New expression.binary(New binop.lt(lt), left.expression, right.expression)}
+				|	{le}	[left]:addsubexp le [right]:addsubexp
+							{-> New expression.binary(New binop.le(le), left.expression, right.expression)}
+				|	{gt}	[left]:addsubexp gt [right]:addsubexp
+							{-> New expression.binary(New binop.gt(gt), left.expression, right.expression)}
+				|	{ge}	[left]:addsubexp ge [right]:addsubexp
+							{-> New expression.binary(New binop.ge(ge), left.expression, right.expression)}
+				;
+
+	addsubexp	{-> expression} =
+					{next}	muldivexp
+							{-> muldivexp.expression}
+				|	{plus}	addsubexp plus muldivexp
+							{-> New expression.binary(New binop.plus(plus), addsubexp.expression, muldivexp.expression)}
+				|	{minus}	addsubexp minus muldivexp
+							{-> New expression.binary(New binop.minus(minus), addsubexp.expression, muldivexp.expression)}
+				;
+
+	muldivexp	{-> expression} =
+					{next}	unaryexp
+							{-> unaryexp.expression}
+				|	{mul}	muldivexp mul unaryexp
+							{-> New expression.binary(New binop.multiply(mul), muldivexp.expression, unaryexp.expression)}
+				|	{div}	muldivexp div unaryexp
+							{-> New expression.binary(New binop.divide(div), muldivexp.expression, unaryexp.expression)}
+				;
+
+	unaryexp	{-> expression} =
+					{neg}	neg unaryexp
+							{-> New expression.neg(unaryexp.expression)}
+				|	{var}	identifier
+							{-> New expression.var(identifier)}
+				|	{num}	number
+							{-> New expression.number(number)}
+				|	{paren}	l_par exp r_par
+							{-> exp.expression}
+				;
+
+Abstract Syntax Tree
+
+	program		=			event* procedure*;
+
+	event		=	
+					{wait}	expression
+				|	{color}	color
+				;
+
+	procedure	=			[name]:identifier [params]:local* [body]:statement*;
+
+	local		=			[name]:identifier;
+
+	statement	=	
+					{draw}	[token]:draw
+				|	{fork}	[token]:fork [proc]:expression [args]:expression*
+				|	{move}	[token]:move expression
+				|	{size}	[token]:size expression
+				|	{temp}	[var]:local expression
+				|	{tint}	[token]:tint expression
+				|	{turn}	[token]:turn expression
+				|	{face}	[token]:face expression
+				|	{wait}	[token]:wait expression
+				|	{when}	[token]:when [cond]:expression [when]:statement* [else]:statement*
+				;
+
+	expression	=
+					{number}	number
+				|	{var}		[name]:identifier
+				|	{binary}	[op]:binop [left]:expression [right]:expression
+				|	{neg}		expression
+				;
+
+	binop		=	
+					{plus}		plus
+				|	{minus}		minus
+				|	{multiply}	mul
+				|	{divide}	div
+				|	{eq}		eq
+				|	{ne}		ne
+				|	{lt}		lt
+				|	{le}		le
+				|	{gt}		gt
+				|	{ge}		ge
+				|	{and}		and
+				|	{or}		or
+				;
+
+

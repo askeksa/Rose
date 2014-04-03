@@ -42,7 +42,7 @@ struct State {
 	number_t time;
 	number_t x,y;
 	number_t size;
-	number_t angle;
+	number_t direction;
 	number_t tint;
 	std::vector<Value> stack;
 
@@ -52,7 +52,7 @@ struct State {
 		x = parent.x;
 		y = parent.y;
 		size = parent.size;
-		angle = parent.angle;
+		direction = parent.direction;
 		tint = parent.tint;
 	}
 
@@ -76,7 +76,7 @@ public:
 		initial.x = MAKE_NUMBER(0);
 		initial.y = MAKE_NUMBER(0);
 		initial.size = MAKE_NUMBER(2);
-		initial.angle = MAKE_NUMBER(0);
+		initial.direction = MAKE_NUMBER(0);
 		initial.tint = MAKE_NUMBER(1);
 		pending.push(std::move(initial));
 
@@ -203,17 +203,18 @@ private:
 	}
 
 	void caseAVarExpression(AVarExpression exp) {
-		std::string name = exp.getName().getText();
 		switch (sym.var_kind[exp]) {
 		case VarKind::GLOBAL:
-			if (name == "x") {
+			switch (sym.var_global[exp]) {
+			case GlobalKind::X:
 				result = Value(state.x);
-			} else if (name == "y") {
+				break;
+			case GlobalKind::Y:
 				result = Value(state.y);
-			} else if (name == "angle") {
-				result = Value(state.angle);
-			} else {
-				throw CompileException(exp.getName(), "Unknown global variable " + name);
+				break;
+			case GlobalKind::DIRECTION:
+				result = Value(state.direction);
+				break;
 			}
 			break;
 		case VarKind::LOCAL:
@@ -272,7 +273,7 @@ private:
 		if (turn.kind != ValueKind::NUMBER) {
 			throw CompileException(s.getToken(), "Turn value is not a number");
 		}
-		state.angle += turn.number;
+		state.direction += turn.number;
 	}
 
 	void caseATurnStatement(AFaceStatement s) {
@@ -280,7 +281,7 @@ private:
 		if (face.kind != ValueKind::NUMBER) {
 			throw CompileException(s.getToken(), "Face value is not a number");
 		}
-		state.angle = face.number;
+		state.direction = face.number;
 	}
 
 	void caseASizeStatement(ASizeStatement s) {
@@ -305,8 +306,8 @@ private:
 			throw CompileException(s.getToken(), "Move distance is not a number");
 		}
 		number_t m = move.number;
-		int sa = sin(state.angle >> 10);
-		int ca = sin((state.angle >> 10) + 4096);
+		int sa = sin(state.direction >> 10);
+		int ca = sin((state.direction >> 10) + 4096);
 		if (m < MAKE_NUMBER(32)) {
 			// High precision move
 			state.x += ((m << 10 >> 16) * ca) >> 8;

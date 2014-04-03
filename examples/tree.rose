@@ -1,0 +1,27 @@
+
+plan
+	0:234 1:53C 2:F00
+
+proc main
+	move 176
+	turn 64
+	move 250
+	turn 128
+	fork tree 8 30
+
+proc tree s n
+	when s > 0
+		size s tint 1 draw
+		move 2
+		wait 1
+		when n > 0
+			fork tree s n-1
+		else
+			turn 30
+			fork tree s-1 s*3
+			turn ~60
+			fork tree s-1 s*3
+		done
+	else
+		size 5 tint 2 draw
+	done

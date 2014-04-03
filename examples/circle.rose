@@ -1,0 +1,20 @@
+
+plan
+	0:234 1:53C
+
+proc main
+	move 250
+	turn 64
+	move 140
+	tint 1
+	size 3
+	fork circle 1 256
+
+proc circle b n
+	draw
+	move 2
+	turn b
+	wait 0.5
+	when n > 0
+		fork circle b n-1
+	done

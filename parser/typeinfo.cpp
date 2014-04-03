@@ -748,14 +748,14 @@ const rose::_TypeInfo rose::ABinaryExpression::type_info = {
     _TypeInfo::is_prod,
     (_TypeInfo::apply_t)&Analysis::caseABinaryExpression
 };
-static int _type_elems_19[] = {0};
+static int _type_elems_19[] = {0, 0};
 const rose::_TypeInfo rose::ANegExpression::type_info = {
     "ANegExpression",
     &PExpression::type_info,
     64,
     -1,
     false,
-    1,
+    2,
     _type_elems_19,
     _TypeInfo::is_prod,
     (_TypeInfo::apply_t)&Analysis::caseANegExpression

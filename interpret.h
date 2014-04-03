@@ -194,6 +194,14 @@ private:
 		result = Value(eval(left.number, right.number));
 	}
 
+	void caseANegExpression(ANegExpression exp) {
+		Value inner = apply(exp.getExpression());
+		if (inner.kind != ValueKind::NUMBER) {
+			throw CompileException(exp.getToken(), "Operand of negation is not a number");
+		}
+		result = Value(-inner.number);
+	}
+
 	void caseAVarExpression(AVarExpression exp) {
 		std::string name = exp.getName().getText();
 		switch (sym.var_kind[exp]) {

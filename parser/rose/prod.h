@@ -749,10 +749,12 @@ public:
   static inline ANegExpression make () { return initProd (&type_info); }
 
   static inline ANegExpression make (
+      TNeg _token_,
       PExpression _expression_
   )
   {
     void *args[] = {
+        &_token_,
         &_expression_
     };
     return initProd (&type_info, args);
@@ -764,8 +766,10 @@ public:
 
   inline void replaceBy (ANegExpression node) { Node::replaceBy (node); }
 
-  inline PExpression getExpression () { return getChildNode(0).unsafe_cast<PExpression>(); }
-  inline void setExpression (PExpression _expression_) { setChildNode (0, _expression_); }
+  inline TNeg getToken () { return getChildNode(0).unsafe_cast<TNeg>(); }
+  inline void setToken (TNeg _token_) { setChildNode (0, _token_); }
+  inline PExpression getExpression () { return getChildNode(1).unsafe_cast<PExpression>(); }
+  inline void setExpression (PExpression _expression_) { setChildNode (1, _expression_); }
 
 private:
   void replaceBy (PExpression node);

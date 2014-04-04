@@ -11,4 +11,4 @@ struct TintColor {
 	short t,i,rgb;
 };
 
-std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filename, int max_time);
+std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filename, int max_time, bool print);

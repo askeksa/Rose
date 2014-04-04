@@ -46,21 +46,22 @@ class RoseProject {
 	static GLuint program;
 	static GLuint xyuv_loc;
 	static GLuint tint_loc;
+	int frames;
 	GLuint vertex_buffer;
 	std::pair<std::vector<Plot>, std::vector<TintColor>> plots_and_script;
 	std::vector<int> schedule;
 
 public:
-	static RoseProject* make(const char *filename, bool print_errors) {
-		auto pas = translate(filename, FRAMES, print_errors);
+	static RoseProject* make(const char *filename, int frames, bool print_errors) {
+		auto pas = translate(filename, frames, print_errors);
 		if (pas.first.empty() && pas.second.empty()) {
 			return nullptr;
 		}
-		return new RoseProject(std::move(pas));
+		return new RoseProject(std::move(pas), frames);
 	}
 
-	RoseProject(std::pair<std::vector<Plot>, std::vector<TintColor>> pas)
-			: plots_and_script(std::move(pas))
+	RoseProject(std::pair<std::vector<Plot>, std::vector<TintColor>> pas, int frames)
+			: frames(frames), plots_and_script(std::move(pas))
 	{
 		std::vector<Plot>& plots = plots_and_script.first;
 
@@ -97,7 +98,7 @@ public:
 
 		// Construct schedule
 		int n = 0;
-		for (int f = 0 ; f < FRAMES ; f++) {
+		for (int f = 0 ; f < frames ; f++) {
 			schedule.push_back(n);
 			while (n < plots.size() && plots[n].t <= f) n++;
 		}
@@ -187,15 +188,21 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 
 int main(int argc, char *argv[]) {
 	if (argc < 2) {
-		printf("Missing filename!\n");
+		printf("Usage: rose <filename> [<framerate> [<frames>]]\n");
 		exit(1);
 	}
 	char *filename = argv[1];
-/*
-	for (auto p : plots) {
-		printf("%d: (%d,%d) R=%d C=%d\n", p.t, p.x, p.y, p.r, p.c);
+
+	int framerate = FRAMERATE;
+	if (argc > 2) {
+		framerate = atoi(argv[2]);
 	}
-*/
+
+	int frames = FRAMES;
+	if (argc > 3) {
+		frames = atoi(argv[3]);
+	}
+
 	// Initialize GLFW
 	glfwSetErrorCallback(error_callback);
 	glfwInit();
@@ -228,7 +235,7 @@ int main(int argc, char *argv[]) {
 	// Load code
 	struct stat filestat;
 	stat(filename, &filestat);
-	RoseProject* project = RoseProject::make(filename, true);
+	RoseProject* project = RoseProject::make(filename, frames, true);
 
 	// Set up key callback
 	std::queue<int> key_queue;
@@ -246,11 +253,11 @@ int main(int argc, char *argv[]) {
 		if (newfilestat.st_mtime != filestat.st_mtime) {
 			// Reload code
 			delete project;
-			project = RoseProject::make(filename, false);
+			project = RoseProject::make(filename, frames, false);
 			if (!project) {
 				// Try again
 				usleep(100*1000);
-				project = RoseProject::make(filename, true);
+				project = RoseProject::make(filename, frames, true);
 			}
 			if (project) {
 				printf("Code reloaded.\n");
@@ -268,7 +275,7 @@ int main(int argc, char *argv[]) {
 			glfwGetCursorPos(window, &xpos, &ypos);
 			int width,height;
 			glfwGetWindowSize(window, &width, &height);
-			frame = (int)(xpos / width * FRAMES);
+			frame = (int)(xpos / width * frames);
 			startframe = frame;
 		}
 
@@ -306,7 +313,7 @@ int main(int argc, char *argv[]) {
 
 		// Clamp frame
 		if (frame < 0) frame = 0;
-		if (frame > FRAMES) frame = FRAMES;
+		if (frame > frames) frame = frames;
 
 		// Clear
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
@@ -326,9 +333,9 @@ int main(int argc, char *argv[]) {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 
-		while (playing && frame < FRAMES && glfwGetTime() - lasttime > 1.0 / FRAMERATE) {
+		while (playing && frame < frames && glfwGetTime() - lasttime > 1.0 / framerate) {
 			frame++;
-			lasttime += 1.0 / FRAMERATE;
+			lasttime += 1.0 / framerate;
 		}
 	}
 

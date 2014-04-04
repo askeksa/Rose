@@ -17,6 +17,7 @@
 #define WIDTH 352
 #define HEIGHT 280
 #define FRAMES 10000
+#define FRAMERATE 50
 
 void error_callback(int error, const char* description) {
 	printf(" *** GLFW error: %s\n", description);
@@ -224,21 +225,26 @@ int main(int argc, char *argv[]) {
 		fflush(stdout);
 	}
 
+	// Load code
 	struct stat filestat;
 	stat(filename, &filestat);
 	RoseProject* project = RoseProject::make(filename, true);
 
-	int startframe = 0;
-	int frame = 0;
-	bool playing = true;
+	// Set up key callback
 	std::queue<int> key_queue;
 	glfwSetWindowUserPointer(window, &key_queue);
 	glfwSetKeyCallback(window, key_callback);
+
+	int startframe = 0;
+	int frame = 0;
+	bool playing = true;
+	double lasttime = glfwGetTime();
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && !glfwWindowShouldClose(window)) {
 		// Reload if changed
 		struct stat newfilestat;
 		stat(filename, &newfilestat);
 		if (newfilestat.st_mtime != filestat.st_mtime) {
+			// Reload code
 			delete project;
 			project = RoseProject::make(filename, false);
 			if (!project) {
@@ -253,6 +259,7 @@ int main(int argc, char *argv[]) {
 			filestat = newfilestat;
 			if (playing) {
 				frame = startframe;
+				lasttime = glfwGetTime();
 			}
 		}
 
@@ -271,7 +278,10 @@ int main(int argc, char *argv[]) {
 			switch (key) {
 			case GLFW_KEY_SPACE:
 				playing = !playing;
-				if (playing) startframe = frame;
+				if (playing) {
+					startframe = frame;
+					lasttime = glfwGetTime();
+				}
 				break;
 			case GLFW_KEY_BACKSPACE:
 				frame = startframe;
@@ -316,7 +326,10 @@ int main(int argc, char *argv[]) {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 
-		if (playing && frame < FRAMES) frame++;
+		while (playing && frame < FRAMES && glfwGetTime() - lasttime > 1.0 / FRAMERATE) {
+			frame++;
+			lasttime += 1.0 / FRAMERATE;
+		}
 	}
 
 	if (project) delete project;

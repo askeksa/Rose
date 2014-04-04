@@ -7,7 +7,7 @@
 
 using namespace rose;
 
-std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filename, int max_time) {
+std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filename, int max_time, bool print) {
 	std::vector<Plot> plots;
 	std::vector<TintColor> colors;
 	try {
@@ -17,6 +17,9 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 		ast.apply(sl);
 		Interpreter in(sl);
 		AProgram program = ast.getPProgram().cast<AProgram>();
+		if (program.getProcedure().size() == 0) {
+			throw Exception("No procedures");
+		}
 		AProcedure mainproc = program.getProcedure().front().cast<AProcedure>();
 		if (mainproc.getParams().size() != 0) {
 			throw CompileException(mainproc.getName(), "Entry procedure must not have any parameters");
@@ -24,11 +27,15 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 		plots = in.interpret(mainproc, max_time);
 		colors = in.get_colors(program);
 	} catch (const CompileException& exc) {
-		printf("%s:%d:%d: %s\n", filename, exc.getToken().getLine(), exc.getToken().getPos(), exc.getMessage().c_str());
-		fflush(stdout);
+		if (print) {
+			printf("%s:%d:%d: %s\n", filename, exc.getToken().getLine(), exc.getToken().getPos(), exc.getMessage().c_str());
+			fflush(stdout);
+		}
 	} catch (const Exception& exc) {
-		printf("%s: %s\n", filename, exc.getMessage().c_str());
-		fflush(stdout);
+		if (print) {
+			printf("%s: %s\n", filename, exc.getMessage().c_str());
+			fflush(stdout);
+		}
 	}
 
 	return std::make_pair(std::move(plots), std::move(colors));

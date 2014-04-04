@@ -9,6 +9,7 @@
 #include <algorithm>
 
 #include <sys/stat.h>
+#include <unistd.h>
 
 #include "translate.h"
 #include "shaders.h"
@@ -49,8 +50,17 @@ class RoseProject {
 	std::vector<int> schedule;
 
 public:
-	RoseProject(const char *filename) {
-		plots_and_script = translate(filename, FRAMES);
+	static RoseProject* make(const char *filename, bool print_errors) {
+		auto pas = translate(filename, FRAMES, print_errors);
+		if (pas.first.empty() && pas.second.empty()) {
+			return nullptr;
+		}
+		return new RoseProject(std::move(pas));
+	}
+
+	RoseProject(std::pair<std::vector<Plot>, std::vector<TintColor>> pas)
+			: plots_and_script(std::move(pas))
+	{
 		std::vector<Plot>& plots = plots_and_script.first;
 
 		// Make vertex data
@@ -157,6 +167,7 @@ public:
 	}
 
 	~RoseProject() {
+		glFinish();
 		glDeleteBuffers(1, &vertex_buffer);
 	}
 };
@@ -215,7 +226,7 @@ int main(int argc, char *argv[]) {
 
 	struct stat filestat;
 	stat(filename, &filestat);
-	RoseProject* project = new RoseProject(filename);
+	RoseProject* project = RoseProject::make(filename, true);
 
 	int startframe = 0;
 	int frame = 0;
@@ -229,7 +240,16 @@ int main(int argc, char *argv[]) {
 		stat(filename, &newfilestat);
 		if (newfilestat.st_mtime != filestat.st_mtime) {
 			delete project;
-			project = new RoseProject(filename);
+			project = RoseProject::make(filename, false);
+			if (!project) {
+				// Try again
+				usleep(100*1000);
+				project = RoseProject::make(filename, true);
+			}
+			if (project) {
+				printf("Code reloaded.\n");
+			}
+			fflush(stdout);
 			filestat = newfilestat;
 			frame = startframe;
 		}
@@ -284,7 +304,7 @@ int main(int argc, char *argv[]) {
 		// Render to FBO
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb);
 		glViewport(0,0,WIDTH,HEIGHT);
-		project->draw(frame);
+		if (project) project->draw(frame);
 
 		// Copy FBO to screen
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
@@ -297,7 +317,7 @@ int main(int argc, char *argv[]) {
 		if (playing && frame < FRAMES) frame++;
 	}
 
-	delete project;
+	if (project) delete project;
 
 	glfwDestroyWindow(window);
 

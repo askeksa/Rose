@@ -95,8 +95,16 @@ writing negative numbers!
 
 THE VISUALIZER
 
-Run the visualizer with a Rose program as argument. It will continuously
-monitor the file and reload it whenever its modification time changes.
+Run the visualizer with these arguments:
+
+rose <filename> [<framerate> [<frames>]]
+
+where <filename> is the name of a file containing a Rose program,
+<framerate> is the frame rate in frames per second (default 50) and
+<frames> is the total number of frames (default 10000, 3m20s at 50fps).
+
+The visualizer will continuously monitor the file and reload it whenever
+its modification time changes.
 
 Keyboard shortcuts:
 - SPACE: start/stop animation.
@@ -107,5 +115,5 @@ Keyboard shortcuts:
 - ESCAPE: Quit the visualizer.
 
 Clicking or holding the left mouse button sets the time proportionally to
-the mouse X position within the window, up to 10000 frames (3m20s at 50fps).
+the mouse X position within the window, up to the total number of frames.
 

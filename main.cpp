@@ -251,7 +251,9 @@ int main(int argc, char *argv[]) {
 			}
 			fflush(stdout);
 			filestat = newfilestat;
-			frame = startframe;
+			if (playing) {
+				frame = startframe;
+			}
 		}
 
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS) {

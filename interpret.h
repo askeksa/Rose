@@ -156,7 +156,13 @@ private:
 			eval = [&](number_t a, number_t b) { return (a >> 8) * (b >> 8); };
 			token = op.cast<AMultiplyBinop>().getMul();
 		} else if (op.is<ADivideBinop>()) {
-			eval = [&](number_t a, number_t b) { return (a / (b << 8 >> 16)) << 8; };
+			eval = [&](number_t a, number_t b) {
+				int divisor = b << 8 >> 16;
+				if (divisor == 0) {
+					throw CompileException(op.cast<ADivideBinop>().getDiv(), "Division by zero");
+				}
+				return (a / divisor) << 8;
+			};
 			token = op.cast<ADivideBinop>().getDiv();
 		} else if (op.is<AEqBinop>()) {
 			eval = [&](number_t a, number_t b) { return a == b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };

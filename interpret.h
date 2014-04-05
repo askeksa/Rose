@@ -202,6 +202,14 @@ private:
 		result = Value(-inner.number);
 	}
 
+	void caseASineExpression(ASineExpression exp) {
+		Value inner = apply(exp.getExpression());
+		if (inner.kind != ValueKind::NUMBER) {
+			throw CompileException(exp.getToken(), "Operand of sine is not a number");
+		}
+		result = Value(sin((inner.number & 0xffff) >> 2) << 2);
+	}
+
 	void caseAVarExpression(AVarExpression exp) {
 		switch (sym.var_kind[exp]) {
 		case VarKind::GLOBAL:

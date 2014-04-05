@@ -774,6 +774,41 @@ public:
 private:
   void replaceBy (PExpression node);
 };
+class ASineExpression : public PExpression {
+protected:
+  inline ASineExpression (_GenericNode *obj) : PExpression (obj) { }
+
+public:
+  inline ASineExpression () : PExpression() { }
+
+  static inline ASineExpression make () { return initProd (&type_info); }
+
+  static inline ASineExpression make (
+      TSine _token_,
+      PExpression _expression_
+  )
+  {
+    void *args[] = {
+        &_token_,
+        &_expression_
+    };
+    return initProd (&type_info, args);
+  }
+
+  static const _TypeInfo type_info;
+
+  inline ASineExpression clone () const { return Node::clone().unsafe_cast<ASineExpression>(); }
+
+  inline void replaceBy (ASineExpression node) { Node::replaceBy (node); }
+
+  inline TSine getToken () { return getChildNode(0).unsafe_cast<TSine>(); }
+  inline void setToken (TSine _token_) { setChildNode (0, _token_); }
+  inline PExpression getExpression () { return getChildNode(1).unsafe_cast<PExpression>(); }
+  inline void setExpression (PExpression _expression_) { setChildNode (1, _expression_); }
+
+private:
+  void replaceBy (PExpression node);
+};
 class APlusBinop : public PBinop {
 protected:
   inline APlusBinop (_GenericNode *obj) : PBinop (obj) { }

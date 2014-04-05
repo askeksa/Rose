@@ -81,6 +81,8 @@ An <expression> is one of:
   fixed-point adjustment to match fixed-point multiplication and division.
 - ~ <expression>
   Negate value. Used instead of - to enable airy, delimiter-sparse syntax.
+- sine ( <expression> )
+  Computes the sine of 2pi * argument.
 - ( <expression> )
   For grouping.
 

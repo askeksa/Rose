@@ -294,6 +294,23 @@ private:
   void replaceBy (Token node);
 };
 
+class TSine : public Token {
+public:
+  static inline TSine make () { return make(0, 0); }
+  static inline TSine make (int line, int pos)
+  { return Token::make(&type_info, line, pos, "sine").unsafe_cast<TSine>(); }
+
+  static const _TypeInfo type_info;
+
+  inline TSine clone () const { return Node::clone().unsafe_cast<TSine>(); }
+
+  inline void replaceBy (TSine node) { Node::replaceBy (node); }
+
+private:
+  void setText (const std::string& text); // Get error at compile time
+  void replaceBy (Token node);
+};
+
 class TSize : public Token {
 public:
   static inline TSize make () { return make(0, 0); }

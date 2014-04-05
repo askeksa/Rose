@@ -23,6 +23,7 @@ Tokens
 	move = 'move';
 	plan = 'plan';
 	proc = 'proc';
+	sine = 'sine';
 	size = 'size';
 	temp = 'temp';
 	tint = 'tint';
@@ -174,6 +175,8 @@ Productions
 							{-> New expression.number(number)}
 				|	{paren}	l_par exp r_par
 							{-> exp.expression}
+				|	{sine}	sine l_par exp r_par
+							{-> New expression.sine(sine, exp.expression)}
 				;
 
 Abstract Syntax Tree
@@ -207,6 +210,7 @@ Abstract Syntax Tree
 				|	{var}		[name]:identifier
 				|	{binary}	[op]:binop [left]:expression [right]:expression
 				|	{neg}		[token]:neg expression
+				|	{sine}		[token]:sine expression
 				;
 
 	binop		=	

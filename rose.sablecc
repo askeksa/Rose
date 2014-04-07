@@ -23,6 +23,8 @@ Tokens
 	move = 'move';
 	plan = 'plan';
 	proc = 'proc';
+	rand = 'rand';
+	seed = 'seed';
 	sine = 'sine';
 	size = 'size';
 	temp = 'temp';
@@ -106,6 +108,8 @@ Productions
 							{-> New statement.fork(fork, New expression.var(identifier), [exp.expression])}
 				|	{temp}	temp identifier assign exp
 							{-> New statement.temp(New local(identifier), exp.expression)}
+				|	{seed}	seed exp
+							{-> New statement.seed(seed, exp.expression)}
 				|	{when}	when exp stmt* done
 							{-> New statement.when(when, exp.expression, [stmt.statement], [])}
 				|	{else}	when exp [s1]:stmt* else [s2]:stmt* done
@@ -177,6 +181,8 @@ Productions
 							{-> exp.expression}
 				|	{sine}	sine l_par exp r_par
 							{-> New expression.sine(sine, exp.expression)}
+				|	{rand}	rand
+							{-> New expression.rand(rand)}
 				;
 
 Abstract Syntax Tree
@@ -202,6 +208,7 @@ Abstract Syntax Tree
 				|	{turn}	[token]:turn expression
 				|	{face}	[token]:face expression
 				|	{wait}	[token]:wait expression
+				|	{seed}	[token]:seed expression
 				|	{when}	[token]:when [cond]:expression [when]:statement* [else]:statement*
 				;
 
@@ -211,6 +218,7 @@ Abstract Syntax Tree
 				|	{binary}	[op]:binop [left]:expression [right]:expression
 				|	{neg}		[token]:neg expression
 				|	{sine}		[token]:sine expression
+				|	{rand}		[token]:rand
 				;
 
 	binop		=	

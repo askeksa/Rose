@@ -62,40 +62,42 @@ static int rargs20[] = {1};
 static int rargs21[] = {0, 2, 0};
 static int rargs22[] = {0};
 static int rargs23[] = {1, 2};
-static int rargs24[] = {0, 1, 0, 1};
+static int rargs24[] = {0, 1};
 static int rargs25[] = {0, 1, 0, 1};
 static int rargs26[] = {0, 1, 0, 1};
 static int rargs27[] = {0, 1, 0, 1};
 static int rargs28[] = {0, 1, 0, 1};
 static int rargs29[] = {0, 1, 0, 1};
-static int rargs30[] = {0};
-static int rargs31[] = {1, 2, 3};
-static int rargs32[] = {0};
-static int rargs33[] = {1, 2, 3};
-static int rargs34[] = {0};
-static int rargs35[] = {1, 2, 3};
-static int rargs36[] = {0};
-static int rargs37[] = {1, 2, 3};
-static int rargs38[] = {0};
-static int rargs39[] = {1, 2, 3};
-static int rargs40[] = {0};
-static int rargs41[] = {1, 2, 3};
-static int rargs42[] = {0};
-static int rargs43[] = {1, 2, 3};
-static int rargs44[] = {0};
-static int rargs45[] = {1, 2, 3};
-static int rargs46[] = {0};
-static int rargs47[] = {1, 2, 3};
-static int rargs48[] = {0};
-static int rargs49[] = {1, 2, 3};
-static int rargs50[] = {0};
-static int rargs51[] = {1, 2, 3};
-static int rargs52[] = {0};
-static int rargs53[] = {1, 2, 3};
-static int rargs54[] = {0, 1};
-static int rargs55[] = {0};
+static int rargs30[] = {0, 1, 0, 1};
+static int rargs31[] = {0};
+static int rargs32[] = {1, 2, 3};
+static int rargs33[] = {0};
+static int rargs34[] = {1, 2, 3};
+static int rargs35[] = {0};
+static int rargs36[] = {1, 2, 3};
+static int rargs37[] = {0};
+static int rargs38[] = {1, 2, 3};
+static int rargs39[] = {0};
+static int rargs40[] = {1, 2, 3};
+static int rargs41[] = {0};
+static int rargs42[] = {1, 2, 3};
+static int rargs43[] = {0};
+static int rargs44[] = {1, 2, 3};
+static int rargs45[] = {0};
+static int rargs46[] = {1, 2, 3};
+static int rargs47[] = {0};
+static int rargs48[] = {1, 2, 3};
+static int rargs49[] = {0};
+static int rargs50[] = {1, 2, 3};
+static int rargs51[] = {0};
+static int rargs52[] = {1, 2, 3};
+static int rargs53[] = {0};
+static int rargs54[] = {1, 2, 3};
+static int rargs55[] = {0, 1};
 static int rargs56[] = {0};
-static int rargs57[] = {0, 1};
+static int rargs57[] = {0};
+static int rargs58[] = {0, 1};
+static int rargs59[] = {0};
 
 static reduce_command rcmd0[] = {
   {CMD_MAKELIST, 0, -1, -1, 0, 0}, 
@@ -304,25 +306,19 @@ static reduce_command rcmd22[] = {
 static reduce_command rcmd23[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_POP, 1, -1, -1, 0, 0}, 
-  {CMD_POP, 2, -1, -1, 0, 0}, 
-  {CMD_MAKELIST, 0, -1, -1, 0, 0}, 
-  {CMD_MAKELIST, 1, -1, -1, 0, 0}, 
-  {CMD_FETCHNODE, 0, 2, 0, 0, 0}, 
-  {CMD_FETCHNODE, 1, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs24, &AWhenStatement::type_info}, 
+  {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
+  {CMD_FETCHNODE, 1, 0, 0, 0, 0}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs24, &ASeedStatement::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
 static reduce_command rcmd24[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
-  {CMD_POP, 3, -1, -1, 0, 0}, 
   {CMD_MAKELIST, 0, -1, -1, 0, 0}, 
   {CMD_MAKELIST, 1, -1, -1, 0, 0}, 
-  {CMD_FETCHNODE, 0, 3, 0, 0, 0}, 
-  {CMD_FETCHNODE, 1, 2, 0, 0, 0}, 
-  {CMD_FETCHLIST, 2, 1, 0, 0, 0}, 
-  {CMD_ADDLIST, 0, 2, -1, 0, 0}, 
+  {CMD_FETCHNODE, 0, 2, 0, 0, 0}, 
+  {CMD_FETCHNODE, 1, 1, 0, 0, 0}, 
   {CMD_MAKENODE, 2, -1, -1, rargs25, &AWhenStatement::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
@@ -335,6 +331,8 @@ static reduce_command rcmd25[] = {
   {CMD_MAKELIST, 1, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 3, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 2, 0, 0, 0}, 
+  {CMD_FETCHLIST, 2, 1, 0, 0, 0}, 
+  {CMD_ADDLIST, 0, 2, -1, 0, 0}, 
   {CMD_MAKENODE, 2, -1, -1, rargs26, &AWhenStatement::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
@@ -343,13 +341,10 @@ static reduce_command rcmd26[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_POP, 3, -1, -1, 0, 0}, 
-  {CMD_POP, 4, -1, -1, 0, 0}, 
   {CMD_MAKELIST, 0, -1, -1, 0, 0}, 
   {CMD_MAKELIST, 1, -1, -1, 0, 0}, 
-  {CMD_FETCHNODE, 0, 4, 0, 0, 0}, 
-  {CMD_FETCHNODE, 1, 3, 0, 0, 0}, 
-  {CMD_FETCHLIST, 2, 2, 0, 0, 0}, 
-  {CMD_ADDLIST, 0, 2, -1, 0, 0}, 
+  {CMD_FETCHNODE, 0, 3, 0, 0, 0}, 
+  {CMD_FETCHNODE, 1, 2, 0, 0, 0}, 
   {CMD_MAKENODE, 2, -1, -1, rargs27, &AWhenStatement::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
@@ -363,12 +358,27 @@ static reduce_command rcmd27[] = {
   {CMD_MAKELIST, 1, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 4, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 3, 0, 0, 0}, 
-  {CMD_FETCHLIST, 2, 1, 0, 0, 0}, 
-  {CMD_ADDLIST, 1, 2, -1, 0, 0}, 
+  {CMD_FETCHLIST, 2, 2, 0, 0, 0}, 
+  {CMD_ADDLIST, 0, 2, -1, 0, 0}, 
   {CMD_MAKENODE, 2, -1, -1, rargs28, &AWhenStatement::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
 static reduce_command rcmd28[] = {
+  {CMD_POP, 0, -1, -1, 0, 0}, 
+  {CMD_POP, 1, -1, -1, 0, 0}, 
+  {CMD_POP, 2, -1, -1, 0, 0}, 
+  {CMD_POP, 3, -1, -1, 0, 0}, 
+  {CMD_POP, 4, -1, -1, 0, 0}, 
+  {CMD_MAKELIST, 0, -1, -1, 0, 0}, 
+  {CMD_MAKELIST, 1, -1, -1, 0, 0}, 
+  {CMD_FETCHNODE, 0, 4, 0, 0, 0}, 
+  {CMD_FETCHNODE, 1, 3, 0, 0, 0}, 
+  {CMD_FETCHLIST, 2, 1, 0, 0, 0}, 
+  {CMD_ADDLIST, 1, 2, -1, 0, 0}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs29, &AWhenStatement::type_info}, 
+  {CMD_RETURNNODE, -1, 2, -1, 0, 0}
+};
+static reduce_command rcmd29[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
@@ -383,13 +393,8 @@ static reduce_command rcmd28[] = {
   {CMD_ADDLIST, 0, 2, -1, 0, 0}, 
   {CMD_FETCHLIST, 3, 1, 0, 0, 0}, 
   {CMD_ADDLIST, 1, 3, -1, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs29, &AWhenStatement::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs30, &AWhenStatement::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
-};
-static reduce_command rcmd29[] = {
-  {CMD_POP, 0, -1, -1, 0, 0}, 
-  {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_RETURNNODE, -1, 0, -1, 0, 0}
 };
 static reduce_command rcmd30[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
@@ -398,56 +403,50 @@ static reduce_command rcmd30[] = {
 };
 static reduce_command rcmd31[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
-  {CMD_POP, 1, -1, -1, 0, 0}, 
-  {CMD_POP, 2, -1, -1, 0, 0}, 
-  {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs30, &AOrBinop::type_info}, 
-  {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
-  {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs31, &ABinaryExpression::type_info}, 
-  {CMD_RETURNNODE, -1, 4, -1, 0, 0}
+  {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
+  {CMD_RETURNNODE, -1, 0, -1, 0, 0}
 };
 static reduce_command rcmd32[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
-  {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_RETURNNODE, -1, 0, -1, 0, 0}
+  {CMD_POP, 1, -1, -1, 0, 0}, 
+  {CMD_POP, 2, -1, -1, 0, 0}, 
+  {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs31, &AOrBinop::type_info}, 
+  {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
+  {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs32, &ABinaryExpression::type_info}, 
+  {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd33[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
-  {CMD_POP, 1, -1, -1, 0, 0}, 
-  {CMD_POP, 2, -1, -1, 0, 0}, 
-  {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs32, &AAndBinop::type_info}, 
-  {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
-  {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs33, &ABinaryExpression::type_info}, 
-  {CMD_RETURNNODE, -1, 4, -1, 0, 0}
-};
-static reduce_command rcmd34[] = {
-  {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
   {CMD_RETURNNODE, -1, 0, -1, 0, 0}
 };
-static reduce_command rcmd35[] = {
+static reduce_command rcmd34[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs34, &AEqBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs33, &AAndBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs35, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs34, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
+};
+static reduce_command rcmd35[] = {
+  {CMD_POP, 0, -1, -1, 0, 0}, 
+  {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
+  {CMD_RETURNNODE, -1, 0, -1, 0, 0}
 };
 static reduce_command rcmd36[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs36, &ANeBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs35, &AEqBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs37, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs36, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd37[] = {
@@ -455,10 +454,10 @@ static reduce_command rcmd37[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs38, &ALtBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs37, &ANeBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs39, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs38, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd38[] = {
@@ -466,10 +465,10 @@ static reduce_command rcmd38[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs40, &ALeBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs39, &ALtBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs41, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs40, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd39[] = {
@@ -477,10 +476,10 @@ static reduce_command rcmd39[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs42, &AGtBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs41, &ALeBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs43, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs42, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd40[] = {
@@ -488,119 +487,119 @@ static reduce_command rcmd40[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs44, &AGeBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs43, &AGtBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs45, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs44, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd41[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
-  {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_RETURNNODE, -1, 0, -1, 0, 0}
-};
-static reduce_command rcmd42[] = {
-  {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs46, &APlusBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs45, &AGeBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs47, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs46, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
+};
+static reduce_command rcmd42[] = {
+  {CMD_POP, 0, -1, -1, 0, 0}, 
+  {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
+  {CMD_RETURNNODE, -1, 0, -1, 0, 0}
 };
 static reduce_command rcmd43[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs48, &AMinusBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs47, &APlusBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs49, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs48, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd44[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
-  {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_RETURNNODE, -1, 0, -1, 0, 0}
-};
-static reduce_command rcmd45[] = {
-  {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs50, &AMultiplyBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs49, &AMinusBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs51, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs50, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
+};
+static reduce_command rcmd45[] = {
+  {CMD_POP, 0, -1, -1, 0, 0}, 
+  {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
+  {CMD_RETURNNODE, -1, 0, -1, 0, 0}
 };
 static reduce_command rcmd46[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs52, &ADivideBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs51, &AMultiplyBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs53, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs52, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd47[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_POP, 1, -1, -1, 0, 0}, 
+  {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_FETCHNODE, 1, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs54, &ANegExpression::type_info}, 
-  {CMD_RETURNNODE, -1, 2, -1, 0, 0}
+  {CMD_MAKENODE, 1, -1, -1, rargs53, &ADivideBinop::type_info}, 
+  {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
+  {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs54, &ABinaryExpression::type_info}, 
+  {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd48[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
-  {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs55, &AVarExpression::type_info}, 
-  {CMD_RETURNNODE, -1, 1, -1, 0, 0}
+  {CMD_POP, 1, -1, -1, 0, 0}, 
+  {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
+  {CMD_FETCHNODE, 1, 0, 0, 0, 0}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs55, &ANegExpression::type_info}, 
+  {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
 static reduce_command rcmd49[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs56, &ANumberExpression::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs56, &AVarExpression::type_info}, 
   {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd50[] = {
+  {CMD_POP, 0, -1, -1, 0, 0}, 
+  {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs57, &ANumberExpression::type_info}, 
+  {CMD_RETURNNODE, -1, 1, -1, 0, 0}
+};
+static reduce_command rcmd51[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
   {CMD_RETURNNODE, -1, 0, -1, 0, 0}
 };
-static reduce_command rcmd51[] = {
+static reduce_command rcmd52[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_POP, 3, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 3, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs57, &ASineExpression::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs58, &ASineExpression::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
-};
-static reduce_command rcmd52[] = {
-  {CMD_POP, 0, -1, -1, 0, 0}, 
-  {CMD_MAKELIST, 0, -1, -1, 0, 0}, 
-  {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_ADDNODE, 0, 0, -1, 0, 0}, 
-  {CMD_RETURNLIST, -1, 0, -1, 0, 0}
 };
 static reduce_command rcmd53[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
-  {CMD_POP, 1, -1, -1, 0, 0}, 
-  {CMD_MAKELIST, 0, -1, -1, 0, 0}, 
-  {CMD_FETCHLIST, 1, 1, 0, 0, 0}, 
   {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_ADDLIST, 0, 1, -1, 0, 0}, 
-  {CMD_ADDNODE, 0, 0, -1, 0, 0}, 
-  {CMD_RETURNLIST, -1, 0, -1, 0, 0}
+  {CMD_MAKENODE, 1, -1, -1, rargs59, &ARandExpression::type_info}, 
+  {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd54[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
@@ -670,6 +669,23 @@ static reduce_command rcmd61[] = {
   {CMD_ADDNODE, 0, 0, -1, 0, 0}, 
   {CMD_RETURNLIST, -1, 0, -1, 0, 0}
 };
+static reduce_command rcmd62[] = {
+  {CMD_POP, 0, -1, -1, 0, 0}, 
+  {CMD_MAKELIST, 0, -1, -1, 0, 0}, 
+  {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
+  {CMD_ADDNODE, 0, 0, -1, 0, 0}, 
+  {CMD_RETURNLIST, -1, 0, -1, 0, 0}
+};
+static reduce_command rcmd63[] = {
+  {CMD_POP, 0, -1, -1, 0, 0}, 
+  {CMD_POP, 1, -1, -1, 0, 0}, 
+  {CMD_MAKELIST, 0, -1, -1, 0, 0}, 
+  {CMD_FETCHLIST, 1, 1, 0, 0, 0}, 
+  {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
+  {CMD_ADDLIST, 0, 1, -1, 0, 0}, 
+  {CMD_ADDNODE, 0, 0, -1, 0, 0}, 
+  {CMD_RETURNLIST, -1, 0, -1, 0, 0}
+};
 
 static struct {
   int count;
@@ -699,104 +715,107 @@ static struct {
   {8, 5, rcmd20},
   {11, 5, rcmd21},
   {9, 5, rcmd22},
-  {9, 5, rcmd23},
-  {12, 5, rcmd24},
-  {10, 5, rcmd25},
-  {13, 5, rcmd26},
+  {6, 5, rcmd23},
+  {9, 5, rcmd24},
+  {12, 5, rcmd25},
+  {10, 5, rcmd26},
   {13, 5, rcmd27},
-  {16, 5, rcmd28},
-  {3, 6, rcmd29},
-  {3, 7, rcmd30},
-  {9, 7, rcmd31},
-  {3, 8, rcmd32},
-  {9, 8, rcmd33},
-  {3, 9, rcmd34},
-  {9, 9, rcmd35},
+  {13, 5, rcmd28},
+  {16, 5, rcmd29},
+  {3, 6, rcmd30},
+  {3, 7, rcmd31},
+  {9, 7, rcmd32},
+  {3, 8, rcmd33},
+  {9, 8, rcmd34},
+  {3, 9, rcmd35},
   {9, 9, rcmd36},
   {9, 9, rcmd37},
   {9, 9, rcmd38},
   {9, 9, rcmd39},
   {9, 9, rcmd40},
-  {3, 10, rcmd41},
-  {9, 10, rcmd42},
+  {9, 9, rcmd41},
+  {3, 10, rcmd42},
   {9, 10, rcmd43},
-  {3, 11, rcmd44},
-  {9, 11, rcmd45},
+  {9, 10, rcmd44},
+  {3, 11, rcmd45},
   {9, 11, rcmd46},
-  {6, 12, rcmd47},
-  {4, 12, rcmd48},
+  {9, 11, rcmd47},
+  {6, 12, rcmd48},
   {4, 12, rcmd49},
-  {5, 12, rcmd50},
-  {8, 12, rcmd51},
-  {5, 13, rcmd52},
-  {8, 13, rcmd53},
-  {5, 14, rcmd54},
-  {8, 14, rcmd55},
-  {5, 15, rcmd56},
-  {8, 15, rcmd57},
-  {5, 16, rcmd58},
-  {8, 16, rcmd59},
-  {5, 17, rcmd60},
-  {8, 17, rcmd61},
+  {4, 12, rcmd50},
+  {5, 12, rcmd51},
+  {8, 12, rcmd52},
+  {4, 12, rcmd53},
+  {5, 13, rcmd54},
+  {8, 13, rcmd55},
+  {5, 14, rcmd56},
+  {8, 14, rcmd57},
+  {5, 15, rcmd58},
+  {8, 15, rcmd59},
+  {5, 16, rcmd60},
+  {8, 16, rcmd61},
+  {5, 17, rcmd62},
+  {8, 17, rcmd63},
 };
 
 static int _g_1_1[] = {-1, 3};
 static int _g_2_1[] = {-1, 4};
 static int _g_3_1[] = {-1, 9};
-static int _g_3_2[] = {10, 26};
+static int _g_3_2[] = {10, 27};
 static int _g_4_1[] = {-1, 5};
 static int _g_4_2[] = {6, 13};
 static int _g_4_3[] = {12, 13};
-static int _g_5_1[] = {-1, 38};
-static int _g_5_2[] = {40, 66};
-static int _g_6_1[] = {-1, 39};
-static int _g_6_2[] = {41, 68};
-static int _g_6_3[] = {67, 68};
-static int _g_6_4[] = {88, 68};
-static int _g_6_5[] = {93, 68};
-static int _g_6_6[] = {98, 68};
-static int _g_7_1[] = {-1, 19};
-static int _g_7_2[] = {15, 43};
-static int _g_7_3[] = {28, 57};
-static int _g_7_4[] = {30, 59};
-static int _g_7_5[] = {31, 60};
-static int _g_7_6[] = {33, 62};
-static int _g_7_7[] = {34, 63};
-static int _g_7_8[] = {35, 64};
-static int _g_7_9[] = {36, 65};
-static int _g_7_10[] = {42, 69};
-static int _g_7_11[] = {58, 83};
-static int _g_7_12[] = {84, 90};
-static int _g_7_13[] = {85, 91};
-static int _g_8_1[] = {-1, 20};
-static int _g_9_1[] = {-1, 21};
-static int _g_9_2[] = {45, 71};
-static int _g_10_1[] = {-1, 22};
-static int _g_10_2[] = {46, 72};
-static int _g_11_1[] = {-1, 23};
-static int _g_11_2[] = {49, 75};
-static int _g_11_3[] = {50, 76};
-static int _g_11_4[] = {51, 77};
-static int _g_11_5[] = {52, 78};
-static int _g_11_6[] = {53, 79};
-static int _g_11_7[] = {54, 80};
-static int _g_12_1[] = {-1, 24};
-static int _g_12_2[] = {47, 73};
-static int _g_12_3[] = {48, 74};
-static int _g_13_1[] = {-1, 25};
-static int _g_13_2[] = {16, 44};
-static int _g_13_3[] = {55, 81};
-static int _g_13_4[] = {56, 82};
+static int _g_5_1[] = {-1, 40};
+static int _g_5_2[] = {42, 69};
+static int _g_6_1[] = {-1, 41};
+static int _g_6_2[] = {43, 71};
+static int _g_6_3[] = {70, 71};
+static int _g_6_4[] = {91, 71};
+static int _g_6_5[] = {96, 71};
+static int _g_6_6[] = {101, 71};
+static int _g_7_1[] = {-1, 20};
+static int _g_7_2[] = {16, 45};
+static int _g_7_3[] = {29, 59};
+static int _g_7_4[] = {31, 61};
+static int _g_7_5[] = {32, 62};
+static int _g_7_6[] = {33, 63};
+static int _g_7_7[] = {35, 65};
+static int _g_7_8[] = {36, 66};
+static int _g_7_9[] = {37, 67};
+static int _g_7_10[] = {38, 68};
+static int _g_7_11[] = {44, 72};
+static int _g_7_12[] = {60, 86};
+static int _g_7_13[] = {87, 93};
+static int _g_7_14[] = {88, 94};
+static int _g_8_1[] = {-1, 21};
+static int _g_9_1[] = {-1, 22};
+static int _g_9_2[] = {47, 74};
+static int _g_10_1[] = {-1, 23};
+static int _g_10_2[] = {48, 75};
+static int _g_11_1[] = {-1, 24};
+static int _g_11_2[] = {51, 78};
+static int _g_11_3[] = {52, 79};
+static int _g_11_4[] = {53, 80};
+static int _g_11_5[] = {54, 81};
+static int _g_11_6[] = {55, 82};
+static int _g_11_7[] = {56, 83};
+static int _g_12_1[] = {-1, 25};
+static int _g_12_2[] = {49, 76};
+static int _g_12_3[] = {50, 77};
+static int _g_13_1[] = {-1, 26};
+static int _g_13_2[] = {17, 46};
+static int _g_13_3[] = {57, 84};
+static int _g_13_4[] = {58, 85};
 static int _g_14_1[] = {-1, 6};
 static int _g_14_2[] = {4, 12};
 static int _g_15_1[] = {-1, 10};
-static int _g_16_1[] = {-1, 40};
-static int _g_17_1[] = {-1, 41};
-static int _g_17_2[] = {40, 67};
-static int _g_17_3[] = {65, 88};
-static int _g_17_4[] = {87, 93};
-static int _g_17_5[] = {95, 98};
-static int _g_18_1[] = {-1, 84};
+static int _g_16_1[] = {-1, 42};
+static int _g_17_1[] = {-1, 43};
+static int _g_17_2[] = {42, 70};
+static int _g_17_3[] = {68, 91};
+static int _g_17_4[] = {90, 96};
+static int _g_17_5[] = {98, 101};
+static int _g_18_1[] = {-1, 87};
 
 static int *_g_1[] = {
         (int *)1,
@@ -832,7 +851,7 @@ static int *_g_6[] = {
         _g_6_6,
 };
 static int *_g_7[] = {
-        (int *)13,
+        (int *)14,
         _g_7_1,
         _g_7_2,
         _g_7_3,
@@ -846,6 +865,7 @@ static int *_g_7[] = {
         _g_7_11,
         _g_7_12,
         _g_7_13,
+        _g_7_14,
 };
 static int *_g_8[] = {
         (int *)1,
@@ -935,388 +955,433 @@ static int _a_1_1[] = {-1, 1, 0};
 static int _a_1_2[] = {6, 0, 1};
 static int _a_1_3[] = {7, 0, 2};
 static int _a_2_1[] = {-1, 1, 4};
-static int _a_2_2[] = {13, 0, 7};
-static int _a_2_3[] = {33, 0, 8};
+static int _a_2_2[] = {15, 0, 7};
+static int _a_2_3[] = {35, 0, 8};
 static int _a_3_1[] = {-1, 3, 2};
-static int _a_3_2[] = {32, 0, 11};
+static int _a_3_2[] = {34, 0, 11};
 static int _a_4_1[] = {-1, 3, 3};
-static int _a_4_2[] = {34, 2, -1};
+static int _a_4_2[] = {36, 2, -1};
 static int _a_5_1[] = {-1, 1, 1};
 static int _a_5_2[] = {7, 0, 2};
-static int _a_6_1[] = {-1, 1, 52};
+static int _a_6_1[] = {-1, 1, 54};
 static int _a_7_1[] = {-1, 1, 2};
 static int _a_7_2[] = {7, 0, 2};
 static int _a_8_1[] = {-1, 3, 7};
 static int _a_8_2[] = {8, 0, 14};
-static int _a_8_3[] = {15, 0, 15};
-static int _a_8_4[] = {30, 0, 16};
-static int _a_8_5[] = {31, 0, 17};
-static int _a_8_6[] = {32, 0, 18};
+static int _a_8_3[] = {10, 0, 15};
+static int _a_8_4[] = {17, 0, 16};
+static int _a_8_5[] = {32, 0, 17};
+static int _a_8_6[] = {33, 0, 18};
+static int _a_8_7[] = {34, 0, 19};
 static int _a_9_1[] = {-1, 1, 7};
-static int _a_10_1[] = {-1, 1, 54};
+static int _a_10_1[] = {-1, 1, 56};
 static int _a_11_1[] = {-1, 1, 5};
-static int _a_11_2[] = {13, 0, 7};
-static int _a_11_3[] = {33, 0, 8};
+static int _a_11_2[] = {15, 0, 7};
+static int _a_11_3[] = {35, 0, 8};
 static int _a_12_1[] = {-1, 1, 8};
-static int _a_12_2[] = {1, 0, 27};
-static int _a_12_3[] = {3, 0, 28};
-static int _a_12_4[] = {4, 0, 29};
-static int _a_12_5[] = {5, 0, 30};
-static int _a_12_6[] = {9, 0, 31};
-static int _a_12_7[] = {10, 0, 32};
-static int _a_12_8[] = {11, 0, 33};
-static int _a_12_9[] = {12, 0, 34};
-static int _a_12_10[] = {13, 0, 35};
-static int _a_12_11[] = {14, 0, 36};
-static int _a_12_12[] = {32, 0, 37};
+static int _a_12_2[] = {1, 0, 28};
+static int _a_12_3[] = {3, 0, 29};
+static int _a_12_4[] = {4, 0, 30};
+static int _a_12_5[] = {5, 0, 31};
+static int _a_12_6[] = {9, 0, 32};
+static int _a_12_7[] = {11, 0, 33};
+static int _a_12_8[] = {12, 0, 34};
+static int _a_12_9[] = {13, 0, 35};
+static int _a_12_10[] = {14, 0, 36};
+static int _a_12_11[] = {15, 0, 37};
+static int _a_12_12[] = {16, 0, 38};
+static int _a_12_13[] = {34, 0, 39};
 static int _a_13_1[] = {-1, 1, 3};
 static int _a_13_2[] = {7, 0, 2};
-static int _a_14_1[] = {-1, 1, 53};
-static int _a_15_1[] = {-1, 3, 14};
-static int _a_15_2[] = {15, 0, 42};
+static int _a_14_1[] = {-1, 1, 55};
+static int _a_15_1[] = {-1, 1, 53};
 static int _a_16_1[] = {-1, 3, 15};
-static int _a_16_2[] = {8, 0, 14};
-static int _a_16_3[] = {15, 0, 15};
-static int _a_16_4[] = {30, 0, 16};
-static int _a_16_5[] = {31, 0, 17};
-static int _a_16_6[] = {32, 0, 18};
+static int _a_16_2[] = {17, 0, 44};
 static int _a_17_1[] = {-1, 3, 16};
 static int _a_17_2[] = {8, 0, 14};
-static int _a_17_3[] = {15, 0, 15};
-static int _a_17_4[] = {30, 0, 16};
-static int _a_17_5[] = {31, 0, 17};
-static int _a_17_6[] = {32, 0, 18};
-static int _a_18_1[] = {-1, 1, 49};
-static int _a_19_1[] = {-1, 1, 48};
-static int _a_20_1[] = {-1, 1, 6};
-static int _a_21_1[] = {-1, 1, 29};
-static int _a_21_2[] = {28, 0, 45};
+static int _a_17_3[] = {10, 0, 15};
+static int _a_17_4[] = {17, 0, 16};
+static int _a_17_5[] = {32, 0, 17};
+static int _a_17_6[] = {33, 0, 18};
+static int _a_17_7[] = {34, 0, 19};
+static int _a_18_1[] = {-1, 3, 17};
+static int _a_18_2[] = {8, 0, 14};
+static int _a_18_3[] = {10, 0, 15};
+static int _a_18_4[] = {17, 0, 16};
+static int _a_18_5[] = {32, 0, 17};
+static int _a_18_6[] = {33, 0, 18};
+static int _a_18_7[] = {34, 0, 19};
+static int _a_19_1[] = {-1, 1, 50};
+static int _a_20_1[] = {-1, 1, 49};
+static int _a_21_1[] = {-1, 1, 6};
 static int _a_22_1[] = {-1, 1, 30};
-static int _a_22_2[] = {27, 0, 46};
-static int _a_23_1[] = {-1, 1, 32};
-static int _a_24_1[] = {-1, 1, 34};
-static int _a_24_2[] = {17, 0, 47};
-static int _a_24_3[] = {18, 0, 48};
-static int _a_24_4[] = {21, 0, 49};
-static int _a_24_5[] = {22, 0, 50};
-static int _a_24_6[] = {23, 0, 51};
-static int _a_24_7[] = {24, 0, 52};
-static int _a_24_8[] = {25, 0, 53};
-static int _a_24_9[] = {26, 0, 54};
-static int _a_25_1[] = {-1, 1, 41};
-static int _a_25_2[] = {19, 0, 55};
-static int _a_25_3[] = {20, 0, 56};
-static int _a_26_1[] = {-1, 1, 44};
-static int _a_27_1[] = {-1, 1, 55};
-static int _a_28_1[] = {-1, 1, 13};
-static int _a_29_1[] = {-1, 3, 28};
-static int _a_29_2[] = {8, 0, 14};
-static int _a_29_3[] = {15, 0, 15};
-static int _a_29_4[] = {30, 0, 16};
-static int _a_29_5[] = {31, 0, 17};
-static int _a_29_6[] = {32, 0, 18};
+static int _a_22_2[] = {30, 0, 47};
+static int _a_23_1[] = {-1, 1, 31};
+static int _a_23_2[] = {29, 0, 48};
+static int _a_24_1[] = {-1, 1, 33};
+static int _a_25_1[] = {-1, 1, 35};
+static int _a_25_2[] = {19, 0, 49};
+static int _a_25_3[] = {20, 0, 50};
+static int _a_25_4[] = {23, 0, 51};
+static int _a_25_5[] = {24, 0, 52};
+static int _a_25_6[] = {25, 0, 53};
+static int _a_25_7[] = {26, 0, 54};
+static int _a_25_8[] = {27, 0, 55};
+static int _a_25_9[] = {28, 0, 56};
+static int _a_26_1[] = {-1, 1, 42};
+static int _a_26_2[] = {21, 0, 57};
+static int _a_26_3[] = {22, 0, 58};
+static int _a_27_1[] = {-1, 1, 45};
+static int _a_28_1[] = {-1, 1, 57};
+static int _a_29_1[] = {-1, 1, 13};
 static int _a_30_1[] = {-1, 3, 29};
-static int _a_30_2[] = {32, 0, 58};
+static int _a_30_2[] = {8, 0, 14};
+static int _a_30_3[] = {10, 0, 15};
+static int _a_30_4[] = {17, 0, 16};
+static int _a_30_5[] = {32, 0, 17};
+static int _a_30_6[] = {33, 0, 18};
+static int _a_30_7[] = {34, 0, 19};
 static int _a_31_1[] = {-1, 3, 30};
-static int _a_31_2[] = {8, 0, 14};
-static int _a_31_3[] = {15, 0, 15};
-static int _a_31_4[] = {30, 0, 16};
-static int _a_31_5[] = {31, 0, 17};
-static int _a_31_6[] = {32, 0, 18};
+static int _a_31_2[] = {34, 0, 60};
 static int _a_32_1[] = {-1, 3, 31};
 static int _a_32_2[] = {8, 0, 14};
-static int _a_32_3[] = {15, 0, 15};
-static int _a_32_4[] = {30, 0, 16};
-static int _a_32_5[] = {31, 0, 17};
-static int _a_32_6[] = {32, 0, 18};
+static int _a_32_3[] = {10, 0, 15};
+static int _a_32_4[] = {17, 0, 16};
+static int _a_32_5[] = {32, 0, 17};
+static int _a_32_6[] = {33, 0, 18};
+static int _a_32_7[] = {34, 0, 19};
 static int _a_33_1[] = {-1, 3, 32};
-static int _a_33_2[] = {32, 0, 61};
+static int _a_33_2[] = {8, 0, 14};
+static int _a_33_3[] = {10, 0, 15};
+static int _a_33_4[] = {17, 0, 16};
+static int _a_33_5[] = {32, 0, 17};
+static int _a_33_6[] = {33, 0, 18};
+static int _a_33_7[] = {34, 0, 19};
 static int _a_34_1[] = {-1, 3, 33};
 static int _a_34_2[] = {8, 0, 14};
-static int _a_34_3[] = {15, 0, 15};
-static int _a_34_4[] = {30, 0, 16};
-static int _a_34_5[] = {31, 0, 17};
-static int _a_34_6[] = {32, 0, 18};
+static int _a_34_3[] = {10, 0, 15};
+static int _a_34_4[] = {17, 0, 16};
+static int _a_34_5[] = {32, 0, 17};
+static int _a_34_6[] = {33, 0, 18};
+static int _a_34_7[] = {34, 0, 19};
 static int _a_35_1[] = {-1, 3, 34};
-static int _a_35_2[] = {8, 0, 14};
-static int _a_35_3[] = {15, 0, 15};
-static int _a_35_4[] = {30, 0, 16};
-static int _a_35_5[] = {31, 0, 17};
-static int _a_35_6[] = {32, 0, 18};
+static int _a_35_2[] = {34, 0, 64};
 static int _a_36_1[] = {-1, 3, 35};
 static int _a_36_2[] = {8, 0, 14};
-static int _a_36_3[] = {15, 0, 15};
-static int _a_36_4[] = {30, 0, 16};
-static int _a_36_5[] = {31, 0, 17};
-static int _a_36_6[] = {32, 0, 18};
+static int _a_36_3[] = {10, 0, 15};
+static int _a_36_4[] = {17, 0, 16};
+static int _a_36_5[] = {32, 0, 17};
+static int _a_36_6[] = {33, 0, 18};
+static int _a_36_7[] = {34, 0, 19};
 static int _a_37_1[] = {-1, 3, 36};
 static int _a_37_2[] = {8, 0, 14};
-static int _a_37_3[] = {15, 0, 15};
-static int _a_37_4[] = {30, 0, 16};
-static int _a_37_5[] = {31, 0, 17};
-static int _a_37_6[] = {32, 0, 18};
-static int _a_38_1[] = {-1, 1, 12};
-static int _a_39_1[] = {-1, 1, 56};
-static int _a_40_1[] = {-1, 1, 58};
-static int _a_41_1[] = {-1, 1, 9};
-static int _a_41_2[] = {1, 0, 27};
-static int _a_41_3[] = {3, 0, 28};
-static int _a_41_4[] = {4, 0, 29};
-static int _a_41_5[] = {5, 0, 30};
-static int _a_41_6[] = {9, 0, 31};
-static int _a_41_7[] = {10, 0, 32};
-static int _a_41_8[] = {11, 0, 33};
-static int _a_41_9[] = {12, 0, 34};
-static int _a_41_10[] = {13, 0, 35};
-static int _a_41_11[] = {14, 0, 36};
-static int _a_41_12[] = {32, 0, 37};
-static int _a_42_1[] = {-1, 1, 10};
-static int _a_42_2[] = {1, 0, 27};
-static int _a_42_3[] = {3, 0, 28};
-static int _a_42_4[] = {4, 0, 29};
-static int _a_42_5[] = {5, 0, 30};
-static int _a_42_6[] = {9, 0, 31};
-static int _a_42_7[] = {10, 0, 32};
-static int _a_42_8[] = {11, 0, 33};
-static int _a_42_9[] = {12, 0, 34};
-static int _a_42_10[] = {13, 0, 35};
-static int _a_42_11[] = {14, 0, 36};
-static int _a_43_1[] = {-1, 3, 42};
-static int _a_43_2[] = {8, 0, 14};
-static int _a_43_3[] = {15, 0, 15};
-static int _a_43_4[] = {30, 0, 16};
-static int _a_43_5[] = {31, 0, 17};
-static int _a_43_6[] = {32, 0, 18};
-static int _a_44_1[] = {-1, 3, 43};
-static int _a_44_2[] = {16, 0, 70};
-static int _a_45_1[] = {-1, 1, 47};
+static int _a_37_3[] = {10, 0, 15};
+static int _a_37_4[] = {17, 0, 16};
+static int _a_37_5[] = {32, 0, 17};
+static int _a_37_6[] = {33, 0, 18};
+static int _a_37_7[] = {34, 0, 19};
+static int _a_38_1[] = {-1, 3, 37};
+static int _a_38_2[] = {8, 0, 14};
+static int _a_38_3[] = {10, 0, 15};
+static int _a_38_4[] = {17, 0, 16};
+static int _a_38_5[] = {32, 0, 17};
+static int _a_38_6[] = {33, 0, 18};
+static int _a_38_7[] = {34, 0, 19};
+static int _a_39_1[] = {-1, 3, 38};
+static int _a_39_2[] = {8, 0, 14};
+static int _a_39_3[] = {10, 0, 15};
+static int _a_39_4[] = {17, 0, 16};
+static int _a_39_5[] = {32, 0, 17};
+static int _a_39_6[] = {33, 0, 18};
+static int _a_39_7[] = {34, 0, 19};
+static int _a_40_1[] = {-1, 1, 12};
+static int _a_41_1[] = {-1, 1, 58};
+static int _a_42_1[] = {-1, 1, 60};
+static int _a_43_1[] = {-1, 1, 9};
+static int _a_43_2[] = {1, 0, 28};
+static int _a_43_3[] = {3, 0, 29};
+static int _a_43_4[] = {4, 0, 30};
+static int _a_43_5[] = {5, 0, 31};
+static int _a_43_6[] = {9, 0, 32};
+static int _a_43_7[] = {11, 0, 33};
+static int _a_43_8[] = {12, 0, 34};
+static int _a_43_9[] = {13, 0, 35};
+static int _a_43_10[] = {14, 0, 36};
+static int _a_43_11[] = {15, 0, 37};
+static int _a_43_12[] = {16, 0, 38};
+static int _a_43_13[] = {34, 0, 39};
+static int _a_44_1[] = {-1, 1, 10};
+static int _a_44_2[] = {1, 0, 28};
+static int _a_44_3[] = {3, 0, 29};
+static int _a_44_4[] = {4, 0, 30};
+static int _a_44_5[] = {5, 0, 31};
+static int _a_44_6[] = {9, 0, 32};
+static int _a_44_7[] = {11, 0, 33};
+static int _a_44_8[] = {12, 0, 34};
+static int _a_44_9[] = {13, 0, 35};
+static int _a_44_10[] = {14, 0, 36};
+static int _a_44_11[] = {15, 0, 37};
+static int _a_44_12[] = {16, 0, 38};
+static int _a_45_1[] = {-1, 3, 44};
+static int _a_45_2[] = {8, 0, 14};
+static int _a_45_3[] = {10, 0, 15};
+static int _a_45_4[] = {17, 0, 16};
+static int _a_45_5[] = {32, 0, 17};
+static int _a_45_6[] = {33, 0, 18};
+static int _a_45_7[] = {34, 0, 19};
 static int _a_46_1[] = {-1, 3, 45};
-static int _a_46_2[] = {8, 0, 14};
-static int _a_46_3[] = {15, 0, 15};
-static int _a_46_4[] = {30, 0, 16};
-static int _a_46_5[] = {31, 0, 17};
-static int _a_46_6[] = {32, 0, 18};
-static int _a_47_1[] = {-1, 3, 46};
-static int _a_47_2[] = {8, 0, 14};
-static int _a_47_3[] = {15, 0, 15};
-static int _a_47_4[] = {30, 0, 16};
-static int _a_47_5[] = {31, 0, 17};
-static int _a_47_6[] = {32, 0, 18};
+static int _a_46_2[] = {18, 0, 73};
+static int _a_47_1[] = {-1, 1, 48};
 static int _a_48_1[] = {-1, 3, 47};
 static int _a_48_2[] = {8, 0, 14};
-static int _a_48_3[] = {15, 0, 15};
-static int _a_48_4[] = {30, 0, 16};
-static int _a_48_5[] = {31, 0, 17};
-static int _a_48_6[] = {32, 0, 18};
+static int _a_48_3[] = {10, 0, 15};
+static int _a_48_4[] = {17, 0, 16};
+static int _a_48_5[] = {32, 0, 17};
+static int _a_48_6[] = {33, 0, 18};
+static int _a_48_7[] = {34, 0, 19};
 static int _a_49_1[] = {-1, 3, 48};
 static int _a_49_2[] = {8, 0, 14};
-static int _a_49_3[] = {15, 0, 15};
-static int _a_49_4[] = {30, 0, 16};
-static int _a_49_5[] = {31, 0, 17};
-static int _a_49_6[] = {32, 0, 18};
+static int _a_49_3[] = {10, 0, 15};
+static int _a_49_4[] = {17, 0, 16};
+static int _a_49_5[] = {32, 0, 17};
+static int _a_49_6[] = {33, 0, 18};
+static int _a_49_7[] = {34, 0, 19};
 static int _a_50_1[] = {-1, 3, 49};
 static int _a_50_2[] = {8, 0, 14};
-static int _a_50_3[] = {15, 0, 15};
-static int _a_50_4[] = {30, 0, 16};
-static int _a_50_5[] = {31, 0, 17};
-static int _a_50_6[] = {32, 0, 18};
+static int _a_50_3[] = {10, 0, 15};
+static int _a_50_4[] = {17, 0, 16};
+static int _a_50_5[] = {32, 0, 17};
+static int _a_50_6[] = {33, 0, 18};
+static int _a_50_7[] = {34, 0, 19};
 static int _a_51_1[] = {-1, 3, 50};
 static int _a_51_2[] = {8, 0, 14};
-static int _a_51_3[] = {15, 0, 15};
-static int _a_51_4[] = {30, 0, 16};
-static int _a_51_5[] = {31, 0, 17};
-static int _a_51_6[] = {32, 0, 18};
+static int _a_51_3[] = {10, 0, 15};
+static int _a_51_4[] = {17, 0, 16};
+static int _a_51_5[] = {32, 0, 17};
+static int _a_51_6[] = {33, 0, 18};
+static int _a_51_7[] = {34, 0, 19};
 static int _a_52_1[] = {-1, 3, 51};
 static int _a_52_2[] = {8, 0, 14};
-static int _a_52_3[] = {15, 0, 15};
-static int _a_52_4[] = {30, 0, 16};
-static int _a_52_5[] = {31, 0, 17};
-static int _a_52_6[] = {32, 0, 18};
+static int _a_52_3[] = {10, 0, 15};
+static int _a_52_4[] = {17, 0, 16};
+static int _a_52_5[] = {32, 0, 17};
+static int _a_52_6[] = {33, 0, 18};
+static int _a_52_7[] = {34, 0, 19};
 static int _a_53_1[] = {-1, 3, 52};
 static int _a_53_2[] = {8, 0, 14};
-static int _a_53_3[] = {15, 0, 15};
-static int _a_53_4[] = {30, 0, 16};
-static int _a_53_5[] = {31, 0, 17};
-static int _a_53_6[] = {32, 0, 18};
+static int _a_53_3[] = {10, 0, 15};
+static int _a_53_4[] = {17, 0, 16};
+static int _a_53_5[] = {32, 0, 17};
+static int _a_53_6[] = {33, 0, 18};
+static int _a_53_7[] = {34, 0, 19};
 static int _a_54_1[] = {-1, 3, 53};
 static int _a_54_2[] = {8, 0, 14};
-static int _a_54_3[] = {15, 0, 15};
-static int _a_54_4[] = {30, 0, 16};
-static int _a_54_5[] = {31, 0, 17};
-static int _a_54_6[] = {32, 0, 18};
+static int _a_54_3[] = {10, 0, 15};
+static int _a_54_4[] = {17, 0, 16};
+static int _a_54_5[] = {32, 0, 17};
+static int _a_54_6[] = {33, 0, 18};
+static int _a_54_7[] = {34, 0, 19};
 static int _a_55_1[] = {-1, 3, 54};
 static int _a_55_2[] = {8, 0, 14};
-static int _a_55_3[] = {15, 0, 15};
-static int _a_55_4[] = {30, 0, 16};
-static int _a_55_5[] = {31, 0, 17};
-static int _a_55_6[] = {32, 0, 18};
+static int _a_55_3[] = {10, 0, 15};
+static int _a_55_4[] = {17, 0, 16};
+static int _a_55_5[] = {32, 0, 17};
+static int _a_55_6[] = {33, 0, 18};
+static int _a_55_7[] = {34, 0, 19};
 static int _a_56_1[] = {-1, 3, 55};
 static int _a_56_2[] = {8, 0, 14};
-static int _a_56_3[] = {15, 0, 15};
-static int _a_56_4[] = {30, 0, 16};
-static int _a_56_5[] = {31, 0, 17};
-static int _a_56_6[] = {32, 0, 18};
+static int _a_56_3[] = {10, 0, 15};
+static int _a_56_4[] = {17, 0, 16};
+static int _a_56_5[] = {32, 0, 17};
+static int _a_56_6[] = {33, 0, 18};
+static int _a_56_7[] = {34, 0, 19};
 static int _a_57_1[] = {-1, 3, 56};
 static int _a_57_2[] = {8, 0, 14};
-static int _a_57_3[] = {15, 0, 15};
-static int _a_57_4[] = {30, 0, 16};
-static int _a_57_5[] = {31, 0, 17};
-static int _a_57_6[] = {32, 0, 18};
-static int _a_58_1[] = {-1, 1, 16};
-static int _a_59_1[] = {-1, 1, 20};
+static int _a_57_3[] = {10, 0, 15};
+static int _a_57_4[] = {17, 0, 16};
+static int _a_57_5[] = {32, 0, 17};
+static int _a_57_6[] = {33, 0, 18};
+static int _a_57_7[] = {34, 0, 19};
+static int _a_58_1[] = {-1, 3, 57};
+static int _a_58_2[] = {8, 0, 14};
+static int _a_58_3[] = {10, 0, 15};
+static int _a_58_4[] = {17, 0, 16};
+static int _a_58_5[] = {32, 0, 17};
+static int _a_58_6[] = {33, 0, 18};
+static int _a_58_7[] = {34, 0, 19};
+static int _a_59_1[] = {-1, 3, 58};
 static int _a_59_2[] = {8, 0, 14};
-static int _a_59_3[] = {15, 0, 15};
-static int _a_59_4[] = {30, 0, 16};
-static int _a_59_5[] = {31, 0, 17};
-static int _a_59_6[] = {32, 0, 18};
-static int _a_60_1[] = {-1, 1, 14};
-static int _a_61_1[] = {-1, 1, 18};
-static int _a_62_1[] = {-1, 3, 61};
-static int _a_62_2[] = {29, 0, 85};
-static int _a_63_1[] = {-1, 1, 17};
-static int _a_64_1[] = {-1, 1, 15};
-static int _a_65_1[] = {-1, 1, 19};
-static int _a_66_1[] = {-1, 3, 65};
-static int _a_66_2[] = {0, 0, 86};
-static int _a_66_3[] = {1, 0, 27};
-static int _a_66_4[] = {2, 0, 87};
-static int _a_66_5[] = {3, 0, 28};
-static int _a_66_6[] = {4, 0, 29};
-static int _a_66_7[] = {5, 0, 30};
-static int _a_66_8[] = {9, 0, 31};
-static int _a_66_9[] = {10, 0, 32};
-static int _a_66_10[] = {11, 0, 33};
-static int _a_66_11[] = {12, 0, 34};
-static int _a_66_12[] = {13, 0, 35};
-static int _a_66_13[] = {14, 0, 36};
-static int _a_67_1[] = {-1, 1, 57};
-static int _a_68_1[] = {-1, 1, 11};
-static int _a_68_2[] = {1, 0, 27};
-static int _a_68_3[] = {3, 0, 28};
-static int _a_68_4[] = {4, 0, 29};
-static int _a_68_5[] = {5, 0, 30};
-static int _a_68_6[] = {9, 0, 31};
-static int _a_68_7[] = {10, 0, 32};
-static int _a_68_8[] = {11, 0, 33};
-static int _a_68_9[] = {12, 0, 34};
-static int _a_68_10[] = {13, 0, 35};
-static int _a_68_11[] = {14, 0, 36};
-static int _a_69_1[] = {-1, 1, 59};
-static int _a_70_1[] = {-1, 3, 69};
-static int _a_70_2[] = {16, 0, 89};
-static int _a_71_1[] = {-1, 1, 50};
-static int _a_72_1[] = {-1, 1, 31};
-static int _a_72_2[] = {27, 0, 46};
-static int _a_73_1[] = {-1, 1, 33};
-static int _a_74_1[] = {-1, 1, 42};
-static int _a_74_2[] = {19, 0, 55};
-static int _a_74_3[] = {20, 0, 56};
-static int _a_75_1[] = {-1, 1, 43};
-static int _a_75_2[] = {19, 0, 55};
-static int _a_75_3[] = {20, 0, 56};
-static int _a_76_1[] = {-1, 1, 35};
-static int _a_76_2[] = {17, 0, 47};
-static int _a_76_3[] = {18, 0, 48};
-static int _a_77_1[] = {-1, 1, 36};
-static int _a_77_2[] = {17, 0, 47};
-static int _a_77_3[] = {18, 0, 48};
-static int _a_78_1[] = {-1, 1, 37};
-static int _a_78_2[] = {17, 0, 47};
-static int _a_78_3[] = {18, 0, 48};
-static int _a_79_1[] = {-1, 1, 38};
-static int _a_79_2[] = {17, 0, 47};
-static int _a_79_3[] = {18, 0, 48};
-static int _a_80_1[] = {-1, 1, 39};
-static int _a_80_2[] = {17, 0, 47};
-static int _a_80_3[] = {18, 0, 48};
-static int _a_81_1[] = {-1, 1, 40};
-static int _a_81_2[] = {17, 0, 47};
-static int _a_81_3[] = {18, 0, 48};
-static int _a_82_1[] = {-1, 1, 45};
-static int _a_83_1[] = {-1, 1, 46};
-static int _a_84_1[] = {-1, 1, 60};
-static int _a_85_1[] = {-1, 1, 21};
-static int _a_85_2[] = {8, 0, 14};
-static int _a_85_3[] = {15, 0, 15};
-static int _a_85_4[] = {30, 0, 16};
-static int _a_85_5[] = {31, 0, 17};
-static int _a_85_6[] = {32, 0, 18};
-static int _a_86_1[] = {-1, 3, 85};
-static int _a_86_2[] = {8, 0, 14};
-static int _a_86_3[] = {15, 0, 15};
-static int _a_86_4[] = {30, 0, 16};
-static int _a_86_5[] = {31, 0, 17};
-static int _a_86_6[] = {32, 0, 18};
-static int _a_87_1[] = {-1, 1, 23};
-static int _a_88_1[] = {-1, 3, 87};
-static int _a_88_2[] = {0, 0, 92};
-static int _a_88_3[] = {1, 0, 27};
-static int _a_88_4[] = {3, 0, 28};
-static int _a_88_5[] = {4, 0, 29};
-static int _a_88_6[] = {5, 0, 30};
-static int _a_88_7[] = {9, 0, 31};
-static int _a_88_8[] = {10, 0, 32};
-static int _a_88_9[] = {11, 0, 33};
-static int _a_88_10[] = {12, 0, 34};
-static int _a_88_11[] = {13, 0, 35};
-static int _a_88_12[] = {14, 0, 36};
+static int _a_59_3[] = {10, 0, 15};
+static int _a_59_4[] = {17, 0, 16};
+static int _a_59_5[] = {32, 0, 17};
+static int _a_59_6[] = {33, 0, 18};
+static int _a_59_7[] = {34, 0, 19};
+static int _a_60_1[] = {-1, 1, 16};
+static int _a_61_1[] = {-1, 1, 20};
+static int _a_61_2[] = {8, 0, 14};
+static int _a_61_3[] = {10, 0, 15};
+static int _a_61_4[] = {17, 0, 16};
+static int _a_61_5[] = {32, 0, 17};
+static int _a_61_6[] = {33, 0, 18};
+static int _a_61_7[] = {34, 0, 19};
+static int _a_62_1[] = {-1, 1, 14};
+static int _a_63_1[] = {-1, 1, 23};
+static int _a_64_1[] = {-1, 1, 18};
+static int _a_65_1[] = {-1, 3, 64};
+static int _a_65_2[] = {31, 0, 88};
+static int _a_66_1[] = {-1, 1, 17};
+static int _a_67_1[] = {-1, 1, 15};
+static int _a_68_1[] = {-1, 1, 19};
+static int _a_69_1[] = {-1, 3, 68};
+static int _a_69_2[] = {0, 0, 89};
+static int _a_69_3[] = {1, 0, 28};
+static int _a_69_4[] = {2, 0, 90};
+static int _a_69_5[] = {3, 0, 29};
+static int _a_69_6[] = {4, 0, 30};
+static int _a_69_7[] = {5, 0, 31};
+static int _a_69_8[] = {9, 0, 32};
+static int _a_69_9[] = {11, 0, 33};
+static int _a_69_10[] = {12, 0, 34};
+static int _a_69_11[] = {13, 0, 35};
+static int _a_69_12[] = {14, 0, 36};
+static int _a_69_13[] = {15, 0, 37};
+static int _a_69_14[] = {16, 0, 38};
+static int _a_70_1[] = {-1, 1, 59};
+static int _a_71_1[] = {-1, 1, 11};
+static int _a_71_2[] = {1, 0, 28};
+static int _a_71_3[] = {3, 0, 29};
+static int _a_71_4[] = {4, 0, 30};
+static int _a_71_5[] = {5, 0, 31};
+static int _a_71_6[] = {9, 0, 32};
+static int _a_71_7[] = {11, 0, 33};
+static int _a_71_8[] = {12, 0, 34};
+static int _a_71_9[] = {13, 0, 35};
+static int _a_71_10[] = {14, 0, 36};
+static int _a_71_11[] = {15, 0, 37};
+static int _a_71_12[] = {16, 0, 38};
+static int _a_72_1[] = {-1, 1, 61};
+static int _a_73_1[] = {-1, 3, 72};
+static int _a_73_2[] = {18, 0, 92};
+static int _a_74_1[] = {-1, 1, 51};
+static int _a_75_1[] = {-1, 1, 32};
+static int _a_75_2[] = {29, 0, 48};
+static int _a_76_1[] = {-1, 1, 34};
+static int _a_77_1[] = {-1, 1, 43};
+static int _a_77_2[] = {21, 0, 57};
+static int _a_77_3[] = {22, 0, 58};
+static int _a_78_1[] = {-1, 1, 44};
+static int _a_78_2[] = {21, 0, 57};
+static int _a_78_3[] = {22, 0, 58};
+static int _a_79_1[] = {-1, 1, 36};
+static int _a_79_2[] = {19, 0, 49};
+static int _a_79_3[] = {20, 0, 50};
+static int _a_80_1[] = {-1, 1, 37};
+static int _a_80_2[] = {19, 0, 49};
+static int _a_80_3[] = {20, 0, 50};
+static int _a_81_1[] = {-1, 1, 38};
+static int _a_81_2[] = {19, 0, 49};
+static int _a_81_3[] = {20, 0, 50};
+static int _a_82_1[] = {-1, 1, 39};
+static int _a_82_2[] = {19, 0, 49};
+static int _a_82_3[] = {20, 0, 50};
+static int _a_83_1[] = {-1, 1, 40};
+static int _a_83_2[] = {19, 0, 49};
+static int _a_83_3[] = {20, 0, 50};
+static int _a_84_1[] = {-1, 1, 41};
+static int _a_84_2[] = {19, 0, 49};
+static int _a_84_3[] = {20, 0, 50};
+static int _a_85_1[] = {-1, 1, 46};
+static int _a_86_1[] = {-1, 1, 47};
+static int _a_87_1[] = {-1, 1, 62};
+static int _a_88_1[] = {-1, 1, 21};
+static int _a_88_2[] = {8, 0, 14};
+static int _a_88_3[] = {10, 0, 15};
+static int _a_88_4[] = {17, 0, 16};
+static int _a_88_5[] = {32, 0, 17};
+static int _a_88_6[] = {33, 0, 18};
+static int _a_88_7[] = {34, 0, 19};
 static int _a_89_1[] = {-1, 3, 88};
-static int _a_89_2[] = {0, 0, 94};
-static int _a_89_3[] = {1, 0, 27};
-static int _a_89_4[] = {2, 0, 95};
-static int _a_89_5[] = {3, 0, 28};
-static int _a_89_6[] = {4, 0, 29};
-static int _a_89_7[] = {5, 0, 30};
-static int _a_89_8[] = {9, 0, 31};
-static int _a_89_9[] = {10, 0, 32};
-static int _a_89_10[] = {11, 0, 33};
-static int _a_89_11[] = {12, 0, 34};
-static int _a_89_12[] = {13, 0, 35};
-static int _a_89_13[] = {14, 0, 36};
-static int _a_90_1[] = {-1, 1, 51};
-static int _a_91_1[] = {-1, 1, 61};
-static int _a_92_1[] = {-1, 1, 22};
-static int _a_93_1[] = {-1, 1, 25};
-static int _a_94_1[] = {-1, 3, 93};
-static int _a_94_2[] = {0, 0, 96};
-static int _a_94_3[] = {1, 0, 27};
-static int _a_94_4[] = {3, 0, 28};
-static int _a_94_5[] = {4, 0, 29};
-static int _a_94_6[] = {5, 0, 30};
-static int _a_94_7[] = {9, 0, 31};
-static int _a_94_8[] = {10, 0, 32};
-static int _a_94_9[] = {11, 0, 33};
-static int _a_94_10[] = {12, 0, 34};
-static int _a_94_11[] = {13, 0, 35};
-static int _a_94_12[] = {14, 0, 36};
-static int _a_95_1[] = {-1, 1, 24};
-static int _a_96_1[] = {-1, 3, 95};
-static int _a_96_2[] = {0, 0, 97};
-static int _a_96_3[] = {1, 0, 27};
-static int _a_96_4[] = {3, 0, 28};
-static int _a_96_5[] = {4, 0, 29};
-static int _a_96_6[] = {5, 0, 30};
-static int _a_96_7[] = {9, 0, 31};
-static int _a_96_8[] = {10, 0, 32};
-static int _a_96_9[] = {11, 0, 33};
-static int _a_96_10[] = {12, 0, 34};
-static int _a_96_11[] = {13, 0, 35};
-static int _a_96_12[] = {14, 0, 36};
-static int _a_97_1[] = {-1, 1, 27};
-static int _a_98_1[] = {-1, 1, 26};
+static int _a_89_2[] = {8, 0, 14};
+static int _a_89_3[] = {10, 0, 15};
+static int _a_89_4[] = {17, 0, 16};
+static int _a_89_5[] = {32, 0, 17};
+static int _a_89_6[] = {33, 0, 18};
+static int _a_89_7[] = {34, 0, 19};
+static int _a_90_1[] = {-1, 1, 24};
+static int _a_91_1[] = {-1, 3, 90};
+static int _a_91_2[] = {0, 0, 95};
+static int _a_91_3[] = {1, 0, 28};
+static int _a_91_4[] = {3, 0, 29};
+static int _a_91_5[] = {4, 0, 30};
+static int _a_91_6[] = {5, 0, 31};
+static int _a_91_7[] = {9, 0, 32};
+static int _a_91_8[] = {11, 0, 33};
+static int _a_91_9[] = {12, 0, 34};
+static int _a_91_10[] = {13, 0, 35};
+static int _a_91_11[] = {14, 0, 36};
+static int _a_91_12[] = {15, 0, 37};
+static int _a_91_13[] = {16, 0, 38};
+static int _a_92_1[] = {-1, 3, 91};
+static int _a_92_2[] = {0, 0, 97};
+static int _a_92_3[] = {1, 0, 28};
+static int _a_92_4[] = {2, 0, 98};
+static int _a_92_5[] = {3, 0, 29};
+static int _a_92_6[] = {4, 0, 30};
+static int _a_92_7[] = {5, 0, 31};
+static int _a_92_8[] = {9, 0, 32};
+static int _a_92_9[] = {11, 0, 33};
+static int _a_92_10[] = {12, 0, 34};
+static int _a_92_11[] = {13, 0, 35};
+static int _a_92_12[] = {14, 0, 36};
+static int _a_92_13[] = {15, 0, 37};
+static int _a_92_14[] = {16, 0, 38};
+static int _a_93_1[] = {-1, 1, 52};
+static int _a_94_1[] = {-1, 1, 63};
+static int _a_95_1[] = {-1, 1, 22};
+static int _a_96_1[] = {-1, 1, 26};
+static int _a_97_1[] = {-1, 3, 96};
+static int _a_97_2[] = {0, 0, 99};
+static int _a_97_3[] = {1, 0, 28};
+static int _a_97_4[] = {3, 0, 29};
+static int _a_97_5[] = {4, 0, 30};
+static int _a_97_6[] = {5, 0, 31};
+static int _a_97_7[] = {9, 0, 32};
+static int _a_97_8[] = {11, 0, 33};
+static int _a_97_9[] = {12, 0, 34};
+static int _a_97_10[] = {13, 0, 35};
+static int _a_97_11[] = {14, 0, 36};
+static int _a_97_12[] = {15, 0, 37};
+static int _a_97_13[] = {16, 0, 38};
+static int _a_98_1[] = {-1, 1, 25};
 static int _a_99_1[] = {-1, 3, 98};
-static int _a_99_2[] = {0, 0, 99};
-static int _a_99_3[] = {1, 0, 27};
-static int _a_99_4[] = {3, 0, 28};
-static int _a_99_5[] = {4, 0, 29};
-static int _a_99_6[] = {5, 0, 30};
-static int _a_99_7[] = {9, 0, 31};
-static int _a_99_8[] = {10, 0, 32};
-static int _a_99_9[] = {11, 0, 33};
-static int _a_99_10[] = {12, 0, 34};
-static int _a_99_11[] = {13, 0, 35};
-static int _a_99_12[] = {14, 0, 36};
+static int _a_99_2[] = {0, 0, 100};
+static int _a_99_3[] = {1, 0, 28};
+static int _a_99_4[] = {3, 0, 29};
+static int _a_99_5[] = {4, 0, 30};
+static int _a_99_6[] = {5, 0, 31};
+static int _a_99_7[] = {9, 0, 32};
+static int _a_99_8[] = {11, 0, 33};
+static int _a_99_9[] = {12, 0, 34};
+static int _a_99_10[] = {13, 0, 35};
+static int _a_99_11[] = {14, 0, 36};
+static int _a_99_12[] = {15, 0, 37};
+static int _a_99_13[] = {16, 0, 38};
 static int _a_100_1[] = {-1, 1, 28};
+static int _a_101_1[] = {-1, 1, 27};
+static int _a_102_1[] = {-1, 3, 101};
+static int _a_102_2[] = {0, 0, 102};
+static int _a_102_3[] = {1, 0, 28};
+static int _a_102_4[] = {3, 0, 29};
+static int _a_102_5[] = {4, 0, 30};
+static int _a_102_6[] = {5, 0, 31};
+static int _a_102_7[] = {9, 0, 32};
+static int _a_102_8[] = {11, 0, 33};
+static int _a_102_9[] = {12, 0, 34};
+static int _a_102_10[] = {13, 0, 35};
+static int _a_102_11[] = {14, 0, 36};
+static int _a_102_12[] = {15, 0, 37};
+static int _a_102_13[] = {16, 0, 38};
+static int _a_103_1[] = {-1, 1, 29};
 
 static int *_a_1[] = {
         (int *)3,
@@ -1355,13 +1420,14 @@ static int *_a_7[] = {
         _a_7_2,
 };
 static int *_a_8[] = {
-        (int *)6,
+        (int *)7,
         _a_8_1,
         _a_8_2,
         _a_8_3,
         _a_8_4,
         _a_8_5,
         _a_8_6,
+        _a_8_7,
 };
 static int *_a_9[] = {
         (int *)1,
@@ -1378,7 +1444,7 @@ static int *_a_11[] = {
         _a_11_3,
 };
 static int *_a_12[] = {
-        (int *)12,
+        (int *)13,
         _a_12_1,
         _a_12_2,
         _a_12_3,
@@ -1391,6 +1457,7 @@ static int *_a_12[] = {
         _a_12_10,
         _a_12_11,
         _a_12_12,
+        _a_12_13,
 };
 static int *_a_13[] = {
         (int *)2,
@@ -1402,31 +1469,33 @@ static int *_a_14[] = {
         _a_14_1,
 };
 static int *_a_15[] = {
-        (int *)2,
+        (int *)1,
         _a_15_1,
-        _a_15_2,
 };
 static int *_a_16[] = {
-        (int *)6,
+        (int *)2,
         _a_16_1,
         _a_16_2,
-        _a_16_3,
-        _a_16_4,
-        _a_16_5,
-        _a_16_6,
 };
 static int *_a_17[] = {
-        (int *)6,
+        (int *)7,
         _a_17_1,
         _a_17_2,
         _a_17_3,
         _a_17_4,
         _a_17_5,
         _a_17_6,
+        _a_17_7,
 };
 static int *_a_18[] = {
-        (int *)1,
+        (int *)7,
         _a_18_1,
+        _a_18_2,
+        _a_18_3,
+        _a_18_4,
+        _a_18_5,
+        _a_18_6,
+        _a_18_7,
 };
 static int *_a_19[] = {
         (int *)1,
@@ -1437,9 +1506,8 @@ static int *_a_20[] = {
         _a_20_1,
 };
 static int *_a_21[] = {
-        (int *)2,
+        (int *)1,
         _a_21_1,
-        _a_21_2,
 };
 static int *_a_22[] = {
         (int *)2,
@@ -1447,30 +1515,31 @@ static int *_a_22[] = {
         _a_22_2,
 };
 static int *_a_23[] = {
-        (int *)1,
+        (int *)2,
         _a_23_1,
+        _a_23_2,
 };
 static int *_a_24[] = {
-        (int *)9,
+        (int *)1,
         _a_24_1,
-        _a_24_2,
-        _a_24_3,
-        _a_24_4,
-        _a_24_5,
-        _a_24_6,
-        _a_24_7,
-        _a_24_8,
-        _a_24_9,
 };
 static int *_a_25[] = {
-        (int *)3,
+        (int *)9,
         _a_25_1,
         _a_25_2,
         _a_25_3,
+        _a_25_4,
+        _a_25_5,
+        _a_25_6,
+        _a_25_7,
+        _a_25_8,
+        _a_25_9,
 };
 static int *_a_26[] = {
-        (int *)1,
+        (int *)3,
         _a_26_1,
+        _a_26_2,
+        _a_26_3,
 };
 static int *_a_27[] = {
         (int *)1,
@@ -1481,270 +1550,298 @@ static int *_a_28[] = {
         _a_28_1,
 };
 static int *_a_29[] = {
-        (int *)6,
+        (int *)1,
         _a_29_1,
-        _a_29_2,
-        _a_29_3,
-        _a_29_4,
-        _a_29_5,
-        _a_29_6,
 };
 static int *_a_30[] = {
-        (int *)2,
+        (int *)7,
         _a_30_1,
         _a_30_2,
+        _a_30_3,
+        _a_30_4,
+        _a_30_5,
+        _a_30_6,
+        _a_30_7,
 };
 static int *_a_31[] = {
-        (int *)6,
+        (int *)2,
         _a_31_1,
         _a_31_2,
-        _a_31_3,
-        _a_31_4,
-        _a_31_5,
-        _a_31_6,
 };
 static int *_a_32[] = {
-        (int *)6,
+        (int *)7,
         _a_32_1,
         _a_32_2,
         _a_32_3,
         _a_32_4,
         _a_32_5,
         _a_32_6,
+        _a_32_7,
 };
 static int *_a_33[] = {
-        (int *)2,
+        (int *)7,
         _a_33_1,
         _a_33_2,
+        _a_33_3,
+        _a_33_4,
+        _a_33_5,
+        _a_33_6,
+        _a_33_7,
 };
 static int *_a_34[] = {
-        (int *)6,
+        (int *)7,
         _a_34_1,
         _a_34_2,
         _a_34_3,
         _a_34_4,
         _a_34_5,
         _a_34_6,
+        _a_34_7,
 };
 static int *_a_35[] = {
-        (int *)6,
+        (int *)2,
         _a_35_1,
         _a_35_2,
-        _a_35_3,
-        _a_35_4,
-        _a_35_5,
-        _a_35_6,
 };
 static int *_a_36[] = {
-        (int *)6,
+        (int *)7,
         _a_36_1,
         _a_36_2,
         _a_36_3,
         _a_36_4,
         _a_36_5,
         _a_36_6,
+        _a_36_7,
 };
 static int *_a_37[] = {
-        (int *)6,
+        (int *)7,
         _a_37_1,
         _a_37_2,
         _a_37_3,
         _a_37_4,
         _a_37_5,
         _a_37_6,
+        _a_37_7,
 };
 static int *_a_38[] = {
-        (int *)1,
+        (int *)7,
         _a_38_1,
+        _a_38_2,
+        _a_38_3,
+        _a_38_4,
+        _a_38_5,
+        _a_38_6,
+        _a_38_7,
 };
 static int *_a_39[] = {
-        (int *)1,
+        (int *)7,
         _a_39_1,
+        _a_39_2,
+        _a_39_3,
+        _a_39_4,
+        _a_39_5,
+        _a_39_6,
+        _a_39_7,
 };
 static int *_a_40[] = {
         (int *)1,
         _a_40_1,
 };
 static int *_a_41[] = {
-        (int *)12,
+        (int *)1,
         _a_41_1,
-        _a_41_2,
-        _a_41_3,
-        _a_41_4,
-        _a_41_5,
-        _a_41_6,
-        _a_41_7,
-        _a_41_8,
-        _a_41_9,
-        _a_41_10,
-        _a_41_11,
-        _a_41_12,
 };
 static int *_a_42[] = {
-        (int *)11,
+        (int *)1,
         _a_42_1,
-        _a_42_2,
-        _a_42_3,
-        _a_42_4,
-        _a_42_5,
-        _a_42_6,
-        _a_42_7,
-        _a_42_8,
-        _a_42_9,
-        _a_42_10,
-        _a_42_11,
 };
 static int *_a_43[] = {
-        (int *)6,
+        (int *)13,
         _a_43_1,
         _a_43_2,
         _a_43_3,
         _a_43_4,
         _a_43_5,
         _a_43_6,
+        _a_43_7,
+        _a_43_8,
+        _a_43_9,
+        _a_43_10,
+        _a_43_11,
+        _a_43_12,
+        _a_43_13,
 };
 static int *_a_44[] = {
-        (int *)2,
+        (int *)12,
         _a_44_1,
         _a_44_2,
+        _a_44_3,
+        _a_44_4,
+        _a_44_5,
+        _a_44_6,
+        _a_44_7,
+        _a_44_8,
+        _a_44_9,
+        _a_44_10,
+        _a_44_11,
+        _a_44_12,
 };
 static int *_a_45[] = {
-        (int *)1,
+        (int *)7,
         _a_45_1,
+        _a_45_2,
+        _a_45_3,
+        _a_45_4,
+        _a_45_5,
+        _a_45_6,
+        _a_45_7,
 };
 static int *_a_46[] = {
-        (int *)6,
+        (int *)2,
         _a_46_1,
         _a_46_2,
-        _a_46_3,
-        _a_46_4,
-        _a_46_5,
-        _a_46_6,
 };
 static int *_a_47[] = {
-        (int *)6,
+        (int *)1,
         _a_47_1,
-        _a_47_2,
-        _a_47_3,
-        _a_47_4,
-        _a_47_5,
-        _a_47_6,
 };
 static int *_a_48[] = {
-        (int *)6,
+        (int *)7,
         _a_48_1,
         _a_48_2,
         _a_48_3,
         _a_48_4,
         _a_48_5,
         _a_48_6,
+        _a_48_7,
 };
 static int *_a_49[] = {
-        (int *)6,
+        (int *)7,
         _a_49_1,
         _a_49_2,
         _a_49_3,
         _a_49_4,
         _a_49_5,
         _a_49_6,
+        _a_49_7,
 };
 static int *_a_50[] = {
-        (int *)6,
+        (int *)7,
         _a_50_1,
         _a_50_2,
         _a_50_3,
         _a_50_4,
         _a_50_5,
         _a_50_6,
+        _a_50_7,
 };
 static int *_a_51[] = {
-        (int *)6,
+        (int *)7,
         _a_51_1,
         _a_51_2,
         _a_51_3,
         _a_51_4,
         _a_51_5,
         _a_51_6,
+        _a_51_7,
 };
 static int *_a_52[] = {
-        (int *)6,
+        (int *)7,
         _a_52_1,
         _a_52_2,
         _a_52_3,
         _a_52_4,
         _a_52_5,
         _a_52_6,
+        _a_52_7,
 };
 static int *_a_53[] = {
-        (int *)6,
+        (int *)7,
         _a_53_1,
         _a_53_2,
         _a_53_3,
         _a_53_4,
         _a_53_5,
         _a_53_6,
+        _a_53_7,
 };
 static int *_a_54[] = {
-        (int *)6,
+        (int *)7,
         _a_54_1,
         _a_54_2,
         _a_54_3,
         _a_54_4,
         _a_54_5,
         _a_54_6,
+        _a_54_7,
 };
 static int *_a_55[] = {
-        (int *)6,
+        (int *)7,
         _a_55_1,
         _a_55_2,
         _a_55_3,
         _a_55_4,
         _a_55_5,
         _a_55_6,
+        _a_55_7,
 };
 static int *_a_56[] = {
-        (int *)6,
+        (int *)7,
         _a_56_1,
         _a_56_2,
         _a_56_3,
         _a_56_4,
         _a_56_5,
         _a_56_6,
+        _a_56_7,
 };
 static int *_a_57[] = {
-        (int *)6,
+        (int *)7,
         _a_57_1,
         _a_57_2,
         _a_57_3,
         _a_57_4,
         _a_57_5,
         _a_57_6,
+        _a_57_7,
 };
 static int *_a_58[] = {
-        (int *)1,
+        (int *)7,
         _a_58_1,
+        _a_58_2,
+        _a_58_3,
+        _a_58_4,
+        _a_58_5,
+        _a_58_6,
+        _a_58_7,
 };
 static int *_a_59[] = {
-        (int *)6,
+        (int *)7,
         _a_59_1,
         _a_59_2,
         _a_59_3,
         _a_59_4,
         _a_59_5,
         _a_59_6,
+        _a_59_7,
 };
 static int *_a_60[] = {
         (int *)1,
         _a_60_1,
 };
 static int *_a_61[] = {
-        (int *)1,
+        (int *)7,
         _a_61_1,
+        _a_61_2,
+        _a_61_3,
+        _a_61_4,
+        _a_61_5,
+        _a_61_6,
+        _a_61_7,
 };
 static int *_a_62[] = {
-        (int *)2,
+        (int *)1,
         _a_62_1,
-        _a_62_2,
 };
 static int *_a_63[] = {
         (int *)1,
@@ -1755,82 +1852,79 @@ static int *_a_64[] = {
         _a_64_1,
 };
 static int *_a_65[] = {
-        (int *)1,
+        (int *)2,
         _a_65_1,
+        _a_65_2,
 };
 static int *_a_66[] = {
-        (int *)13,
+        (int *)1,
         _a_66_1,
-        _a_66_2,
-        _a_66_3,
-        _a_66_4,
-        _a_66_5,
-        _a_66_6,
-        _a_66_7,
-        _a_66_8,
-        _a_66_9,
-        _a_66_10,
-        _a_66_11,
-        _a_66_12,
-        _a_66_13,
 };
 static int *_a_67[] = {
         (int *)1,
         _a_67_1,
 };
 static int *_a_68[] = {
-        (int *)11,
+        (int *)1,
         _a_68_1,
-        _a_68_2,
-        _a_68_3,
-        _a_68_4,
-        _a_68_5,
-        _a_68_6,
-        _a_68_7,
-        _a_68_8,
-        _a_68_9,
-        _a_68_10,
-        _a_68_11,
 };
 static int *_a_69[] = {
-        (int *)1,
+        (int *)14,
         _a_69_1,
+        _a_69_2,
+        _a_69_3,
+        _a_69_4,
+        _a_69_5,
+        _a_69_6,
+        _a_69_7,
+        _a_69_8,
+        _a_69_9,
+        _a_69_10,
+        _a_69_11,
+        _a_69_12,
+        _a_69_13,
+        _a_69_14,
 };
 static int *_a_70[] = {
-        (int *)2,
+        (int *)1,
         _a_70_1,
-        _a_70_2,
 };
 static int *_a_71[] = {
-        (int *)1,
+        (int *)12,
         _a_71_1,
+        _a_71_2,
+        _a_71_3,
+        _a_71_4,
+        _a_71_5,
+        _a_71_6,
+        _a_71_7,
+        _a_71_8,
+        _a_71_9,
+        _a_71_10,
+        _a_71_11,
+        _a_71_12,
 };
 static int *_a_72[] = {
-        (int *)2,
+        (int *)1,
         _a_72_1,
-        _a_72_2,
 };
 static int *_a_73[] = {
-        (int *)1,
+        (int *)2,
         _a_73_1,
+        _a_73_2,
 };
 static int *_a_74[] = {
-        (int *)3,
+        (int *)1,
         _a_74_1,
-        _a_74_2,
-        _a_74_3,
 };
 static int *_a_75[] = {
-        (int *)3,
+        (int *)2,
         _a_75_1,
         _a_75_2,
-        _a_75_3,
 };
 static int *_a_76[] = {
-        (int *)3,
+        (int *)1,
         _a_76_1,
-        _a_76_2,
-        _a_76_3,
 };
 static int *_a_77[] = {
         (int *)3,
@@ -1863,41 +1957,37 @@ static int *_a_81[] = {
         _a_81_3,
 };
 static int *_a_82[] = {
-        (int *)1,
+        (int *)3,
         _a_82_1,
+        _a_82_2,
+        _a_82_3,
 };
 static int *_a_83[] = {
-        (int *)1,
+        (int *)3,
         _a_83_1,
+        _a_83_2,
+        _a_83_3,
 };
 static int *_a_84[] = {
-        (int *)1,
+        (int *)3,
         _a_84_1,
+        _a_84_2,
+        _a_84_3,
 };
 static int *_a_85[] = {
-        (int *)6,
+        (int *)1,
         _a_85_1,
-        _a_85_2,
-        _a_85_3,
-        _a_85_4,
-        _a_85_5,
-        _a_85_6,
 };
 static int *_a_86[] = {
-        (int *)6,
+        (int *)1,
         _a_86_1,
-        _a_86_2,
-        _a_86_3,
-        _a_86_4,
-        _a_86_5,
-        _a_86_6,
 };
 static int *_a_87[] = {
         (int *)1,
         _a_87_1,
 };
 static int *_a_88[] = {
-        (int *)12,
+        (int *)7,
         _a_88_1,
         _a_88_2,
         _a_88_3,
@@ -1905,14 +1995,9 @@ static int *_a_88[] = {
         _a_88_5,
         _a_88_6,
         _a_88_7,
-        _a_88_8,
-        _a_88_9,
-        _a_88_10,
-        _a_88_11,
-        _a_88_12,
 };
 static int *_a_89[] = {
-        (int *)13,
+        (int *)7,
         _a_89_1,
         _a_89_2,
         _a_89_3,
@@ -1920,73 +2005,82 @@ static int *_a_89[] = {
         _a_89_5,
         _a_89_6,
         _a_89_7,
-        _a_89_8,
-        _a_89_9,
-        _a_89_10,
-        _a_89_11,
-        _a_89_12,
-        _a_89_13,
 };
 static int *_a_90[] = {
         (int *)1,
         _a_90_1,
 };
 static int *_a_91[] = {
-        (int *)1,
+        (int *)13,
         _a_91_1,
+        _a_91_2,
+        _a_91_3,
+        _a_91_4,
+        _a_91_5,
+        _a_91_6,
+        _a_91_7,
+        _a_91_8,
+        _a_91_9,
+        _a_91_10,
+        _a_91_11,
+        _a_91_12,
+        _a_91_13,
 };
 static int *_a_92[] = {
-        (int *)1,
+        (int *)14,
         _a_92_1,
+        _a_92_2,
+        _a_92_3,
+        _a_92_4,
+        _a_92_5,
+        _a_92_6,
+        _a_92_7,
+        _a_92_8,
+        _a_92_9,
+        _a_92_10,
+        _a_92_11,
+        _a_92_12,
+        _a_92_13,
+        _a_92_14,
 };
 static int *_a_93[] = {
         (int *)1,
         _a_93_1,
 };
 static int *_a_94[] = {
-        (int *)12,
+        (int *)1,
         _a_94_1,
-        _a_94_2,
-        _a_94_3,
-        _a_94_4,
-        _a_94_5,
-        _a_94_6,
-        _a_94_7,
-        _a_94_8,
-        _a_94_9,
-        _a_94_10,
-        _a_94_11,
-        _a_94_12,
 };
 static int *_a_95[] = {
         (int *)1,
         _a_95_1,
 };
 static int *_a_96[] = {
-        (int *)12,
+        (int *)1,
         _a_96_1,
-        _a_96_2,
-        _a_96_3,
-        _a_96_4,
-        _a_96_5,
-        _a_96_6,
-        _a_96_7,
-        _a_96_8,
-        _a_96_9,
-        _a_96_10,
-        _a_96_11,
-        _a_96_12,
 };
 static int *_a_97[] = {
-        (int *)1,
+        (int *)13,
         _a_97_1,
+        _a_97_2,
+        _a_97_3,
+        _a_97_4,
+        _a_97_5,
+        _a_97_6,
+        _a_97_7,
+        _a_97_8,
+        _a_97_9,
+        _a_97_10,
+        _a_97_11,
+        _a_97_12,
+        _a_97_13,
 };
 static int *_a_98[] = {
         (int *)1,
         _a_98_1,
 };
 static int *_a_99[] = {
-        (int *)12,
+        (int *)13,
         _a_99_1,
         _a_99_2,
         _a_99_3,
@@ -1999,10 +2093,35 @@ static int *_a_99[] = {
         _a_99_10,
         _a_99_11,
         _a_99_12,
+        _a_99_13,
 };
 static int *_a_100[] = {
         (int *)1,
         _a_100_1,
+};
+static int *_a_101[] = {
+        (int *)1,
+        _a_101_1,
+};
+static int *_a_102[] = {
+        (int *)13,
+        _a_102_1,
+        _a_102_2,
+        _a_102_3,
+        _a_102_4,
+        _a_102_5,
+        _a_102_6,
+        _a_102_7,
+        _a_102_8,
+        _a_102_9,
+        _a_102_10,
+        _a_102_11,
+        _a_102_12,
+        _a_102_13,
+};
+static int *_a_103[] = {
+        (int *)1,
+        _a_103_1,
 };
 
 static int **action_table[] = {
@@ -2106,6 +2225,9 @@ static int **action_table[] = {
         _a_98,
         _a_99,
         _a_100,
+        _a_101,
+        _a_102,
+        _a_103,
 };
 };
 
@@ -2161,7 +2283,7 @@ Stack::elems_t& Stack::pop()
 }
 
 int errors[] = {
-0, 1, 2, 3, 4, 4, 4, 5, 1, 1, 1, 6, 4, 4, 7, 5, 5, 8, 8, 1, 9, 10, 10, 11, 8, 8, 1, 12, 5, 2, 5, 5, 2, 5, 5, 5, 5, 6, 6, 12, 6, 13, 5, 14, 8, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 12, 15, 12, 12, 16, 12, 12, 12, 17, 6, 13, 12, 14, 8, 10, 10, 8, 8, 18, 18, 18, 18, 18, 18, 8, 8, 15, 15, 5, 12, 19, 17, 8, 15, 12, 12, 19, 12, 19, 12, 12, 19, 12, 
+0, 1, 2, 3, 4, 4, 4, 5, 1, 1, 1, 6, 4, 4, 7, 8, 5, 5, 7, 7, 1, 9, 10, 10, 11, 7, 7, 1, 12, 5, 2, 5, 5, 5, 2, 5, 5, 5, 5, 6, 6, 12, 6, 13, 5, 14, 7, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 12, 15, 12, 12, 12, 16, 12, 12, 12, 17, 6, 13, 12, 14, 7, 10, 10, 7, 7, 18, 18, 18, 18, 18, 18, 7, 7, 15, 15, 5, 12, 19, 17, 7, 15, 12, 12, 19, 12, 19, 12, 12, 19, 12, 
 };
 
 char * error_messages[] = {
@@ -2170,21 +2292,21 @@ char * error_messages[] = {
         "expecting: identifier",
         "expecting: EOF",
         "expecting: 'proc', EOF",
-        "expecting: 'sine', '(', '~', number, identifier",
-        "expecting: 'draw', 'face', 'fork', 'move', 'proc', 'size', 'temp', 'tint', 'turn', 'wait', 'when', identifier, EOF",
+        "expecting: 'rand', 'sine', '(', '~', number, identifier",
+        "expecting: 'draw', 'face', 'fork', 'move', 'proc', 'seed', 'size', 'temp', 'tint', 'turn', 'wait', 'when', identifier, EOF",
+        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'proc', 'rand', 'seed', 'sine', 'size', 'temp', 'tint', 'turn', 'wait', 'when', '(', ')', '+', '-', '*', '/', '--', '!=', '<', '<=', '>', '>=', '&', '|', '~', number, identifier, color, EOF",
         "expecting: '('",
-        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'proc', 'sine', 'size', 'temp', 'tint', 'turn', 'wait', 'when', '(', ')', '+', '-', '*', '/', '--', '!=', '<', '<=', '>', '>=', '&', '|', '~', number, identifier, color, EOF",
-        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'proc', 'sine', 'size', 'temp', 'tint', 'turn', 'wait', 'when', '(', ')', '|', '~', number, identifier, color, EOF",
-        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'proc', 'sine', 'size', 'temp', 'tint', 'turn', 'wait', 'when', '(', ')', '&', '|', '~', number, identifier, color, EOF",
-        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'proc', 'sine', 'size', 'temp', 'tint', 'turn', 'wait', 'when', '(', ')', '+', '-', '--', '!=', '<', '<=', '>', '>=', '&', '|', '~', number, identifier, color, EOF",
-        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'proc', 'size', 'temp', 'tint', 'turn', 'wait', 'when', EOF",
-        "expecting: 'draw', 'face', 'fork', 'move', 'proc', 'size', 'temp', 'tint', 'turn', 'wait', 'when', EOF",
+        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'proc', 'rand', 'seed', 'sine', 'size', 'temp', 'tint', 'turn', 'wait', 'when', '(', ')', '|', '~', number, identifier, color, EOF",
+        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'proc', 'rand', 'seed', 'sine', 'size', 'temp', 'tint', 'turn', 'wait', 'when', '(', ')', '&', '|', '~', number, identifier, color, EOF",
+        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'proc', 'rand', 'seed', 'sine', 'size', 'temp', 'tint', 'turn', 'wait', 'when', '(', ')', '+', '-', '--', '!=', '<', '<=', '>', '>=', '&', '|', '~', number, identifier, color, EOF",
+        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'proc', 'seed', 'size', 'temp', 'tint', 'turn', 'wait', 'when', EOF",
+        "expecting: 'draw', 'face', 'fork', 'move', 'proc', 'seed', 'size', 'temp', 'tint', 'turn', 'wait', 'when', EOF",
         "expecting: ')'",
-        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'proc', 'sine', 'size', 'temp', 'tint', 'turn', 'wait', 'when', '(', '~', number, identifier, EOF",
+        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'proc', 'rand', 'seed', 'sine', 'size', 'temp', 'tint', 'turn', 'wait', 'when', '(', '~', number, identifier, EOF",
         "expecting: '='",
-        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'size', 'temp', 'tint', 'turn', 'wait', 'when'",
-        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'proc', 'sine', 'size', 'temp', 'tint', 'turn', 'wait', 'when', '(', ')', '+', '-', '&', '|', '~', number, identifier, color, EOF",
-        "expecting: 'done', 'draw', 'face', 'fork', 'move', 'size', 'temp', 'tint', 'turn', 'wait', 'when'",
+        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'seed', 'size', 'temp', 'tint', 'turn', 'wait', 'when'",
+        "expecting: 'done', 'draw', 'else', 'face', 'fork', 'move', 'proc', 'rand', 'seed', 'sine', 'size', 'temp', 'tint', 'turn', 'wait', 'when', '(', ')', '+', '-', '&', '|', '~', number, identifier, color, EOF",
+        "expecting: 'done', 'draw', 'face', 'fork', 'move', 'seed', 'size', 'temp', 'tint', 'turn', 'wait', 'when'",
 };
 
 int goTo(int index, int state)

@@ -294,6 +294,40 @@ private:
   void replaceBy (Token node);
 };
 
+class TRand : public Token {
+public:
+  static inline TRand make () { return make(0, 0); }
+  static inline TRand make (int line, int pos)
+  { return Token::make(&type_info, line, pos, "rand").unsafe_cast<TRand>(); }
+
+  static const _TypeInfo type_info;
+
+  inline TRand clone () const { return Node::clone().unsafe_cast<TRand>(); }
+
+  inline void replaceBy (TRand node) { Node::replaceBy (node); }
+
+private:
+  void setText (const std::string& text); // Get error at compile time
+  void replaceBy (Token node);
+};
+
+class TSeed : public Token {
+public:
+  static inline TSeed make () { return make(0, 0); }
+  static inline TSeed make (int line, int pos)
+  { return Token::make(&type_info, line, pos, "seed").unsafe_cast<TSeed>(); }
+
+  static const _TypeInfo type_info;
+
+  inline TSeed clone () const { return Node::clone().unsafe_cast<TSeed>(); }
+
+  inline void replaceBy (TSeed node) { Node::replaceBy (node); }
+
+private:
+  void setText (const std::string& text); // Get error at compile time
+  void replaceBy (Token node);
+};
+
 class TSine : public Token {
 public:
   static inline TSine make () { return make(0, 0); }

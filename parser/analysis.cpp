@@ -22,6 +22,8 @@ void rose::AnalysisAdapter::caseTFork (TFork node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTMove (TMove node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTPlan (TPlan node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTProc (TProc node) { defaultCase(node); }
+void rose::AnalysisAdapter::caseTRand (TRand node) { defaultCase(node); }
+void rose::AnalysisAdapter::caseTSeed (TSeed node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTSine (TSine node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTSize (TSize node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTTemp (TTemp node) { defaultCase(node); }
@@ -65,12 +67,14 @@ void rose::AnalysisAdapter::caseATintStatement (ATintStatement node) { defaultCa
 void rose::AnalysisAdapter::caseATurnStatement (ATurnStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAFaceStatement (AFaceStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAWaitStatement (AWaitStatement node) { defaultCase(node); }
+void rose::AnalysisAdapter::caseASeedStatement (ASeedStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAWhenStatement (AWhenStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseANumberExpression (ANumberExpression node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAVarExpression (AVarExpression node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseABinaryExpression (ABinaryExpression node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseANegExpression (ANegExpression node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseASineExpression (ASineExpression node) { defaultCase(node); }
+void rose::AnalysisAdapter::caseARandExpression (ARandExpression node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAPlusBinop (APlusBinop node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAMinusBinop (AMinusBinop node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAMultiplyBinop (AMultiplyBinop node) { defaultCase(node); }
@@ -224,6 +228,15 @@ void rose::DepthFirstAdapter::caseAWaitStatement (AWaitStatement node)
   outAWaitStatement (node);
 }
 void rose::DepthFirstAdapter::outAWaitStatement (AWaitStatement node) { defaultOut(node); }
+void rose::DepthFirstAdapter::inASeedStatement (ASeedStatement node) { defaultIn(node); }
+void rose::DepthFirstAdapter::caseASeedStatement (ASeedStatement node)
+{
+  inASeedStatement (node);
+  if ( node.getToken() ) node.getToken().apply(*this);
+  if ( node.getExpression() ) node.getExpression().apply(*this);
+  outASeedStatement (node);
+}
+void rose::DepthFirstAdapter::outASeedStatement (ASeedStatement node) { defaultOut(node); }
 void rose::DepthFirstAdapter::inAWhenStatement (AWhenStatement node) { defaultIn(node); }
 void rose::DepthFirstAdapter::caseAWhenStatement (AWhenStatement node)
 {
@@ -279,6 +292,14 @@ void rose::DepthFirstAdapter::caseASineExpression (ASineExpression node)
   outASineExpression (node);
 }
 void rose::DepthFirstAdapter::outASineExpression (ASineExpression node) { defaultOut(node); }
+void rose::DepthFirstAdapter::inARandExpression (ARandExpression node) { defaultIn(node); }
+void rose::DepthFirstAdapter::caseARandExpression (ARandExpression node)
+{
+  inARandExpression (node);
+  if ( node.getToken() ) node.getToken().apply(*this);
+  outARandExpression (node);
+}
+void rose::DepthFirstAdapter::outARandExpression (ARandExpression node) { defaultOut(node); }
 void rose::DepthFirstAdapter::inAPlusBinop (APlusBinop node) { defaultIn(node); }
 void rose::DepthFirstAdapter::caseAPlusBinop (APlusBinop node)
 {
@@ -516,6 +537,15 @@ void rose::ReversedDepthFirstAdapter::caseAWaitStatement (AWaitStatement node)
   outAWaitStatement (node);
 }
 void rose::ReversedDepthFirstAdapter::outAWaitStatement (AWaitStatement node) { defaultOut(node); }
+void rose::ReversedDepthFirstAdapter::inASeedStatement (ASeedStatement node) { defaultIn(node); }
+void rose::ReversedDepthFirstAdapter::caseASeedStatement (ASeedStatement node)
+{
+  inASeedStatement (node);
+  if ( node.getExpression() ) node.getExpression().apply(*this);
+  if ( node.getToken() ) node.getToken().apply(*this);
+  outASeedStatement (node);
+}
+void rose::ReversedDepthFirstAdapter::outASeedStatement (ASeedStatement node) { defaultOut(node); }
 void rose::ReversedDepthFirstAdapter::inAWhenStatement (AWhenStatement node) { defaultIn(node); }
 void rose::ReversedDepthFirstAdapter::caseAWhenStatement (AWhenStatement node)
 {
@@ -571,6 +601,14 @@ void rose::ReversedDepthFirstAdapter::caseASineExpression (ASineExpression node)
   outASineExpression (node);
 }
 void rose::ReversedDepthFirstAdapter::outASineExpression (ASineExpression node) { defaultOut(node); }
+void rose::ReversedDepthFirstAdapter::inARandExpression (ARandExpression node) { defaultIn(node); }
+void rose::ReversedDepthFirstAdapter::caseARandExpression (ARandExpression node)
+{
+  inARandExpression (node);
+  if ( node.getToken() ) node.getToken().apply(*this);
+  outARandExpression (node);
+}
+void rose::ReversedDepthFirstAdapter::outARandExpression (ARandExpression node) { defaultOut(node); }
 void rose::ReversedDepthFirstAdapter::inAPlusBinop (APlusBinop node) { defaultIn(node); }
 void rose::ReversedDepthFirstAdapter::caseAPlusBinop (APlusBinop node)
 {

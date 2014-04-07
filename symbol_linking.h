@@ -18,16 +18,15 @@ enum class GlobalKind {
 
 class SymbolLinking : public DepthFirstAdapter {
 	std::unordered_map<std::string,AProcedure> proc_map;
-	std::unordered_map<std::string,ALocal> local_map;
+	std::unordered_map<std::string,int> localindex_map;
 	std::unordered_map<std::string,GlobalKind> global_map;
 	int current_local_index;
 
 public:
 	nodemap<int> proc_index;
-	nodemap<int> local_index;
 	nodemap<VarKind> var_kind;
 	nodemap<GlobalKind> var_global;
-	nodemap<ALocal> var_local;
+	nodemap<int> var_localindex;
 	nodemap<AProcedure> var_proc;
 	nodemap<int> literal_number;
 
@@ -52,20 +51,18 @@ public:
 		current_local_index = 0;
 		for (auto p : proc.getParams()) {
 			ALocal local = p.cast<ALocal>();
-			local_map[local.getName().getText()] = local;
-			local_index[local] = current_local_index++;
+			localindex_map[local.getName().getText()] = current_local_index++;
 		}
 	}
 
 	void outATempStatement(ATempStatement temp) {
 		// TODO: Handle when/else/done scope
 		ALocal local = temp.getVar().cast<ALocal>();
-		local_map[local.getName().getText()] = local;
-		local_index[local] = current_local_index++;
+		localindex_map[local.getName().getText()] = current_local_index++;
 	}
 
 	void outAProcedure(AProcedure proc) {
-		local_map.clear();
+		localindex_map.clear();
 	}
 
 	void inAVarExpression(AVarExpression var) {
@@ -73,9 +70,9 @@ public:
 		if (global_map.count(name)) {
 			var_kind[var] = VarKind::GLOBAL;
 			var_global[var] = global_map[name];
-		} else if (local_map.count(name)) {
+		} else if (localindex_map.count(name)) {
 			var_kind[var] = VarKind::LOCAL;
-			var_local[var] = local_map[name];
+			var_localindex[var] = localindex_map[name];
 		} else if (proc_map.count(name)) {
 			var_kind[var] = VarKind::PROCEDURE;
 			var_proc[var] = proc_map[name];

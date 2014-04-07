@@ -44,16 +44,19 @@ struct State {
 	number_t size;
 	number_t direction;
 	number_t tint;
+	number_t seed;
 	std::vector<Value> stack;
 
 	State() {}
-	State(AProcedure proc, const State& parent, std::vector<Value> stack) : proc(proc), stack(std::move(stack)) {
+	State(AProcedure proc, State& parent, std::vector<Value> stack) : proc(proc), stack(std::move(stack)) {
 		time = parent.time;
 		x = parent.x;
 		y = parent.y;
 		size = parent.size;
 		direction = parent.direction;
 		tint = parent.tint;
+		seed = parent.seed;
+		parent.seed = (seed << 25) | ((seed >> 7) & 0x01FFFFFF);
 	}
 
 	State(State&& state) = default;
@@ -78,6 +81,7 @@ public:
 		initial.size = MAKE_NUMBER(2);
 		initial.direction = MAKE_NUMBER(0);
 		initial.tint = MAKE_NUMBER(1);
+		initial.seed = 0xBABEFEED;
 		pending.push(std::move(initial));
 
 		while (!pending.empty()) {
@@ -136,6 +140,10 @@ private:
 		int na2 = (na * na) >> 8;
 		int r = (((((((2373 * na2) >> 16) - 21073) * na2) >> 16) + 51469) * na) >> 13;
 		return a & 8192 ? -r : r;
+	}
+
+	number_t random_iteration(number_t v) {
+		return ((v & 0xFFFF) * 0x9D3D) + ((v << 16) | ((v >> 16) & 0xFFFF));
 	}
 
 	// Expressions
@@ -216,6 +224,11 @@ private:
 		result = Value(sin((inner.number & 0xffff) >> 2) << 2);
 	}
 
+	void caseARandExpression(ARandExpression exp) {
+		state.seed = random_iteration(state.seed);
+		result = Value((state.seed >> 16) & 0xFFFF);
+	}
+
 	void caseAVarExpression(AVarExpression exp) {
 		switch (sym.var_kind[exp]) {
 		case VarKind::GLOBAL:
@@ -232,7 +245,10 @@ private:
 			}
 			break;
 		case VarKind::LOCAL:
-			result = state.stack[sym.local_index[sym.var_local[exp]]];
+			if (state.stack.size() <= sym.var_localindex[exp]) {
+				throw CompileException(exp.getName(), "Internal error: Local index out of range");
+			}
+			result = state.stack[sym.var_localindex[exp]];
 			break;
 		case VarKind::PROCEDURE:
 			result = Value(sym.var_proc[exp], true);
@@ -270,7 +286,7 @@ private:
 		pending.emplace(proc.proc, state, std::move(args));
 	}
 
-	void ATempStatement(ATempStatement s) {
+	void caseATempStatement(ATempStatement s) {
 		state.stack.push_back(apply(s.getExpression()));
 	}
 
@@ -312,6 +328,14 @@ private:
 			throw CompileException(s.getToken(), "Tint is not a number");
 		}
 		state.tint = tint.number;
+	}
+
+	void caseASeedStatement(ASeedStatement s) {
+		Value seed = apply(s.getExpression());
+		if (seed.kind != ValueKind::NUMBER) {
+			throw CompileException(s.getToken(), "Seed is not a number");
+		}
+		state.seed = random_iteration(random_iteration(seed.number));
 	}
 
 	void caseAMoveStatement(AMoveStatement s) {

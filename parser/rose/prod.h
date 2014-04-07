@@ -597,6 +597,41 @@ public:
 private:
   void replaceBy (PStatement node);
 };
+class ASeedStatement : public PStatement {
+protected:
+  inline ASeedStatement (_GenericNode *obj) : PStatement (obj) { }
+
+public:
+  inline ASeedStatement () : PStatement() { }
+
+  static inline ASeedStatement make () { return initProd (&type_info); }
+
+  static inline ASeedStatement make (
+      TSeed _token_,
+      PExpression _expression_
+  )
+  {
+    void *args[] = {
+        &_token_,
+        &_expression_
+    };
+    return initProd (&type_info, args);
+  }
+
+  static const _TypeInfo type_info;
+
+  inline ASeedStatement clone () const { return Node::clone().unsafe_cast<ASeedStatement>(); }
+
+  inline void replaceBy (ASeedStatement node) { Node::replaceBy (node); }
+
+  inline TSeed getToken () { return getChildNode(0).unsafe_cast<TSeed>(); }
+  inline void setToken (TSeed _token_) { setChildNode (0, _token_); }
+  inline PExpression getExpression () { return getChildNode(1).unsafe_cast<PExpression>(); }
+  inline void setExpression (PExpression _expression_) { setChildNode (1, _expression_); }
+
+private:
+  void replaceBy (PStatement node);
+};
 class AWhenStatement : public PStatement {
 protected:
   inline AWhenStatement (_GenericNode *obj) : PStatement (obj) { }
@@ -805,6 +840,37 @@ public:
   inline void setToken (TSine _token_) { setChildNode (0, _token_); }
   inline PExpression getExpression () { return getChildNode(1).unsafe_cast<PExpression>(); }
   inline void setExpression (PExpression _expression_) { setChildNode (1, _expression_); }
+
+private:
+  void replaceBy (PExpression node);
+};
+class ARandExpression : public PExpression {
+protected:
+  inline ARandExpression (_GenericNode *obj) : PExpression (obj) { }
+
+public:
+  inline ARandExpression () : PExpression() { }
+
+  static inline ARandExpression make () { return initProd (&type_info); }
+
+  static inline ARandExpression make (
+      TRand _token_
+  )
+  {
+    void *args[] = {
+        &_token_
+    };
+    return initProd (&type_info, args);
+  }
+
+  static const _TypeInfo type_info;
+
+  inline ARandExpression clone () const { return Node::clone().unsafe_cast<ARandExpression>(); }
+
+  inline void replaceBy (ARandExpression node) { Node::replaceBy (node); }
+
+  inline TRand getToken () { return getChildNode(0).unsafe_cast<TRand>(); }
+  inline void setToken (TRand _token_) { setChildNode (0, _token_); }
 
 private:
   void replaceBy (PExpression node);

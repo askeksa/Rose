@@ -20,6 +20,8 @@ public:
   virtual void caseTMove (TMove node) = 0;
   virtual void caseTPlan (TPlan node) = 0;
   virtual void caseTProc (TProc node) = 0;
+  virtual void caseTRand (TRand node) = 0;
+  virtual void caseTSeed (TSeed node) = 0;
   virtual void caseTSine (TSine node) = 0;
   virtual void caseTSize (TSize node) = 0;
   virtual void caseTTemp (TTemp node) = 0;
@@ -63,12 +65,14 @@ public:
   virtual void caseATurnStatement (ATurnStatement node) = 0;
   virtual void caseAFaceStatement (AFaceStatement node) = 0;
   virtual void caseAWaitStatement (AWaitStatement node) = 0;
+  virtual void caseASeedStatement (ASeedStatement node) = 0;
   virtual void caseAWhenStatement (AWhenStatement node) = 0;
   virtual void caseANumberExpression (ANumberExpression node) = 0;
   virtual void caseAVarExpression (AVarExpression node) = 0;
   virtual void caseABinaryExpression (ABinaryExpression node) = 0;
   virtual void caseANegExpression (ANegExpression node) = 0;
   virtual void caseASineExpression (ASineExpression node) = 0;
+  virtual void caseARandExpression (ARandExpression node) = 0;
   virtual void caseAPlusBinop (APlusBinop node) = 0;
   virtual void caseAMinusBinop (AMinusBinop node) = 0;
   virtual void caseAMultiplyBinop (AMultiplyBinop node) = 0;
@@ -98,6 +102,8 @@ public:
   virtual void caseTMove (TMove node);
   virtual void caseTPlan (TPlan node);
   virtual void caseTProc (TProc node);
+  virtual void caseTRand (TRand node);
+  virtual void caseTSeed (TSeed node);
   virtual void caseTSine (TSine node);
   virtual void caseTSize (TSize node);
   virtual void caseTTemp (TTemp node);
@@ -141,12 +147,14 @@ public:
   virtual void caseATurnStatement (ATurnStatement node);
   virtual void caseAFaceStatement (AFaceStatement node);
   virtual void caseAWaitStatement (AWaitStatement node);
+  virtual void caseASeedStatement (ASeedStatement node);
   virtual void caseAWhenStatement (AWhenStatement node);
   virtual void caseANumberExpression (ANumberExpression node);
   virtual void caseAVarExpression (AVarExpression node);
   virtual void caseABinaryExpression (ABinaryExpression node);
   virtual void caseANegExpression (ANegExpression node);
   virtual void caseASineExpression (ASineExpression node);
+  virtual void caseARandExpression (ARandExpression node);
   virtual void caseAPlusBinop (APlusBinop node);
   virtual void caseAMinusBinop (AMinusBinop node);
   virtual void caseAMultiplyBinop (AMultiplyBinop node);
@@ -214,6 +222,9 @@ public:
   virtual void inAWaitStatement (AWaitStatement node);
   virtual void caseAWaitStatement (AWaitStatement node);
   virtual void outAWaitStatement (AWaitStatement node);
+  virtual void inASeedStatement (ASeedStatement node);
+  virtual void caseASeedStatement (ASeedStatement node);
+  virtual void outASeedStatement (ASeedStatement node);
   virtual void inAWhenStatement (AWhenStatement node);
   virtual void caseAWhenStatement (AWhenStatement node);
   virtual void outAWhenStatement (AWhenStatement node);
@@ -232,6 +243,9 @@ public:
   virtual void inASineExpression (ASineExpression node);
   virtual void caseASineExpression (ASineExpression node);
   virtual void outASineExpression (ASineExpression node);
+  virtual void inARandExpression (ARandExpression node);
+  virtual void caseARandExpression (ARandExpression node);
+  virtual void outARandExpression (ARandExpression node);
   virtual void inAPlusBinop (APlusBinop node);
   virtual void caseAPlusBinop (APlusBinop node);
   virtual void outAPlusBinop (APlusBinop node);
@@ -323,6 +337,9 @@ public:
   virtual void inAWaitStatement (AWaitStatement node);
   virtual void caseAWaitStatement (AWaitStatement node);
   virtual void outAWaitStatement (AWaitStatement node);
+  virtual void inASeedStatement (ASeedStatement node);
+  virtual void caseASeedStatement (ASeedStatement node);
+  virtual void outASeedStatement (ASeedStatement node);
   virtual void inAWhenStatement (AWhenStatement node);
   virtual void caseAWhenStatement (AWhenStatement node);
   virtual void outAWhenStatement (AWhenStatement node);
@@ -341,6 +358,9 @@ public:
   virtual void inASineExpression (ASineExpression node);
   virtual void caseASineExpression (ASineExpression node);
   virtual void outASineExpression (ASineExpression node);
+  virtual void inARandExpression (ARandExpression node);
+  virtual void caseARandExpression (ARandExpression node);
+  virtual void outARandExpression (ARandExpression node);
   virtual void inAPlusBinop (APlusBinop node);
   virtual void caseAPlusBinop (APlusBinop node);
   virtual void outAPlusBinop (APlusBinop node);

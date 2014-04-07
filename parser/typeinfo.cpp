@@ -47,7 +47,7 @@ const rose::_TypeInfo rose::TEOF::type_info = {
     "TEOF",
     &Token::type_info,
     2,
-    34,
+    36,
     false,
     0,
     0,
@@ -156,11 +156,33 @@ const rose::_TypeInfo rose::TProc::type_info = {
     _TypeInfo::is_token,
     (_TypeInfo::apply_t)&Analysis::caseTProc
 };
-const rose::_TypeInfo rose::TSine::type_info = {
-    "TSine",
+const rose::_TypeInfo rose::TRand::type_info = {
+    "TRand",
     &Token::type_info,
     12,
     8,
+    false,
+    0,
+    0,
+    _TypeInfo::is_token,
+    (_TypeInfo::apply_t)&Analysis::caseTRand
+};
+const rose::_TypeInfo rose::TSeed::type_info = {
+    "TSeed",
+    &Token::type_info,
+    13,
+    9,
+    false,
+    0,
+    0,
+    _TypeInfo::is_token,
+    (_TypeInfo::apply_t)&Analysis::caseTSeed
+};
+const rose::_TypeInfo rose::TSine::type_info = {
+    "TSine",
+    &Token::type_info,
+    14,
+    10,
     false,
     0,
     0,
@@ -170,8 +192,8 @@ const rose::_TypeInfo rose::TSine::type_info = {
 const rose::_TypeInfo rose::TSize::type_info = {
     "TSize",
     &Token::type_info,
-    13,
-    9,
+    15,
+    11,
     false,
     0,
     0,
@@ -181,8 +203,8 @@ const rose::_TypeInfo rose::TSize::type_info = {
 const rose::_TypeInfo rose::TTemp::type_info = {
     "TTemp",
     &Token::type_info,
-    14,
-    10,
+    16,
+    12,
     false,
     0,
     0,
@@ -192,8 +214,8 @@ const rose::_TypeInfo rose::TTemp::type_info = {
 const rose::_TypeInfo rose::TTint::type_info = {
     "TTint",
     &Token::type_info,
-    15,
-    11,
+    17,
+    13,
     false,
     0,
     0,
@@ -203,8 +225,8 @@ const rose::_TypeInfo rose::TTint::type_info = {
 const rose::_TypeInfo rose::TTurn::type_info = {
     "TTurn",
     &Token::type_info,
-    16,
-    12,
+    18,
+    14,
     false,
     0,
     0,
@@ -214,8 +236,8 @@ const rose::_TypeInfo rose::TTurn::type_info = {
 const rose::_TypeInfo rose::TWait::type_info = {
     "TWait",
     &Token::type_info,
-    17,
-    13,
+    19,
+    15,
     false,
     0,
     0,
@@ -225,8 +247,8 @@ const rose::_TypeInfo rose::TWait::type_info = {
 const rose::_TypeInfo rose::TWhen::type_info = {
     "TWhen",
     &Token::type_info,
-    18,
-    14,
+    20,
+    16,
     false,
     0,
     0,
@@ -236,8 +258,8 @@ const rose::_TypeInfo rose::TWhen::type_info = {
 const rose::_TypeInfo rose::TLPar::type_info = {
     "TLPar",
     &Token::type_info,
-    19,
-    15,
+    21,
+    17,
     false,
     0,
     0,
@@ -247,8 +269,8 @@ const rose::_TypeInfo rose::TLPar::type_info = {
 const rose::_TypeInfo rose::TRPar::type_info = {
     "TRPar",
     &Token::type_info,
-    20,
-    16,
+    22,
+    18,
     false,
     0,
     0,
@@ -258,8 +280,8 @@ const rose::_TypeInfo rose::TRPar::type_info = {
 const rose::_TypeInfo rose::TPlus::type_info = {
     "TPlus",
     &Token::type_info,
-    21,
-    17,
+    23,
+    19,
     false,
     0,
     0,
@@ -269,8 +291,8 @@ const rose::_TypeInfo rose::TPlus::type_info = {
 const rose::_TypeInfo rose::TMinus::type_info = {
     "TMinus",
     &Token::type_info,
-    22,
-    18,
+    24,
+    20,
     false,
     0,
     0,
@@ -280,8 +302,8 @@ const rose::_TypeInfo rose::TMinus::type_info = {
 const rose::_TypeInfo rose::TMul::type_info = {
     "TMul",
     &Token::type_info,
-    23,
-    19,
+    25,
+    21,
     false,
     0,
     0,
@@ -291,8 +313,8 @@ const rose::_TypeInfo rose::TMul::type_info = {
 const rose::_TypeInfo rose::TDiv::type_info = {
     "TDiv",
     &Token::type_info,
-    24,
-    20,
+    26,
+    22,
     false,
     0,
     0,
@@ -302,8 +324,8 @@ const rose::_TypeInfo rose::TDiv::type_info = {
 const rose::_TypeInfo rose::TEq::type_info = {
     "TEq",
     &Token::type_info,
-    25,
-    21,
+    27,
+    23,
     false,
     0,
     0,
@@ -313,8 +335,8 @@ const rose::_TypeInfo rose::TEq::type_info = {
 const rose::_TypeInfo rose::TNe::type_info = {
     "TNe",
     &Token::type_info,
-    26,
-    22,
+    28,
+    24,
     false,
     0,
     0,
@@ -324,8 +346,8 @@ const rose::_TypeInfo rose::TNe::type_info = {
 const rose::_TypeInfo rose::TLt::type_info = {
     "TLt",
     &Token::type_info,
-    27,
-    23,
+    29,
+    25,
     false,
     0,
     0,
@@ -335,8 +357,8 @@ const rose::_TypeInfo rose::TLt::type_info = {
 const rose::_TypeInfo rose::TLe::type_info = {
     "TLe",
     &Token::type_info,
-    28,
-    24,
+    30,
+    26,
     false,
     0,
     0,
@@ -346,8 +368,8 @@ const rose::_TypeInfo rose::TLe::type_info = {
 const rose::_TypeInfo rose::TGt::type_info = {
     "TGt",
     &Token::type_info,
-    29,
-    25,
+    31,
+    27,
     false,
     0,
     0,
@@ -357,8 +379,8 @@ const rose::_TypeInfo rose::TGt::type_info = {
 const rose::_TypeInfo rose::TGe::type_info = {
     "TGe",
     &Token::type_info,
-    30,
-    26,
+    32,
+    28,
     false,
     0,
     0,
@@ -368,8 +390,8 @@ const rose::_TypeInfo rose::TGe::type_info = {
 const rose::_TypeInfo rose::TAnd::type_info = {
     "TAnd",
     &Token::type_info,
-    31,
-    27,
+    33,
+    29,
     false,
     0,
     0,
@@ -379,8 +401,8 @@ const rose::_TypeInfo rose::TAnd::type_info = {
 const rose::_TypeInfo rose::TOr::type_info = {
     "TOr",
     &Token::type_info,
-    32,
-    28,
+    34,
+    30,
     false,
     0,
     0,
@@ -390,8 +412,8 @@ const rose::_TypeInfo rose::TOr::type_info = {
 const rose::_TypeInfo rose::TAssign::type_info = {
     "TAssign",
     &Token::type_info,
-    33,
-    29,
+    35,
+    31,
     false,
     0,
     0,
@@ -401,8 +423,8 @@ const rose::_TypeInfo rose::TAssign::type_info = {
 const rose::_TypeInfo rose::TNeg::type_info = {
     "TNeg",
     &Token::type_info,
-    34,
-    30,
+    36,
+    32,
     false,
     0,
     0,
@@ -412,8 +434,8 @@ const rose::_TypeInfo rose::TNeg::type_info = {
 const rose::_TypeInfo rose::TNumber::type_info = {
     "TNumber",
     &Token::type_info,
-    35,
-    31,
+    37,
+    33,
     true,
     0,
     0,
@@ -423,8 +445,8 @@ const rose::_TypeInfo rose::TNumber::type_info = {
 const rose::_TypeInfo rose::TIdentifier::type_info = {
     "TIdentifier",
     &Token::type_info,
-    36,
-    32,
+    38,
+    34,
     true,
     0,
     0,
@@ -434,8 +456,8 @@ const rose::_TypeInfo rose::TIdentifier::type_info = {
 const rose::_TypeInfo rose::TColor::type_info = {
     "TColor",
     &Token::type_info,
-    37,
-    33,
+    39,
+    35,
     true,
     0,
     0,
@@ -445,7 +467,7 @@ const rose::_TypeInfo rose::TColor::type_info = {
 const rose::_TypeInfo rose::TBlank::type_info = {
     "TBlank",
     &Token::type_info,
-    38,
+    40,
     -1,
     true,
     0,
@@ -456,7 +478,7 @@ const rose::_TypeInfo rose::TBlank::type_info = {
 const rose::_TypeInfo rose::TComment::type_info = {
     "TComment",
     &Token::type_info,
-    39,
+    41,
     -1,
     true,
     0,
@@ -468,7 +490,7 @@ const rose::_TypeInfo rose::TComment::type_info = {
 const rose::_TypeInfo rose::PProgram::type_info = {
     "PProgram",
     &Node::type_info,
-    40,
+    42,
     -1,
     false,
     0,
@@ -479,7 +501,7 @@ const rose::_TypeInfo rose::PProgram::type_info = {
 const rose::_TypeInfo rose::PEvent::type_info = {
     "PEvent",
     &Node::type_info,
-    41,
+    43,
     -1,
     false,
     0,
@@ -490,7 +512,7 @@ const rose::_TypeInfo rose::PEvent::type_info = {
 const rose::_TypeInfo rose::PProcedure::type_info = {
     "PProcedure",
     &Node::type_info,
-    42,
+    44,
     -1,
     false,
     0,
@@ -501,7 +523,7 @@ const rose::_TypeInfo rose::PProcedure::type_info = {
 const rose::_TypeInfo rose::PLocal::type_info = {
     "PLocal",
     &Node::type_info,
-    43,
+    45,
     -1,
     false,
     0,
@@ -512,7 +534,7 @@ const rose::_TypeInfo rose::PLocal::type_info = {
 const rose::_TypeInfo rose::PStatement::type_info = {
     "PStatement",
     &Node::type_info,
-    44,
+    46,
     -1,
     false,
     0,
@@ -523,7 +545,7 @@ const rose::_TypeInfo rose::PStatement::type_info = {
 const rose::_TypeInfo rose::PExpression::type_info = {
     "PExpression",
     &Node::type_info,
-    45,
+    47,
     -1,
     false,
     0,
@@ -534,7 +556,7 @@ const rose::_TypeInfo rose::PExpression::type_info = {
 const rose::_TypeInfo rose::PBinop::type_info = {
     "PBinop",
     &Node::type_info,
-    46,
+    48,
     -1,
     false,
     0,
@@ -547,7 +569,7 @@ static int _type_elems_1[] = {1, 1};
 const rose::_TypeInfo rose::AProgram::type_info = {
     "AProgram",
     &PProgram::type_info,
-    47,
+    49,
     -1,
     false,
     2,
@@ -559,7 +581,7 @@ static int _type_elems_2[] = {0};
 const rose::_TypeInfo rose::AWaitEvent::type_info = {
     "AWaitEvent",
     &PEvent::type_info,
-    48,
+    50,
     -1,
     false,
     1,
@@ -571,7 +593,7 @@ static int _type_elems_3[] = {0};
 const rose::_TypeInfo rose::AColorEvent::type_info = {
     "AColorEvent",
     &PEvent::type_info,
-    49,
+    51,
     -1,
     false,
     1,
@@ -583,7 +605,7 @@ static int _type_elems_4[] = {0, 1, 1};
 const rose::_TypeInfo rose::AProcedure::type_info = {
     "AProcedure",
     &PProcedure::type_info,
-    50,
+    52,
     -1,
     false,
     3,
@@ -595,7 +617,7 @@ static int _type_elems_5[] = {0};
 const rose::_TypeInfo rose::ALocal::type_info = {
     "ALocal",
     &PLocal::type_info,
-    51,
+    53,
     -1,
     false,
     1,
@@ -607,7 +629,7 @@ static int _type_elems_6[] = {0};
 const rose::_TypeInfo rose::ADrawStatement::type_info = {
     "ADrawStatement",
     &PStatement::type_info,
-    52,
+    54,
     -1,
     false,
     1,
@@ -619,7 +641,7 @@ static int _type_elems_7[] = {0, 0, 1};
 const rose::_TypeInfo rose::AForkStatement::type_info = {
     "AForkStatement",
     &PStatement::type_info,
-    53,
+    55,
     -1,
     false,
     3,
@@ -631,7 +653,7 @@ static int _type_elems_8[] = {0, 0};
 const rose::_TypeInfo rose::AMoveStatement::type_info = {
     "AMoveStatement",
     &PStatement::type_info,
-    54,
+    56,
     -1,
     false,
     2,
@@ -643,7 +665,7 @@ static int _type_elems_9[] = {0, 0};
 const rose::_TypeInfo rose::ASizeStatement::type_info = {
     "ASizeStatement",
     &PStatement::type_info,
-    55,
+    57,
     -1,
     false,
     2,
@@ -655,7 +677,7 @@ static int _type_elems_10[] = {0, 0};
 const rose::_TypeInfo rose::ATempStatement::type_info = {
     "ATempStatement",
     &PStatement::type_info,
-    56,
+    58,
     -1,
     false,
     2,
@@ -667,7 +689,7 @@ static int _type_elems_11[] = {0, 0};
 const rose::_TypeInfo rose::ATintStatement::type_info = {
     "ATintStatement",
     &PStatement::type_info,
-    57,
+    59,
     -1,
     false,
     2,
@@ -679,7 +701,7 @@ static int _type_elems_12[] = {0, 0};
 const rose::_TypeInfo rose::ATurnStatement::type_info = {
     "ATurnStatement",
     &PStatement::type_info,
-    58,
+    60,
     -1,
     false,
     2,
@@ -691,7 +713,7 @@ static int _type_elems_13[] = {0, 0};
 const rose::_TypeInfo rose::AFaceStatement::type_info = {
     "AFaceStatement",
     &PStatement::type_info,
-    59,
+    61,
     -1,
     false,
     2,
@@ -703,7 +725,7 @@ static int _type_elems_14[] = {0, 0};
 const rose::_TypeInfo rose::AWaitStatement::type_info = {
     "AWaitStatement",
     &PStatement::type_info,
-    60,
+    62,
     -1,
     false,
     2,
@@ -711,219 +733,243 @@ const rose::_TypeInfo rose::AWaitStatement::type_info = {
     _TypeInfo::is_prod,
     (_TypeInfo::apply_t)&Analysis::caseAWaitStatement
 };
-static int _type_elems_15[] = {0, 0, 1, 1};
+static int _type_elems_15[] = {0, 0};
+const rose::_TypeInfo rose::ASeedStatement::type_info = {
+    "ASeedStatement",
+    &PStatement::type_info,
+    63,
+    -1,
+    false,
+    2,
+    _type_elems_15,
+    _TypeInfo::is_prod,
+    (_TypeInfo::apply_t)&Analysis::caseASeedStatement
+};
+static int _type_elems_16[] = {0, 0, 1, 1};
 const rose::_TypeInfo rose::AWhenStatement::type_info = {
     "AWhenStatement",
     &PStatement::type_info,
-    61,
+    64,
     -1,
     false,
     4,
-    _type_elems_15,
+    _type_elems_16,
     _TypeInfo::is_prod,
     (_TypeInfo::apply_t)&Analysis::caseAWhenStatement
 };
-static int _type_elems_16[] = {0};
+static int _type_elems_17[] = {0};
 const rose::_TypeInfo rose::ANumberExpression::type_info = {
     "ANumberExpression",
     &PExpression::type_info,
-    62,
-    -1,
-    false,
-    1,
-    _type_elems_16,
-    _TypeInfo::is_prod,
-    (_TypeInfo::apply_t)&Analysis::caseANumberExpression
-};
-static int _type_elems_17[] = {0};
-const rose::_TypeInfo rose::AVarExpression::type_info = {
-    "AVarExpression",
-    &PExpression::type_info,
-    63,
+    65,
     -1,
     false,
     1,
     _type_elems_17,
     _TypeInfo::is_prod,
+    (_TypeInfo::apply_t)&Analysis::caseANumberExpression
+};
+static int _type_elems_18[] = {0};
+const rose::_TypeInfo rose::AVarExpression::type_info = {
+    "AVarExpression",
+    &PExpression::type_info,
+    66,
+    -1,
+    false,
+    1,
+    _type_elems_18,
+    _TypeInfo::is_prod,
     (_TypeInfo::apply_t)&Analysis::caseAVarExpression
 };
-static int _type_elems_18[] = {0, 0, 0};
+static int _type_elems_19[] = {0, 0, 0};
 const rose::_TypeInfo rose::ABinaryExpression::type_info = {
     "ABinaryExpression",
     &PExpression::type_info,
-    64,
+    67,
     -1,
     false,
     3,
-    _type_elems_18,
+    _type_elems_19,
     _TypeInfo::is_prod,
     (_TypeInfo::apply_t)&Analysis::caseABinaryExpression
 };
-static int _type_elems_19[] = {0, 0};
+static int _type_elems_20[] = {0, 0};
 const rose::_TypeInfo rose::ANegExpression::type_info = {
     "ANegExpression",
     &PExpression::type_info,
-    65,
-    -1,
-    false,
-    2,
-    _type_elems_19,
-    _TypeInfo::is_prod,
-    (_TypeInfo::apply_t)&Analysis::caseANegExpression
-};
-static int _type_elems_20[] = {0, 0};
-const rose::_TypeInfo rose::ASineExpression::type_info = {
-    "ASineExpression",
-    &PExpression::type_info,
-    66,
+    68,
     -1,
     false,
     2,
     _type_elems_20,
     _TypeInfo::is_prod,
-    (_TypeInfo::apply_t)&Analysis::caseASineExpression
+    (_TypeInfo::apply_t)&Analysis::caseANegExpression
 };
-static int _type_elems_21[] = {0};
-const rose::_TypeInfo rose::APlusBinop::type_info = {
-    "APlusBinop",
-    &PBinop::type_info,
-    67,
+static int _type_elems_21[] = {0, 0};
+const rose::_TypeInfo rose::ASineExpression::type_info = {
+    "ASineExpression",
+    &PExpression::type_info,
+    69,
     -1,
     false,
-    1,
+    2,
     _type_elems_21,
     _TypeInfo::is_prod,
-    (_TypeInfo::apply_t)&Analysis::caseAPlusBinop
+    (_TypeInfo::apply_t)&Analysis::caseASineExpression
 };
 static int _type_elems_22[] = {0};
-const rose::_TypeInfo rose::AMinusBinop::type_info = {
-    "AMinusBinop",
-    &PBinop::type_info,
-    68,
+const rose::_TypeInfo rose::ARandExpression::type_info = {
+    "ARandExpression",
+    &PExpression::type_info,
+    70,
     -1,
     false,
     1,
     _type_elems_22,
     _TypeInfo::is_prod,
-    (_TypeInfo::apply_t)&Analysis::caseAMinusBinop
+    (_TypeInfo::apply_t)&Analysis::caseARandExpression
 };
 static int _type_elems_23[] = {0};
-const rose::_TypeInfo rose::AMultiplyBinop::type_info = {
-    "AMultiplyBinop",
-    &PBinop::type_info,
-    69,
-    -1,
-    false,
-    1,
-    _type_elems_23,
-    _TypeInfo::is_prod,
-    (_TypeInfo::apply_t)&Analysis::caseAMultiplyBinop
-};
-static int _type_elems_24[] = {0};
-const rose::_TypeInfo rose::ADivideBinop::type_info = {
-    "ADivideBinop",
-    &PBinop::type_info,
-    70,
-    -1,
-    false,
-    1,
-    _type_elems_24,
-    _TypeInfo::is_prod,
-    (_TypeInfo::apply_t)&Analysis::caseADivideBinop
-};
-static int _type_elems_25[] = {0};
-const rose::_TypeInfo rose::AEqBinop::type_info = {
-    "AEqBinop",
+const rose::_TypeInfo rose::APlusBinop::type_info = {
+    "APlusBinop",
     &PBinop::type_info,
     71,
     -1,
     false,
     1,
-    _type_elems_25,
+    _type_elems_23,
     _TypeInfo::is_prod,
-    (_TypeInfo::apply_t)&Analysis::caseAEqBinop
+    (_TypeInfo::apply_t)&Analysis::caseAPlusBinop
 };
-static int _type_elems_26[] = {0};
-const rose::_TypeInfo rose::ANeBinop::type_info = {
-    "ANeBinop",
+static int _type_elems_24[] = {0};
+const rose::_TypeInfo rose::AMinusBinop::type_info = {
+    "AMinusBinop",
     &PBinop::type_info,
     72,
     -1,
     false,
     1,
-    _type_elems_26,
+    _type_elems_24,
     _TypeInfo::is_prod,
-    (_TypeInfo::apply_t)&Analysis::caseANeBinop
+    (_TypeInfo::apply_t)&Analysis::caseAMinusBinop
 };
-static int _type_elems_27[] = {0};
-const rose::_TypeInfo rose::ALtBinop::type_info = {
-    "ALtBinop",
+static int _type_elems_25[] = {0};
+const rose::_TypeInfo rose::AMultiplyBinop::type_info = {
+    "AMultiplyBinop",
     &PBinop::type_info,
     73,
     -1,
     false,
     1,
-    _type_elems_27,
+    _type_elems_25,
     _TypeInfo::is_prod,
-    (_TypeInfo::apply_t)&Analysis::caseALtBinop
+    (_TypeInfo::apply_t)&Analysis::caseAMultiplyBinop
 };
-static int _type_elems_28[] = {0};
-const rose::_TypeInfo rose::ALeBinop::type_info = {
-    "ALeBinop",
+static int _type_elems_26[] = {0};
+const rose::_TypeInfo rose::ADivideBinop::type_info = {
+    "ADivideBinop",
     &PBinop::type_info,
     74,
     -1,
     false,
     1,
-    _type_elems_28,
+    _type_elems_26,
     _TypeInfo::is_prod,
-    (_TypeInfo::apply_t)&Analysis::caseALeBinop
+    (_TypeInfo::apply_t)&Analysis::caseADivideBinop
 };
-static int _type_elems_29[] = {0};
-const rose::_TypeInfo rose::AGtBinop::type_info = {
-    "AGtBinop",
+static int _type_elems_27[] = {0};
+const rose::_TypeInfo rose::AEqBinop::type_info = {
+    "AEqBinop",
     &PBinop::type_info,
     75,
     -1,
     false,
     1,
-    _type_elems_29,
+    _type_elems_27,
     _TypeInfo::is_prod,
-    (_TypeInfo::apply_t)&Analysis::caseAGtBinop
+    (_TypeInfo::apply_t)&Analysis::caseAEqBinop
 };
-static int _type_elems_30[] = {0};
-const rose::_TypeInfo rose::AGeBinop::type_info = {
-    "AGeBinop",
+static int _type_elems_28[] = {0};
+const rose::_TypeInfo rose::ANeBinop::type_info = {
+    "ANeBinop",
     &PBinop::type_info,
     76,
     -1,
     false,
     1,
-    _type_elems_30,
+    _type_elems_28,
     _TypeInfo::is_prod,
-    (_TypeInfo::apply_t)&Analysis::caseAGeBinop
+    (_TypeInfo::apply_t)&Analysis::caseANeBinop
 };
-static int _type_elems_31[] = {0};
-const rose::_TypeInfo rose::AAndBinop::type_info = {
-    "AAndBinop",
+static int _type_elems_29[] = {0};
+const rose::_TypeInfo rose::ALtBinop::type_info = {
+    "ALtBinop",
     &PBinop::type_info,
     77,
     -1,
     false,
     1,
-    _type_elems_31,
+    _type_elems_29,
     _TypeInfo::is_prod,
-    (_TypeInfo::apply_t)&Analysis::caseAAndBinop
+    (_TypeInfo::apply_t)&Analysis::caseALtBinop
 };
-static int _type_elems_32[] = {0};
-const rose::_TypeInfo rose::AOrBinop::type_info = {
-    "AOrBinop",
+static int _type_elems_30[] = {0};
+const rose::_TypeInfo rose::ALeBinop::type_info = {
+    "ALeBinop",
     &PBinop::type_info,
     78,
     -1,
     false,
     1,
+    _type_elems_30,
+    _TypeInfo::is_prod,
+    (_TypeInfo::apply_t)&Analysis::caseALeBinop
+};
+static int _type_elems_31[] = {0};
+const rose::_TypeInfo rose::AGtBinop::type_info = {
+    "AGtBinop",
+    &PBinop::type_info,
+    79,
+    -1,
+    false,
+    1,
+    _type_elems_31,
+    _TypeInfo::is_prod,
+    (_TypeInfo::apply_t)&Analysis::caseAGtBinop
+};
+static int _type_elems_32[] = {0};
+const rose::_TypeInfo rose::AGeBinop::type_info = {
+    "AGeBinop",
+    &PBinop::type_info,
+    80,
+    -1,
+    false,
+    1,
     _type_elems_32,
+    _TypeInfo::is_prod,
+    (_TypeInfo::apply_t)&Analysis::caseAGeBinop
+};
+static int _type_elems_33[] = {0};
+const rose::_TypeInfo rose::AAndBinop::type_info = {
+    "AAndBinop",
+    &PBinop::type_info,
+    81,
+    -1,
+    false,
+    1,
+    _type_elems_33,
+    _TypeInfo::is_prod,
+    (_TypeInfo::apply_t)&Analysis::caseAAndBinop
+};
+static int _type_elems_34[] = {0};
+const rose::_TypeInfo rose::AOrBinop::type_info = {
+    "AOrBinop",
+    &PBinop::type_info,
+    82,
+    -1,
+    false,
+    1,
+    _type_elems_34,
     _TypeInfo::is_prod,
     (_TypeInfo::apply_t)&Analysis::caseAOrBinop
 };

@@ -15,7 +15,7 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 		Start ast = rose::Parser(&lexer).parse();
 		SymbolLinking sl;
 		ast.apply(sl);
-		Interpreter in(sl);
+		Interpreter in(sl, filename);
 		AProgram program = ast.getPProgram().cast<AProgram>();
 		if (program.getProcedure().size() == 0) {
 			throw Exception("No procedures");
@@ -28,12 +28,12 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 		colors = in.get_colors(program);
 	} catch (const CompileException& exc) {
 		if (print) {
-			printf("%s:%d:%d: %s\n", filename, exc.getToken().getLine(), exc.getToken().getPos(), exc.getMessage().c_str());
+			printf("%s:%d:%d: Error: %s\n", filename, exc.getToken().getLine(), exc.getToken().getPos(), exc.getMessage().c_str());
 			fflush(stdout);
 		}
 	} catch (const Exception& exc) {
 		if (print) {
-			printf("%s: %s\n", filename, exc.getMessage().c_str());
+			printf("%s: Error: %s\n", filename, exc.getMessage().c_str());
 			fflush(stdout);
 		}
 	}

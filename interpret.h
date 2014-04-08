@@ -56,8 +56,6 @@ struct State {
 		direction = parent.direction;
 		tint = parent.tint;
 		seed = parent.seed;
-		parent.seed = (seed << 29) | ((seed >> 3) & 0x1FFFFFFF);
-		seed = (seed << 25) | ((seed >> 7) & 0x01FFFFFF);
 	}
 
 	State(State&& state) = default;

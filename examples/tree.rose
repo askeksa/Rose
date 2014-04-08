@@ -15,6 +15,7 @@ proc tree s n
 		size s tint 1 draw
 		move 2
 		wait 1
+		temp r1 = rand
 		when n > 0
 			fork tree s n-1
 		else
@@ -22,10 +23,11 @@ proc tree s n
 			turn a
 			fork tree s-1 s*3
 			turn a * ~2
+			temp r2 = rand
 			fork tree s-1 s*3
 		done
 		temp r = rand
-		when r*64*8 < x
+		when r*64*10 < x
 			turn 60
 			move 10
 			size 2 tint 3 draw

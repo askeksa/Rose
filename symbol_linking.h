@@ -16,69 +16,103 @@ enum class GlobalKind {
 	X, Y, DIRECTION
 };
 
-class SymbolLinking : public DepthFirstAdapter {
-	std::unordered_map<std::string,AProcedure> proc_map;
-	std::unordered_map<std::string,int> localindex_map;
-	std::unordered_map<std::string,GlobalKind> global_map;
-	int current_local_index;
+struct VarRef {
+	VarKind kind;
+	int index;
+};
+
+class Scope {
+	Scope* parent;
+	Node node;
+
+	std::unordered_map<std::string,VarRef> scope_map;
 
 public:
-	nodemap<int> proc_index;
-	nodemap<VarKind> var_kind;
-	nodemap<GlobalKind> var_global;
-	nodemap<int> var_localindex;
-	nodemap<AProcedure> var_proc;
+
+	Scope(Scope* parent, Node node) : parent(parent), node(node) {}
+
+	template <class V>
+	void add(TIdentifier var, VarKind kind, V value) {
+		const std::string& name = var.getText();
+		if (scope_map.count(name)) {
+			throw CompileException(var, "Redefinition of " + name);
+		}
+		scope_map[name] = { kind, static_cast<int>(value) };
+	}
+
+	VarRef lookup(TIdentifier var) {
+		const std::string& name = var.getText();
+		if (scope_map.count(name)) {
+			return scope_map[name];
+		}
+		if (parent == nullptr) {
+			throw CompileException(var, "Undefined variable " + name);
+		}		
+		return parent->lookup(var);
+	}
+
+	Scope* pop() {
+		Scope *p = parent;
+		delete this;
+		return p;
+	}
+
+	Node getNode() {
+		return node;
+	}
+};
+
+class SymbolLinking : public DepthFirstAdapter {
+	int current_local_index;
+	Scope* current_scope;
+
+	nodemap<int> when_local_index;
+
+public:
+	std::vector<AProcedure> procs;
+	nodemap<VarRef> var_ref;
 	nodemap<int> literal_number;
+	nodemap<int> when_pop;
+	nodemap<int> else_pop;
 
 	void inAProgram(AProgram prog) {
+		current_scope = new Scope(nullptr, prog);
+		current_scope->add(TIdentifier::make("x"), VarKind::GLOBAL, GlobalKind::X);
+		current_scope->add(TIdentifier::make("y"), VarKind::GLOBAL, GlobalKind::Y);
+		current_scope->add(TIdentifier::make("dir"), VarKind::GLOBAL, GlobalKind::DIRECTION);
 		int current_proc_index = 0;
 		for (auto p : prog.getProcedure()) {
 			AProcedure proc = p.cast<AProcedure>();
-			proc_map[proc.getName().getText()] = proc;
-			proc_index[proc] = current_proc_index++;
+			procs.push_back(proc);
+			current_scope->add(proc.getName(), VarKind::PROCEDURE, current_proc_index++);
 		}
-		global_map["x"] = GlobalKind::X;
-		global_map["y"] = GlobalKind::Y;
-		global_map["dir"] = GlobalKind::DIRECTION;
 	}
 
 	void outAProgram(AProgram prog) {
-		proc_map.clear();
-		global_map.clear();
+		current_scope = current_scope->pop();
 	}
 
 	void inAProcedure(AProcedure proc) {
+		current_scope = new Scope(current_scope, proc);
 		current_local_index = 0;
 		for (auto p : proc.getParams()) {
 			ALocal local = p.cast<ALocal>();
-			localindex_map[local.getName().getText()] = current_local_index++;
+			current_scope->add(local.getName(), VarKind::LOCAL, current_local_index++);
 		}
 	}
 
 	void outATempStatement(ATempStatement temp) {
-		// TODO: Handle when/else/done scope
 		ALocal local = temp.getVar().cast<ALocal>();
-		localindex_map[local.getName().getText()] = current_local_index++;
+		current_scope->add(local.getName(), VarKind::LOCAL, current_local_index++);
 	}
 
 	void outAProcedure(AProcedure proc) {
-		localindex_map.clear();
+		current_scope = current_scope->pop();
 	}
 
 	void inAVarExpression(AVarExpression var) {
-		std::string name = var.getName().getText();
-		if (global_map.count(name)) {
-			var_kind[var] = VarKind::GLOBAL;
-			var_global[var] = global_map[name];
-		} else if (localindex_map.count(name)) {
-			var_kind[var] = VarKind::LOCAL;
-			var_localindex[var] = localindex_map[name];
-		} else if (proc_map.count(name)) {
-			var_kind[var] = VarKind::PROCEDURE;
-			var_proc[var] = proc_map[name];
-		} else {
-			throw CompileException(var.getName(), "Unknown variable " + name);
-		}
+		VarRef ref = current_scope->lookup(var.getName());
+		var_ref[var] = ref;
 	}
 
 	void inANumberExpression(ANumberExpression lit) {
@@ -89,6 +123,24 @@ public:
 			throw CompileException(lit.getNumber(), "Number format error");
 		}
 		literal_number[lit] = int(val * 65536);
+	}
+
+	void inAWhenStatement(AWhenStatement when) {
+		when_local_index[when] = current_local_index;
+		current_scope = new Scope(current_scope, when);
+	}
+
+	void inAElseMarker(AElseMarker m) {
+		AWhenStatement when = current_scope->getNode().cast<AWhenStatement>();
+		when_pop[when] = current_local_index - when_local_index[when];
+		current_local_index = when_local_index[when];
+		current_scope = new Scope(current_scope->pop(), when);
+	}
+
+	void outAWhenStatement(AWhenStatement when) {
+		else_pop[when] = current_local_index - when_local_index[when];
+		current_local_index = when_local_index[when];
+		current_scope = current_scope->pop();
 	}
 };
 

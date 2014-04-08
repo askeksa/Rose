@@ -56,7 +56,8 @@ struct State {
 		direction = parent.direction;
 		tint = parent.tint;
 		seed = parent.seed;
-		parent.seed = (seed << 25) | ((seed >> 7) & 0x01FFFFFF);
+		parent.seed = (seed << 29) | ((seed >> 3) & 0x1FFFFFFF);
+		seed = (seed << 25) | ((seed >> 7) & 0x01FFFFFF);
 	}
 
 	State(State&& state) = default;
@@ -230,9 +231,10 @@ private:
 	}
 
 	void caseAVarExpression(AVarExpression exp) {
-		switch (sym.var_kind[exp]) {
+		VarRef ref = sym.var_ref[exp];
+		switch (ref.kind) {
 		case VarKind::GLOBAL:
-			switch (sym.var_global[exp]) {
+			switch (static_cast<GlobalKind>(ref.index)) {
 			case GlobalKind::X:
 				result = Value(state.x);
 				break;
@@ -245,13 +247,13 @@ private:
 			}
 			break;
 		case VarKind::LOCAL:
-			if (state.stack.size() <= sym.var_localindex[exp]) {
+			if (state.stack.size() <= ref.index) {
 				throw CompileException(exp.getName(), "Internal error: Local index out of range");
 			}
-			result = state.stack[sym.var_localindex[exp]];
+			result = state.stack[ref.index];
 			break;
 		case VarKind::PROCEDURE:
-			result = Value(sym.var_proc[exp], true);
+			result = Value(sym.procs[ref.index], true);
 			break;
 		}
 	}

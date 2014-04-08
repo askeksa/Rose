@@ -69,6 +69,7 @@ void rose::AnalysisAdapter::caseAFaceStatement (AFaceStatement node) { defaultCa
 void rose::AnalysisAdapter::caseAWaitStatement (AWaitStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseASeedStatement (ASeedStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAWhenStatement (AWhenStatement node) { defaultCase(node); }
+void rose::AnalysisAdapter::caseAElseMarker (AElseMarker node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseANumberExpression (ANumberExpression node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAVarExpression (AVarExpression node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseABinaryExpression (ABinaryExpression node) { defaultCase(node); }
@@ -244,10 +245,18 @@ void rose::DepthFirstAdapter::caseAWhenStatement (AWhenStatement node)
   if ( node.getToken() ) node.getToken().apply(*this);
   if ( node.getCond() ) node.getCond().apply(*this);
   node.getWhen().apply(*this);
+  if ( node.getBetween() ) node.getBetween().apply(*this);
   node.getElse().apply(*this);
   outAWhenStatement (node);
 }
 void rose::DepthFirstAdapter::outAWhenStatement (AWhenStatement node) { defaultOut(node); }
+void rose::DepthFirstAdapter::inAElseMarker (AElseMarker node) { defaultIn(node); }
+void rose::DepthFirstAdapter::caseAElseMarker (AElseMarker node)
+{
+  inAElseMarker (node);
+  outAElseMarker (node);
+}
+void rose::DepthFirstAdapter::outAElseMarker (AElseMarker node) { defaultOut(node); }
 void rose::DepthFirstAdapter::inANumberExpression (ANumberExpression node) { defaultIn(node); }
 void rose::DepthFirstAdapter::caseANumberExpression (ANumberExpression node)
 {
@@ -551,12 +560,20 @@ void rose::ReversedDepthFirstAdapter::caseAWhenStatement (AWhenStatement node)
 {
   inAWhenStatement (node);
   node.getElse().reverse_apply(*this);
+  if ( node.getBetween() ) node.getBetween().apply(*this);
   node.getWhen().reverse_apply(*this);
   if ( node.getCond() ) node.getCond().apply(*this);
   if ( node.getToken() ) node.getToken().apply(*this);
   outAWhenStatement (node);
 }
 void rose::ReversedDepthFirstAdapter::outAWhenStatement (AWhenStatement node) { defaultOut(node); }
+void rose::ReversedDepthFirstAdapter::inAElseMarker (AElseMarker node) { defaultIn(node); }
+void rose::ReversedDepthFirstAdapter::caseAElseMarker (AElseMarker node)
+{
+  inAElseMarker (node);
+  outAElseMarker (node);
+}
+void rose::ReversedDepthFirstAdapter::outAElseMarker (AElseMarker node) { defaultOut(node); }
 void rose::ReversedDepthFirstAdapter::inANumberExpression (ANumberExpression node) { defaultIn(node); }
 void rose::ReversedDepthFirstAdapter::caseANumberExpression (ANumberExpression node)
 {

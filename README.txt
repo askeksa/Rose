@@ -10,6 +10,7 @@ moving around on a canvas. Each turtle has the following state:
 - Direction
 - Pen size
 - Color index, called "tint"
+- Random number generator state.
 
 Unless specific otherwise, all numeric values in Rose are 16.16 bits
 fixed-point values.
@@ -63,6 +64,8 @@ where <name> and <param> are identifiers, and <statement> is one of:
   the rest of the current procedure in parallel.
 - temp <variable> = <expression>
   Assign a value to a local variable.
+- seed <expression>
+  Seed the random number generator.
 - when <expression> <statement>* done
   Run the block of statements if the expression evaluates to non-zero.
 - when <expression> <statement>* else <statement>* done
@@ -83,6 +86,8 @@ An <expression> is one of:
   Negate value. Used instead of - to enable airy, delimiter-sparse syntax.
 - sine ( <expression> )
   Computes the sine of 2pi * argument.
+- rand
+  Produces a random number between 0 and 1.
 - ( <expression> )
   For grouping.
 

@@ -7,6 +7,8 @@
 #include <functional>
 #include <cstring>
 #include <queue>
+#include <unordered_set>
+#include <utility>
 
 // 16:16 fixed point
 typedef int number_t;
@@ -64,12 +66,14 @@ struct State {
 
 class Interpreter : private ReturningAdapter<Value> {
 	SymbolLinking& sym;
+	const char *filename;
 	State state;
 	std::queue<State> pending;
 	std::vector<Plot> output;
+	nodemap<std::unordered_set<std::string>> warning_nodes;
 
 public:
-	Interpreter(SymbolLinking& sym) : sym(sym) {}
+	Interpreter(SymbolLinking& sym, const char *filename) : sym(sym), filename(filename) {}
 
 	std::vector<Plot> interpret(AProcedure main, int max_time) {
 		State initial;
@@ -145,6 +149,13 @@ private:
 		return ((v & 0xFFFF) * 0x9D3D) + ((v << 16) | ((v >> 16) & 0xFFFF));
 	}
 
+	void warning(Token token, std::string message) {
+		if (!warning_nodes[token].count(message)) {
+			printf("%s:%d:%d: Warning: %s\n", filename, token.getLine(), token.getPos(), message.c_str());
+			warning_nodes[token].insert(message);
+		}
+	}
+
 	// Expressions
 
 	void caseABinaryExpression(ABinaryExpression exp) {
@@ -160,17 +171,41 @@ private:
 			eval = [&](number_t a, number_t b) { return a - b; };
 			token = op.cast<AMinusBinop>().getMinus();
 		} else if (op.is<AMultiplyBinop>()) {
-			eval = [&](number_t a, number_t b) { return (a >> 8) * (b >> 8); };
 			token = op.cast<AMultiplyBinop>().getMul();
-		} else if (op.is<ADivideBinop>()) {
 			eval = [&](number_t a, number_t b) {
+				if (a >= 128 << 16 || a < -128 << 16) {
+					warning(token, "Left operand overflows");
+				}
+				if (a < 1 << 8 && a >= -1 << 8) {
+					warning(token, "Left operand underflows");
+				}
+				if (b >= 128 << 16 || b < -128 << 16) {
+					warning(token, "Right operand overflows");
+				}
+				if (b < 1 << 8 && b >= -1 << 8) {
+					warning(token, "Right operand underflows");
+				}
+				return (a << 8 >> 16) * (b << 8 >> 16);
+			};
+		} else if (op.is<ADivideBinop>()) {
+			token = op.cast<ADivideBinop>().getDiv();
+			eval = [&](number_t a, number_t b) {
+				if (b >= 128 << 16 || b < -128 << 16) {
+					warning(token, "Right operand overflows");
+				}
+				if (b < 1 << 8 && b >= -1 << 8) {
+					warning(token, "Right operand underflows");
+				}
 				int divisor = b << 8 >> 16;
 				if (divisor == 0) {
-					throw CompileException(op.cast<ADivideBinop>().getDiv(), "Division by zero");
+					throw CompileException(token, "Division by zero");
 				}
-				return (a / divisor) << 8;
+				int div_result = a / divisor;
+				if (b >= 128 << 16 || b < -128 << 16) {
+					warning(token, "Result overflows");
+				}
+				return div_result << 8;
 			};
-			token = op.cast<ADivideBinop>().getDiv();
 		} else if (op.is<AEqBinop>()) {
 			eval = [&](number_t a, number_t b) { return a == b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };
 			token = op.cast<AEqBinop>().getEq();

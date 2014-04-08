@@ -87,6 +87,22 @@ protected:
 private:
   void replaceBy (Node node);
 };
+class PElseMarker : public Node {
+public:
+  inline PElseMarker () : Node () { }
+
+  static const _TypeInfo type_info;
+
+  inline PElseMarker clone () const { return Node::clone().unsafe_cast<PElseMarker>(); }
+
+  inline void replaceBy (PElseMarker node) { Node::replaceBy (node); }
+
+protected:
+  inline PElseMarker (_GenericNode *obj) : Node(obj) { }
+
+private:
+  void replaceBy (Node node);
+};
 class PExpression : public Node {
 public:
   inline PExpression () : Node () { }
@@ -645,6 +661,7 @@ public:
       TWhen _token_,
       PExpression _cond_,
       List<PStatement>& _when_,
+      PElseMarker _between_,
       List<PStatement>& _else_
   )
   {
@@ -652,6 +669,7 @@ public:
         &_token_,
         &_cond_,
         &getListGuts(_when_),
+        &_between_,
         &getListGuts(_else_)
     };
     return initProd (&type_info, args);
@@ -668,10 +686,38 @@ public:
   inline PExpression getCond () { return getChildNode(1).unsafe_cast<PExpression>(); }
   inline void setCond (PExpression _cond_) { setChildNode (1, _cond_); }
   inline List<PStatement>& getWhen () { return reinterpret_cast<List<PStatement>& >(getChildList(2)); }
-  inline List<PStatement>& getElse () { return reinterpret_cast<List<PStatement>& >(getChildList(3)); }
+  inline PElseMarker getBetween () { return getChildNode(3).unsafe_cast<PElseMarker>(); }
+  inline void setBetween (PElseMarker _between_) { setChildNode (3, _between_); }
+  inline List<PStatement>& getElse () { return reinterpret_cast<List<PStatement>& >(getChildList(4)); }
 
 private:
   void replaceBy (PStatement node);
+};
+class AElseMarker : public PElseMarker {
+protected:
+  inline AElseMarker (_GenericNode *obj) : PElseMarker (obj) { }
+
+public:
+  inline AElseMarker () : PElseMarker() { }
+
+
+  static inline AElseMarker make (
+  )
+  {
+    void *args[] = {
+    };
+    return initProd (&type_info, args);
+  }
+
+  static const _TypeInfo type_info;
+
+  inline AElseMarker clone () const { return Node::clone().unsafe_cast<AElseMarker>(); }
+
+  inline void replaceBy (AElseMarker node) { Node::replaceBy (node); }
+
+
+private:
+  void replaceBy (PElseMarker node);
 };
 class ANumberExpression : public PExpression {
 protected:

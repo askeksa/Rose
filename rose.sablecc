@@ -111,9 +111,9 @@ Productions
 				|	{seed}	seed exp
 							{-> New statement.seed(seed, exp.expression)}
 				|	{when}	when exp stmt* done
-							{-> New statement.when(when, exp.expression, [stmt.statement], [])}
+							{-> New statement.when(when, exp.expression, [stmt.statement], New else_marker(), [])}
 				|	{else}	when exp [s1]:stmt* else [s2]:stmt* done
-							{-> New statement.when(when, exp.expression, [s1.statement], [s2.statement])}
+							{-> New statement.when(when, exp.expression, [s1.statement], New else_marker(), [s2.statement])}
 				;
 
 	exp			{-> expression} =
@@ -209,8 +209,10 @@ Abstract Syntax Tree
 				|	{face}	[token]:face expression
 				|	{wait}	[token]:wait expression
 				|	{seed}	[token]:seed expression
-				|	{when}	[token]:when [cond]:expression [when]:statement* [else]:statement*
+				|	{when}	[token]:when [cond]:expression [when]:statement* [between]:else_marker [else]:statement*
 				;
+
+	else_marker	=			;
 
 	expression	=
 					{number}	number

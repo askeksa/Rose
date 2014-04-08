@@ -67,6 +67,7 @@ public:
   virtual void caseAWaitStatement (AWaitStatement node) = 0;
   virtual void caseASeedStatement (ASeedStatement node) = 0;
   virtual void caseAWhenStatement (AWhenStatement node) = 0;
+  virtual void caseAElseMarker (AElseMarker node) = 0;
   virtual void caseANumberExpression (ANumberExpression node) = 0;
   virtual void caseAVarExpression (AVarExpression node) = 0;
   virtual void caseABinaryExpression (ABinaryExpression node) = 0;
@@ -149,6 +150,7 @@ public:
   virtual void caseAWaitStatement (AWaitStatement node);
   virtual void caseASeedStatement (ASeedStatement node);
   virtual void caseAWhenStatement (AWhenStatement node);
+  virtual void caseAElseMarker (AElseMarker node);
   virtual void caseANumberExpression (ANumberExpression node);
   virtual void caseAVarExpression (AVarExpression node);
   virtual void caseABinaryExpression (ABinaryExpression node);
@@ -228,6 +230,9 @@ public:
   virtual void inAWhenStatement (AWhenStatement node);
   virtual void caseAWhenStatement (AWhenStatement node);
   virtual void outAWhenStatement (AWhenStatement node);
+  virtual void inAElseMarker (AElseMarker node);
+  virtual void caseAElseMarker (AElseMarker node);
+  virtual void outAElseMarker (AElseMarker node);
   virtual void inANumberExpression (ANumberExpression node);
   virtual void caseANumberExpression (ANumberExpression node);
   virtual void outANumberExpression (ANumberExpression node);
@@ -343,6 +348,9 @@ public:
   virtual void inAWhenStatement (AWhenStatement node);
   virtual void caseAWhenStatement (AWhenStatement node);
   virtual void outAWhenStatement (AWhenStatement node);
+  virtual void inAElseMarker (AElseMarker node);
+  virtual void caseAElseMarker (AElseMarker node);
+  virtual void outAElseMarker (AElseMarker node);
   virtual void inANumberExpression (ANumberExpression node);
   virtual void caseANumberExpression (ANumberExpression node);
   virtual void outANumberExpression (ANumberExpression node);

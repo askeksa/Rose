@@ -304,8 +304,10 @@ private:
 		}
 		if (cond.number > 0) {
 			s.getWhen().apply(*this);
+			state.stack.resize(state.stack.size() - sym.when_pop[s]);
 		} else {
 			s.getElse().apply(*this);
+			state.stack.resize(state.stack.size() - sym.else_pop[s]);
 		}
 	}
 

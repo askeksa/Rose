@@ -158,7 +158,7 @@ private:
 
 	// Expressions
 
-	void caseABinaryExpression(ABinaryExpression exp) {
+	void caseABinaryExpression(ABinaryExpression exp) override {
 		Value left = apply(exp.getLeft());
 		Value right = apply(exp.getRight());
 		std::function<number_t(number_t,number_t)> eval;
@@ -242,7 +242,7 @@ private:
 		result = Value(eval(left.number, right.number));
 	}
 
-	void caseANegExpression(ANegExpression exp) {
+	void caseANegExpression(ANegExpression exp) override {
 		Value inner = apply(exp.getExpression());
 		if (inner.kind != ValueKind::NUMBER) {
 			throw CompileException(exp.getToken(), "Operand of negation is not a number");
@@ -250,7 +250,7 @@ private:
 		result = Value(-inner.number);
 	}
 
-	void caseASineExpression(ASineExpression exp) {
+	void caseASineExpression(ASineExpression exp) override {
 		Value inner = apply(exp.getExpression());
 		if (inner.kind != ValueKind::NUMBER) {
 			throw CompileException(exp.getToken(), "Operand of sine is not a number");
@@ -258,12 +258,12 @@ private:
 		result = Value(sin((inner.number & 0xffff) >> 2) << 2);
 	}
 
-	void caseARandExpression(ARandExpression exp) {
+	void caseARandExpression(ARandExpression exp) override {
 		state.seed = random_iteration(state.seed);
 		result = Value((state.seed >> 16) & 0xFFFF);
 	}
 
-	void caseAVarExpression(AVarExpression exp) {
+	void caseAVarExpression(AVarExpression exp) override {
 		VarRef ref = sym.var_ref[exp];
 		switch (ref.kind) {
 		case VarKind::GLOBAL:
@@ -291,13 +291,13 @@ private:
 		}
 	}
 
-	void caseANumberExpression(ANumberExpression exp) {
+	void caseANumberExpression(ANumberExpression exp) override {
 		result = Value(sym.literal_number[exp]);
 	}
 
 	// Statements
 
-	void caseAWhenStatement(AWhenStatement s) {
+	void caseAWhenStatement(AWhenStatement s) override {
 		Value cond = apply(s.getCond());
 		if (cond.kind != ValueKind::NUMBER) {
 			throw CompileException(s.getToken(), "Condition is not a number");
@@ -311,7 +311,7 @@ private:
 		}
 	}
 
-	void caseAForkStatement(AForkStatement s) {
+	void caseAForkStatement(AForkStatement s) override {
 		Value proc = apply(s.getProc());
 		if (proc.kind != ValueKind::PROCEDURE) {
 			throw CompileException(s.getToken(), "Target is not a procedure");
@@ -323,11 +323,11 @@ private:
 		pending.emplace(proc.proc, state, std::move(args));
 	}
 
-	void caseATempStatement(ATempStatement s) {
+	void caseATempStatement(ATempStatement s) override {
 		state.stack.push_back(apply(s.getExpression()));
 	}
 
-	void caseAWaitStatement(AWaitStatement s) {
+	void caseAWaitStatement(AWaitStatement s) override {
 		Value wait = apply(s.getExpression());
 		if (wait.kind != ValueKind::NUMBER) {
 			throw CompileException(s.getToken(), "Wait value is not a number");
@@ -335,7 +335,7 @@ private:
 		state.time += wait.number;
 	}
 
-	void caseATurnStatement(ATurnStatement s) {
+	void caseATurnStatement(ATurnStatement s) override {
 		Value turn = apply(s.getExpression());
 		if (turn.kind != ValueKind::NUMBER) {
 			throw CompileException(s.getToken(), "Turn value is not a number");
@@ -343,7 +343,7 @@ private:
 		state.direction += turn.number;
 	}
 
-	void caseATurnStatement(AFaceStatement s) {
+	void caseAFaceStatement(AFaceStatement s) override {
 		Value face = apply(s.getExpression());
 		if (face.kind != ValueKind::NUMBER) {
 			throw CompileException(s.getToken(), "Face value is not a number");
@@ -351,7 +351,7 @@ private:
 		state.direction = face.number;
 	}
 
-	void caseASizeStatement(ASizeStatement s) {
+	void caseASizeStatement(ASizeStatement s) override {
 		Value size = apply(s.getExpression());
 		if (size.kind != ValueKind::NUMBER) {
 			throw CompileException(s.getToken(), "Size is not a number");
@@ -359,7 +359,7 @@ private:
 		state.size = size.number;
 	}
 
-	void caseATintStatement(ATintStatement s) {
+	void caseATintStatement(ATintStatement s) override {
 		Value tint = apply(s.getExpression());
 		if (tint.kind != ValueKind::NUMBER) {
 			throw CompileException(s.getToken(), "Tint is not a number");
@@ -367,7 +367,7 @@ private:
 		state.tint = tint.number;
 	}
 
-	void caseASeedStatement(ASeedStatement s) {
+	void caseASeedStatement(ASeedStatement s) override {
 		Value seed = apply(s.getExpression());
 		if (seed.kind != ValueKind::NUMBER) {
 			throw CompileException(s.getToken(), "Seed is not a number");
@@ -375,7 +375,7 @@ private:
 		state.seed = random_iteration(random_iteration(seed.number));
 	}
 
-	void caseAMoveStatement(AMoveStatement s) {
+	void caseAMoveStatement(AMoveStatement s) override {
 		Value move = apply(s.getExpression());
 		if (move.kind != ValueKind::NUMBER) {
 			throw CompileException(s.getToken(), "Move distance is not a number");
@@ -394,7 +394,7 @@ private:
 		}
 	}
 
-	void caseADrawStatement(ADrawStatement s) {
+	void caseADrawStatement(ADrawStatement s) override {
 		output.push_back({NUMBER_TO_INT(state.time), NUMBER_TO_INT(state.x), NUMBER_TO_INT(state.y),
 			NUMBER_TO_INT(state.size), NUMBER_TO_INT(state.tint)});
 	}

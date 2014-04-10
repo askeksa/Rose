@@ -75,7 +75,7 @@ public:
 	nodemap<int> when_pop;
 	nodemap<int> else_pop;
 
-	void inAProgram(AProgram prog) {
+	void inAProgram(AProgram prog) override {
 		current_scope = new Scope(nullptr, prog);
 		current_scope->add(TIdentifier::make("x"), VarKind::GLOBAL, GlobalKind::X);
 		current_scope->add(TIdentifier::make("y"), VarKind::GLOBAL, GlobalKind::Y);
@@ -88,11 +88,11 @@ public:
 		}
 	}
 
-	void outAProgram(AProgram prog) {
+	void outAProgram(AProgram prog) override {
 		current_scope = current_scope->pop();
 	}
 
-	void inAProcedure(AProcedure proc) {
+	void inAProcedure(AProcedure proc) override {
 		current_scope = new Scope(current_scope, proc);
 		current_local_index = 0;
 		for (auto p : proc.getParams()) {
@@ -101,21 +101,21 @@ public:
 		}
 	}
 
-	void outATempStatement(ATempStatement temp) {
+	void outATempStatement(ATempStatement temp) override {
 		ALocal local = temp.getVar().cast<ALocal>();
 		current_scope->add(local.getName(), VarKind::LOCAL, current_local_index++);
 	}
 
-	void outAProcedure(AProcedure proc) {
+	void outAProcedure(AProcedure proc) override {
 		current_scope = current_scope->pop();
 	}
 
-	void inAVarExpression(AVarExpression var) {
+	void inAVarExpression(AVarExpression var) override {
 		VarRef ref = current_scope->lookup(var.getName());
 		var_ref[var] = ref;
 	}
 
-	void inANumberExpression(ANumberExpression lit) {
+	void inANumberExpression(ANumberExpression lit) override {
 		const char *num = lit.getNumber().getText().c_str();
 		char *end;
 		double val = strtod(num, &end);
@@ -125,19 +125,19 @@ public:
 		literal_number[lit] = int(val * 65536);
 	}
 
-	void inAWhenStatement(AWhenStatement when) {
+	void inAWhenStatement(AWhenStatement when) override {
 		when_local_index[when] = current_local_index;
 		current_scope = new Scope(current_scope, when);
 	}
 
-	void inAElseMarker(AElseMarker m) {
+	void inAElseMarker(AElseMarker m) override {
 		AWhenStatement when = current_scope->getNode().cast<AWhenStatement>();
 		when_pop[when] = current_local_index - when_local_index[when];
 		current_local_index = when_local_index[when];
 		current_scope = new Scope(current_scope->pop(), when);
 	}
 
-	void outAWhenStatement(AWhenStatement when) {
+	void outAWhenStatement(AWhenStatement when) override {
 		else_pop[when] = current_local_index - when_local_index[when];
 		current_local_index = when_local_index[when];
 		current_scope = current_scope->pop();

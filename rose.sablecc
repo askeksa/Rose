@@ -15,6 +15,7 @@ Helpers
 
 Tokens
 
+	defy = 'defy';
 	done = 'done';
 	draw = 'draw';
 	else = 'else';
@@ -92,7 +93,9 @@ Productions
 				;
 
 	stmt		{-> statement} =
-					{draw}	draw
+					{defy}	defy
+							{-> New statement.defy(defy)}
+				|	{draw}	draw
 							{-> New statement.draw(draw)}
 				|	{move}	move exp
 							{-> New statement.move(move, exp.expression)}
@@ -203,7 +206,8 @@ Abstract Syntax Tree
 	local		=			[name]:identifier;
 
 	statement	=	
-					{draw}	[token]:draw
+					{defy}	[token]:defy
+				|	{draw}	[token]:draw
 				|	{fork}	[token]:fork [proc]:expression [args]:expression*
 				|	{move}	[token]:move expression
 				|	{size}	[token]:size expression

@@ -158,6 +158,23 @@ private:
 };
 
 
+class TDefy : public Token {
+public:
+  static inline TDefy make () { return make(0, 0); }
+  static inline TDefy make (int line, int pos)
+  { return Token::make(&type_info, line, pos, "defy").unsafe_cast<TDefy>(); }
+
+  static const _TypeInfo type_info;
+
+  inline TDefy clone () const { return Node::clone().unsafe_cast<TDefy>(); }
+
+  inline void replaceBy (TDefy node) { Node::replaceBy (node); }
+
+private:
+  void setText (const std::string& text); // Get error at compile time
+  void replaceBy (Token node);
+};
+
 class TDone : public Token {
 public:
   static inline TDone make () { return make(0, 0); }

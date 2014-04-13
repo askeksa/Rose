@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 
 enum class VarKind {
 	GLOBAL,
@@ -74,6 +75,7 @@ public:
 	nodemap<int> literal_number;
 	nodemap<int> when_pop;
 	nodemap<int> else_pop;
+	std::unordered_set<int> defied_lines;
 
 	void inAProgram(AProgram prog) override {
 		current_scope = new Scope(nullptr, prog);
@@ -141,6 +143,11 @@ public:
 		else_pop[when] = current_local_index - when_local_index[when];
 		current_local_index = when_local_index[when];
 		current_scope = current_scope->pop();
+	}
+
+	void inADefyStatement(ADefyStatement defy) {
+		int line = defy.getToken().getLine();
+		defied_lines.insert(line);
 	}
 };
 

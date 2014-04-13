@@ -299,6 +299,37 @@ public:
 private:
   void replaceBy (PLocal node);
 };
+class ADefyStatement : public PStatement {
+protected:
+  inline ADefyStatement (_GenericNode *obj) : PStatement (obj) { }
+
+public:
+  inline ADefyStatement () : PStatement() { }
+
+  static inline ADefyStatement make () { return initProd (&type_info); }
+
+  static inline ADefyStatement make (
+      TDefy _token_
+  )
+  {
+    void *args[] = {
+        &_token_
+    };
+    return initProd (&type_info, args);
+  }
+
+  static const _TypeInfo type_info;
+
+  inline ADefyStatement clone () const { return Node::clone().unsafe_cast<ADefyStatement>(); }
+
+  inline void replaceBy (ADefyStatement node) { Node::replaceBy (node); }
+
+  inline TDefy getToken () { return getChildNode(0).unsafe_cast<TDefy>(); }
+  inline void setToken (TDefy _token_) { setChildNode (0, _token_); }
+
+private:
+  void replaceBy (PStatement node);
+};
 class ADrawStatement : public PStatement {
 protected:
   inline ADrawStatement (_GenericNode *obj) : PStatement (obj) { }

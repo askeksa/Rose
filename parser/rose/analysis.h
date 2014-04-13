@@ -12,6 +12,7 @@ public:
   virtual void caseStart (Start node) = 0;
   virtual void caseTEOF (TEOF node) = 0;
 
+  virtual void caseTDefy (TDefy node) = 0;
   virtual void caseTDone (TDone node) = 0;
   virtual void caseTDraw (TDraw node) = 0;
   virtual void caseTElse (TElse node) = 0;
@@ -58,6 +59,7 @@ public:
   virtual void caseAColorEvent (AColorEvent node) = 0;
   virtual void caseAProcedure (AProcedure node) = 0;
   virtual void caseALocal (ALocal node) = 0;
+  virtual void caseADefyStatement (ADefyStatement node) = 0;
   virtual void caseADrawStatement (ADrawStatement node) = 0;
   virtual void caseAForkStatement (AForkStatement node) = 0;
   virtual void caseAMoveStatement (AMoveStatement node) = 0;
@@ -98,6 +100,7 @@ public:
 
   virtual void defaultCase (Node node);
 
+  virtual void caseTDefy (TDefy node);
   virtual void caseTDone (TDone node);
   virtual void caseTDraw (TDraw node);
   virtual void caseTElse (TElse node);
@@ -144,6 +147,7 @@ public:
   virtual void caseAColorEvent (AColorEvent node);
   virtual void caseAProcedure (AProcedure node);
   virtual void caseALocal (ALocal node);
+  virtual void caseADefyStatement (ADefyStatement node);
   virtual void caseADrawStatement (ADrawStatement node);
   virtual void caseAForkStatement (AForkStatement node);
   virtual void caseAMoveStatement (AMoveStatement node);
@@ -203,6 +207,9 @@ public:
   virtual void inALocal (ALocal node);
   virtual void caseALocal (ALocal node);
   virtual void outALocal (ALocal node);
+  virtual void inADefyStatement (ADefyStatement node);
+  virtual void caseADefyStatement (ADefyStatement node);
+  virtual void outADefyStatement (ADefyStatement node);
   virtual void inADrawStatement (ADrawStatement node);
   virtual void caseADrawStatement (ADrawStatement node);
   virtual void outADrawStatement (ADrawStatement node);
@@ -324,6 +331,9 @@ public:
   virtual void inALocal (ALocal node);
   virtual void caseALocal (ALocal node);
   virtual void outALocal (ALocal node);
+  virtual void inADefyStatement (ADefyStatement node);
+  virtual void caseADefyStatement (ADefyStatement node);
+  virtual void outADefyStatement (ADefyStatement node);
   virtual void inADrawStatement (ADrawStatement node);
   virtual void caseADrawStatement (ADrawStatement node);
   virtual void outADrawStatement (ADrawStatement node);

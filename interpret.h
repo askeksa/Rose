@@ -296,6 +296,18 @@ private:
 		result = Value(sym.literal_number[exp]);
 	}
 
+	void caseACondExpression(ACondExpression exp) override {
+		Value cond = apply(exp.getCond());
+		if (cond.kind != ValueKind::NUMBER) {
+			throw CompileException(exp.getToken(), "Condition is not a number");
+		}
+		if (cond.number != 0) {
+			result = apply(exp.getWhen());
+		} else {
+			result = apply(exp.getElse());
+		}
+	}
+
 	// Statements
 
 	void caseAWhenStatement(AWhenStatement s) override {

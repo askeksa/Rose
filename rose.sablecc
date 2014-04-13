@@ -49,6 +49,8 @@ Tokens
 	or = '|';
 	assign = '=';
 	neg = '~';
+	question = '?';
+	colon = ':';
 
 	number = digit+ ('.' digit+) ?;
 	identifier = letter (letter | digit)*;
@@ -117,8 +119,10 @@ Productions
 				;
 
 	exp			{-> expression} =
-							orexp
+					{next}	orexp
 							{-> orexp.expression}
+				|	{cond}	[cond]:orexp question [when]:exp colon [else]:exp
+							{-> New expression.cond(question, cond.expression, when.expression, else.expression)}
 				;
 
 	orexp		{-> expression} =
@@ -221,6 +225,7 @@ Abstract Syntax Tree
 				|	{neg}		[token]:neg expression
 				|	{sine}		[token]:sine expression
 				|	{rand}		[token]:rand
+				|	{cond}		[token]:question [cond]:expression [when]:expression [else]:expression
 				;
 
 	binop		=	

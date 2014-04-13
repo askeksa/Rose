@@ -719,6 +719,40 @@ private:
   void replaceBy (Token node);
 };
 
+class TQuestion : public Token {
+public:
+  static inline TQuestion make () { return make(0, 0); }
+  static inline TQuestion make (int line, int pos)
+  { return Token::make(&type_info, line, pos, "?").unsafe_cast<TQuestion>(); }
+
+  static const _TypeInfo type_info;
+
+  inline TQuestion clone () const { return Node::clone().unsafe_cast<TQuestion>(); }
+
+  inline void replaceBy (TQuestion node) { Node::replaceBy (node); }
+
+private:
+  void setText (const std::string& text); // Get error at compile time
+  void replaceBy (Token node);
+};
+
+class TColon : public Token {
+public:
+  static inline TColon make () { return make(0, 0); }
+  static inline TColon make (int line, int pos)
+  { return Token::make(&type_info, line, pos, ":").unsafe_cast<TColon>(); }
+
+  static const _TypeInfo type_info;
+
+  inline TColon clone () const { return Node::clone().unsafe_cast<TColon>(); }
+
+  inline void replaceBy (TColon node) { Node::replaceBy (node); }
+
+private:
+  void setText (const std::string& text); // Get error at compile time
+  void replaceBy (Token node);
+};
+
 
 } // namespace rose {
 

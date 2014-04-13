@@ -71,6 +71,8 @@ where <name> and <param> are identifiers, and <statement> is one of:
 - when <expression> <statement>* else <statement>* done
   Run the first block of statements if the expression evaluates to non-zero,
   or the second block of statements otherwise.
+- defy
+  Suppress all warnings for the current source line.
 
 An <expression> is one of:
 
@@ -88,6 +90,9 @@ An <expression> is one of:
   Computes the sine of 2pi * argument.
 - rand
   Produces a random number between 0 and 1.
+- <expression> ? <expression> : <expression>
+  If the first expression evaulates to non-zero, evaluate the second
+  expression, otherwise evaluate the third expression.
 - ( <expression> )
   For grouping.
 

@@ -33,5 +33,14 @@ proc tree s n
 			size 2 tint 3 draw
 		done
 	else
-		size 5 tint 2 draw
+		seed x*y
+		wait rand*50
+		fork bloom 1
+	done
+
+proc bloom s
+	wait 2
+	size s tint 2 draw
+	when s < 5
+		fork bloom s+1
 	done

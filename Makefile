@@ -17,7 +17,7 @@ rose: main.o translate.o $(patsubst parser/%.cpp,%.o,$(wildcard parser/*.cpp))
 
 main.o: main.cpp shaders.h translate.h
 
-translate.o: translate.cpp ast.h symbol_linking.h interpret.h parser
+translate.o: translate.cpp ast.h symbol_linking.h interpret.h code_generator.h bytecode.h parser
 
 parser: rose.sablecc
 	java -jar sablecc.jar -t cxx -d parser rose.sablecc

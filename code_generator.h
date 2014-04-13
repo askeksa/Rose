@@ -15,6 +15,7 @@ class CodeGenerator : private AnalysisAdapter {
 	std::vector<number_t> constants;
 	std::unordered_map<int,int> constant_index;
 	std::vector<bytecode_t> out;
+	RoseStatistics& stats;
 
 	int stack_height;
 	std::vector<int> saved_stack_height;
@@ -22,7 +23,8 @@ class CodeGenerator : private AnalysisAdapter {
 	int cmp_code;
 
 public:
-	CodeGenerator(SymbolLinking& sym, const char *filename) : sym(sym), filename(filename) {}
+	CodeGenerator(SymbolLinking& sym, const char *filename, RoseStatistics& stats)
+		: sym(sym), filename(filename), stats(stats) {}
 
 	std::pair<std::vector<bytecode_t>,std::vector<number_t>> generate(AProgram program) {
 		constants.resize(program.getProcedure().size(), 0);
@@ -46,6 +48,7 @@ private:
 				throw Exception(std::string("Mismatching stack heights: ") + std::to_string(when_height) + " vs " + std::to_string(stack_height));
 			}
 		}
+		if (stack_height > stats.max_stack_height) stats.max_stack_height = stack_height;
 	}
 
 	void emit_constant(int c) {

@@ -66,11 +66,13 @@ class Interpreter : private ReturningAdapter<Value> {
 	std::queue<State> pending;
 	std::vector<Plot> output;
 	nodemap<std::unordered_set<std::string>> warning_nodes;
+	RoseStatistics& stats;
 
 public:
-	Interpreter(SymbolLinking& sym, const char *filename) : sym(sym), filename(filename) {}
+	Interpreter(SymbolLinking& sym, const char *filename, RoseStatistics& stats)
+		: sym(sym), filename(filename), stats(stats) {}
 
-	std::vector<Plot> interpret(AProcedure main, int max_time) {
+	std::vector<Plot> interpret(AProcedure main) {
 		State initial;
 		initial.proc = main;
 		initial.time = MAKE_NUMBER(0);
@@ -85,9 +87,13 @@ public:
 		while (!pending.empty()) {
 			state = std::move(pending.front());
 			pending.pop();
-			if (state.time < MAKE_NUMBER(max_time)) {
+			if (state.time < MAKE_NUMBER(stats.frames)) {
 				state.proc.getBody().apply(*this);
+			} else {
+				int overwait = NUMBER_TO_INT(state.time) - stats.frames;
+				if (overwait > stats.max_overwait) stats.max_overwait = overwait;
 			}
+			stats.turtles_died_in_frame[NUMBER_TO_INT(state.time)]++;
 		}
 
 		return output;
@@ -316,6 +322,7 @@ private:
 			args.push_back(apply(a));
 		}
 		pending.emplace(proc.proc, state, std::move(args));
+		stats.turtles_born_in_frame[NUMBER_TO_INT(state.time)]++;
 	}
 
 	void caseATempStatement(ATempStatement s) override {
@@ -392,6 +399,7 @@ private:
 	void caseADrawStatement(ADrawStatement s) override {
 		output.push_back({NUMBER_TO_INT(state.time), NUMBER_TO_INT(state.x), NUMBER_TO_INT(state.y),
 			NUMBER_TO_INT(state.size), NUMBER_TO_INT(state.tint)});
+		stats.circles_in_frame[NUMBER_TO_INT(state.time)]++;
 	}
 
 };

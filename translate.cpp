@@ -30,11 +30,13 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 	std::vector<Plot> plots;
 	std::vector<TintColor> colors;
 	try {
+		RoseStatistics stats(max_time);
+
 		Lexer lexer(filename);
 		Start ast = rose::Parser(&lexer).parse();
 		SymbolLinking sl;
 		ast.apply(sl);
-		Interpreter in(sl, filename);
+		Interpreter in(sl, filename, stats);
 		AProgram program = ast.getPProgram().cast<AProgram>();
 		if (program.getProcedure().size() == 0) {
 			throw Exception("No procedures");
@@ -43,11 +45,11 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 		if (mainproc.getParams().size() != 0) {
 			throw CompileException(mainproc.getName(), "Entry procedure must not have any parameters");
 		}
-		plots = in.interpret(mainproc, max_time);
+		plots = in.interpret(mainproc);
 		colors = in.get_colors(program);
 
 		// Output
-		CodeGenerator codegen(sl, filename);
+		CodeGenerator codegen(sl, filename, stats);
 		auto bytecodes_and_constants = codegen.generate(program);
 		std::vector<bytecode_t> bytecodes = bytecodes_and_constants.first;
 		std::vector<number_t> constants = bytecodes_and_constants.second;
@@ -64,6 +66,8 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 		writefile(bytecodes, "bytecodes.bin");
 		writefile(constants, "constants.bin");
 		writefile(colorscript, "colorscript.bin");
+
+		stats.print(stdout);
 
 	} catch (const CompileException& exc) {
 		if (print) {

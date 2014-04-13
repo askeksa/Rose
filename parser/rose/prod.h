@@ -921,6 +921,49 @@ public:
 private:
   void replaceBy (PExpression node);
 };
+class ACondExpression : public PExpression {
+protected:
+  inline ACondExpression (_GenericNode *obj) : PExpression (obj) { }
+
+public:
+  inline ACondExpression () : PExpression() { }
+
+  static inline ACondExpression make () { return initProd (&type_info); }
+
+  static inline ACondExpression make (
+      TQuestion _token_,
+      PExpression _cond_,
+      PExpression _when_,
+      PExpression _else_
+  )
+  {
+    void *args[] = {
+        &_token_,
+        &_cond_,
+        &_when_,
+        &_else_
+    };
+    return initProd (&type_info, args);
+  }
+
+  static const _TypeInfo type_info;
+
+  inline ACondExpression clone () const { return Node::clone().unsafe_cast<ACondExpression>(); }
+
+  inline void replaceBy (ACondExpression node) { Node::replaceBy (node); }
+
+  inline TQuestion getToken () { return getChildNode(0).unsafe_cast<TQuestion>(); }
+  inline void setToken (TQuestion _token_) { setChildNode (0, _token_); }
+  inline PExpression getCond () { return getChildNode(1).unsafe_cast<PExpression>(); }
+  inline void setCond (PExpression _cond_) { setChildNode (1, _cond_); }
+  inline PExpression getWhen () { return getChildNode(2).unsafe_cast<PExpression>(); }
+  inline void setWhen (PExpression _when_) { setChildNode (2, _when_); }
+  inline PExpression getElse () { return getChildNode(3).unsafe_cast<PExpression>(); }
+  inline void setElse (PExpression _else_) { setChildNode (3, _else_); }
+
+private:
+  void replaceBy (PExpression node);
+};
 class APlusBinop : public PBinop {
 protected:
   inline APlusBinop (_GenericNode *obj) : PBinop (obj) { }

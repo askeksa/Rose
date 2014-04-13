@@ -35,12 +35,12 @@ proc tree s n
 	else
 		seed x*y
 		wait rand*50
-		fork bloom 1
+		fork bloom 1 x < 100 ? 3 : 2
 	done
 
-proc bloom s
+proc bloom s c
 	wait 2
-	size s tint 2 draw
+	size s tint c draw
 	when s < 5
-		fork bloom s+1
+		fork bloom s+1 c
 	done

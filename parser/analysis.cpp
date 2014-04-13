@@ -47,6 +47,8 @@ void rose::AnalysisAdapter::caseTAnd (TAnd node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTOr (TOr node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTAssign (TAssign node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTNeg (TNeg node) { defaultCase(node); }
+void rose::AnalysisAdapter::caseTQuestion (TQuestion node) { defaultCase(node); }
+void rose::AnalysisAdapter::caseTColon (TColon node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTNumber (TNumber node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTIdentifier (TIdentifier node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTColor (TColor node) { defaultCase(node); }
@@ -76,6 +78,7 @@ void rose::AnalysisAdapter::caseABinaryExpression (ABinaryExpression node) { def
 void rose::AnalysisAdapter::caseANegExpression (ANegExpression node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseASineExpression (ASineExpression node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseARandExpression (ARandExpression node) { defaultCase(node); }
+void rose::AnalysisAdapter::caseACondExpression (ACondExpression node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAPlusBinop (APlusBinop node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAMinusBinop (AMinusBinop node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAMultiplyBinop (AMultiplyBinop node) { defaultCase(node); }
@@ -309,6 +312,17 @@ void rose::DepthFirstAdapter::caseARandExpression (ARandExpression node)
   outARandExpression (node);
 }
 void rose::DepthFirstAdapter::outARandExpression (ARandExpression node) { defaultOut(node); }
+void rose::DepthFirstAdapter::inACondExpression (ACondExpression node) { defaultIn(node); }
+void rose::DepthFirstAdapter::caseACondExpression (ACondExpression node)
+{
+  inACondExpression (node);
+  if ( node.getToken() ) node.getToken().apply(*this);
+  if ( node.getCond() ) node.getCond().apply(*this);
+  if ( node.getWhen() ) node.getWhen().apply(*this);
+  if ( node.getElse() ) node.getElse().apply(*this);
+  outACondExpression (node);
+}
+void rose::DepthFirstAdapter::outACondExpression (ACondExpression node) { defaultOut(node); }
 void rose::DepthFirstAdapter::inAPlusBinop (APlusBinop node) { defaultIn(node); }
 void rose::DepthFirstAdapter::caseAPlusBinop (APlusBinop node)
 {
@@ -626,6 +640,17 @@ void rose::ReversedDepthFirstAdapter::caseARandExpression (ARandExpression node)
   outARandExpression (node);
 }
 void rose::ReversedDepthFirstAdapter::outARandExpression (ARandExpression node) { defaultOut(node); }
+void rose::ReversedDepthFirstAdapter::inACondExpression (ACondExpression node) { defaultIn(node); }
+void rose::ReversedDepthFirstAdapter::caseACondExpression (ACondExpression node)
+{
+  inACondExpression (node);
+  if ( node.getElse() ) node.getElse().apply(*this);
+  if ( node.getWhen() ) node.getWhen().apply(*this);
+  if ( node.getCond() ) node.getCond().apply(*this);
+  if ( node.getToken() ) node.getToken().apply(*this);
+  outACondExpression (node);
+}
+void rose::ReversedDepthFirstAdapter::outACondExpression (ACondExpression node) { defaultOut(node); }
 void rose::ReversedDepthFirstAdapter::inAPlusBinop (APlusBinop node) { defaultIn(node); }
 void rose::ReversedDepthFirstAdapter::caseAPlusBinop (APlusBinop node)
 {

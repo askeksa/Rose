@@ -87,7 +87,7 @@ private:
 		exp.getLeft().apply(*this);
 		exp.getOp().apply(*this);
 		emit(op_code);
-		if (op_code == BC_OP(OP_CMP) && !exp.parent().is<AWhenStatement>()) {
+		if (op_code == BC_OP(OP_CMP) && !exp.parent().is<AWhenStatement>() && !exp.parent().is<ACondExpression>()) {
 			// Produce truth value
 			emit(BC_WHEN(cmp_code));
 			emit_constant(MAKE_NUMBER(1));
@@ -139,6 +139,15 @@ private:
 
 	void caseARandExpression(ARandExpression exp) override {
 		emit(BC_RAND);
+	}
+
+	void caseACondExpression(ACondExpression exp) override {
+		exp.getCond().apply(*this);
+		emit(BC_WHEN(cmp_code));
+		exp.getWhen().apply(*this);
+		emit(BC_ELSE);
+		exp.getElse().apply(*this);
+		emit(BC_DONE);
 	}
 
 	void caseAWhenStatement(AWhenStatement s) override {

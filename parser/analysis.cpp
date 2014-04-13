@@ -14,6 +14,7 @@ void rose::AnalysisAdapter::caseStart (Start node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTEOF (TEOF node) { defaultCase(node); }
 void rose::AnalysisAdapter::defaultCase (Node node) { }
 
+void rose::AnalysisAdapter::caseTDefy (TDefy node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTDone (TDone node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTDraw (TDraw node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTElse (TElse node) { defaultCase(node); }
@@ -60,6 +61,7 @@ void rose::AnalysisAdapter::caseAWaitEvent (AWaitEvent node) { defaultCase(node)
 void rose::AnalysisAdapter::caseAColorEvent (AColorEvent node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAProcedure (AProcedure node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseALocal (ALocal node) { defaultCase(node); }
+void rose::AnalysisAdapter::caseADefyStatement (ADefyStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseADrawStatement (ADrawStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAForkStatement (AForkStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAMoveStatement (AMoveStatement node) { defaultCase(node); }
@@ -151,6 +153,14 @@ void rose::DepthFirstAdapter::caseALocal (ALocal node)
   outALocal (node);
 }
 void rose::DepthFirstAdapter::outALocal (ALocal node) { defaultOut(node); }
+void rose::DepthFirstAdapter::inADefyStatement (ADefyStatement node) { defaultIn(node); }
+void rose::DepthFirstAdapter::caseADefyStatement (ADefyStatement node)
+{
+  inADefyStatement (node);
+  if ( node.getToken() ) node.getToken().apply(*this);
+  outADefyStatement (node);
+}
+void rose::DepthFirstAdapter::outADefyStatement (ADefyStatement node) { defaultOut(node); }
 void rose::DepthFirstAdapter::inADrawStatement (ADrawStatement node) { defaultIn(node); }
 void rose::DepthFirstAdapter::caseADrawStatement (ADrawStatement node)
 {
@@ -479,6 +489,14 @@ void rose::ReversedDepthFirstAdapter::caseALocal (ALocal node)
   outALocal (node);
 }
 void rose::ReversedDepthFirstAdapter::outALocal (ALocal node) { defaultOut(node); }
+void rose::ReversedDepthFirstAdapter::inADefyStatement (ADefyStatement node) { defaultIn(node); }
+void rose::ReversedDepthFirstAdapter::caseADefyStatement (ADefyStatement node)
+{
+  inADefyStatement (node);
+  if ( node.getToken() ) node.getToken().apply(*this);
+  outADefyStatement (node);
+}
+void rose::ReversedDepthFirstAdapter::outADefyStatement (ADefyStatement node) { defaultOut(node); }
 void rose::ReversedDepthFirstAdapter::inADrawStatement (ADrawStatement node) { defaultIn(node); }
 void rose::ReversedDepthFirstAdapter::caseADrawStatement (ADrawStatement node)
 {

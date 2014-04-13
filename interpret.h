@@ -151,7 +151,7 @@ private:
 	}
 
 	void warning(Token token, std::string message) {
-		if (!warning_nodes[token].count(message)) {
+		if (!sym.defied_lines.count(token.getLine()) && !warning_nodes[token].count(message)) {
 			printf("%s:%d:%d: Warning: %s\n", filename, token.getLine(), token.getPos(), message.c_str());
 			warning_nodes[token].insert(message);
 		}

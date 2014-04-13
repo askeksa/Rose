@@ -33,7 +33,7 @@ proc tree s n
 			size 2 tint 3 draw
 		done
 	else
-		seed x*y
+		defy seed x*y
 		wait rand*50
 		fork bloom 1 x < 100 ? 3 : 2
 	done

@@ -329,6 +329,12 @@ private:
 		if (proc.kind != ValueKind::PROCEDURE) {
 			throw CompileException(s.getToken(), "Target is not a procedure");
 		}
+		int n_args = s.getArgs().size();
+		int n_params = proc.proc.getParams().size();
+		if (n_args != n_params) {
+			throw CompileException(s.getToken(), "Wrong number of arguments for procedure " + proc.proc.getName().getText() + ": "
+				+ std::to_string(n_args) + " given, " + std::to_string(n_params) + " expected");
+		}
 		std::vector<Value> args;
 		for (auto a : s.getArgs()) {
 			args.push_back(apply(a));

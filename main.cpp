@@ -3,6 +3,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <portaudio.h>
+
 #include <vector>
 #include <queue>
 #include <cstdio>
@@ -18,6 +20,38 @@
 #define HEIGHT 280
 #define FRAMES 10000
 #define FRAMERATE 50
+
+#define STREAM_BUFFER_SIZE 512
+
+struct WavInfo {
+	short *wavdata;
+	unsigned samplepos;
+};
+
+struct WavHeader {
+	unsigned riff_tag;
+	unsigned file_length;
+	unsigned wave_tag;
+	unsigned fmt_tag;
+	unsigned header_length;
+	unsigned short format;
+	unsigned short num_channels;
+	unsigned sample_rate;
+	unsigned byte_rate;
+	unsigned short block_align;
+	unsigned short bits;
+	unsigned data_tag;
+	unsigned data_length;
+};
+
+int stream_callback(const void *input, void *output, unsigned long frameCount,
+					const PaStreamCallbackTimeInfo *timeInfo, PaStreamCallbackFlags statusFlags, void *userData)
+{
+	struct WavInfo *info = (struct WavInfo *) userData;
+	memcpy(output, &info->wavdata[info->samplepos * 2], frameCount * 4);
+	info->samplepos += frameCount;
+	return paContinue;
+}
 
 void error_callback(int error, const char* description) {
 	printf(" *** GLFW error: %s\n", description);
@@ -188,10 +222,13 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 
 int main(int argc, char *argv[]) {
 	if (argc < 2) {
-		printf("Usage: rose <filename> [<framerate> [<frames>]]\n");
+		printf("Usage: rose <filename> [<framerate> [<music>]]\n");
 		exit(1);
 	}
 	char *filename = argv[1];
+	void *wav_file = nullptr;
+	double sample_rate = 44100.0;
+	struct WavInfo info = { nullptr, 0 };
 
 	int framerate = FRAMERATE;
 	if (argc > 2) {
@@ -200,7 +237,27 @@ int main(int argc, char *argv[]) {
 
 	int frames = FRAMES;
 	if (argc > 3) {
-		frames = atoi(argv[3]);
+		const char *wav_filename = argv[3];
+		FILE *fp = fopen(wav_filename,"rb");
+		if (!fp) {
+			printf("Unable to open music file %s\n", wav_filename);
+			exit(1);
+		}
+		fseek(fp,0,SEEK_END);
+		size_t wav_size = ftell(fp);
+		fseek(fp,0,SEEK_SET);
+		wav_file = malloc(wav_size);
+		fread(wav_file, 1, wav_size, fp);
+		fclose(fp);
+
+		struct WavHeader *wh = (struct WavHeader *) wav_file;
+		sample_rate = wh->sample_rate;
+		if (wh->num_channels != 2 || wh->bits != 16) {
+			printf("Music must be 16 bit stereo.\n");
+			exit(1);
+		}
+		frames = (int) ((wh->data_length / 4) / sample_rate * framerate);
+		info.wavdata = (short *) &wh[1];
 	}
 
 	// Initialize GLFW
@@ -242,11 +299,21 @@ int main(int argc, char *argv[]) {
 	glfwSetWindowUserPointer(window, &key_queue);
 	glfwSetKeyCallback(window, key_callback);
 
+	Pa_Initialize();
+	PaStream* stream;
+	if (Pa_OpenDefaultStream(&stream, 0, 2, paInt16, sample_rate, STREAM_BUFFER_SIZE, stream_callback, &info)) {
+		printf("Error opening audio output!\n");
+		exit(1);
+	}
+
 	int startframe = 0;
 	int frame = 0;
 	bool playing = true;
-	double lasttime = glfwGetTime();
+	double lasttime = Pa_GetStreamTime(stream);
+	Pa_StartStream(stream);
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && !glfwWindowShouldClose(window)) {
+		bool frame_set = false;
+
 		// Reload if changed
 		struct stat newfilestat;
 		stat(filename, &newfilestat);
@@ -263,7 +330,8 @@ int main(int argc, char *argv[]) {
 			filestat = newfilestat;
 			if (playing) {
 				frame = startframe;
-				lasttime = glfwGetTime();
+				frame_set = true;
+				lasttime = Pa_GetStreamTime(stream);
 			}
 		}
 
@@ -273,6 +341,7 @@ int main(int argc, char *argv[]) {
 			int width,height;
 			glfwGetWindowSize(window, &width, &height);
 			frame = (int)(xpos / width * frames);
+			frame_set = true;
 			startframe = frame;
 		}
 
@@ -284,26 +353,36 @@ int main(int argc, char *argv[]) {
 				playing = !playing;
 				if (playing) {
 					startframe = frame;
-					lasttime = glfwGetTime();
+					lasttime = Pa_GetStreamTime(stream);
+					Pa_StartStream(stream);
+				} else {
+					Pa_StopStream(stream);
+					frame_set = true;
 				}
 				break;
 			case GLFW_KEY_BACKSPACE:
 				frame = startframe;
+				frame_set = true;
 				break;
 			case GLFW_KEY_LEFT:
 				frame -= 1;
+				frame_set = true;
 				break;
 			case GLFW_KEY_RIGHT:
 				frame += 1;
+				frame_set = true;
 				break;
 			case GLFW_KEY_PAGE_UP:
 				frame -= 50;
+				frame_set = true;
 				break;
 			case GLFW_KEY_PAGE_DOWN:
 				frame += 50;
+				frame_set = true;
 				break;
 			case GLFW_KEY_HOME:
 				frame = 0;
+				frame_set = true;
 				break;
 			}
 		}
@@ -311,6 +390,10 @@ int main(int argc, char *argv[]) {
 		// Clamp frame
 		if (frame < 0) frame = 0;
 		if (frame > frames) frame = frames;
+
+		if (frame_set) {
+			info.samplepos = (int) (frame * sample_rate / framerate);
+		}
 
 		// Clear
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
@@ -330,11 +413,14 @@ int main(int argc, char *argv[]) {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 
-		while (playing && frame < frames && glfwGetTime() - lasttime > 1.0 / framerate) {
+		while (playing && frame < frames && Pa_GetStreamTime(stream) - lasttime > 1.0 / framerate) {
 			frame++;
 			lasttime += 1.0 / framerate;
 		}
 	}
+
+	Pa_CloseStream(stream);
+	Pa_Terminate();
 
 	if (project) delete project;
 

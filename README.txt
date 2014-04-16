@@ -113,11 +113,15 @@ THE VISUALIZER
 
 Run the visualizer with these arguments:
 
-rose <filename> [<framerate> [<frames>]]
+rose <filename> [<framerate> [<music>]]
 
 where <filename> is the name of a file containing a Rose program,
 <framerate> is the frame rate in frames per second (default 50) and
-<frames> is the total number of frames (default 10000, 3m20s at 50fps).
+<music> is a 16-bit stereo WAV file containing the music to play to
+the animation.
+
+The total number of frames for the animation will be inferred from
+the length of the music, or set to 10000 if no music is specified.
 
 The visualizer will continuously monitor the file and reload it whenever
 its modification time changes.

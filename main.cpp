@@ -259,9 +259,6 @@ int main(int argc, char *argv[]) {
 				usleep(100*1000);
 				project = RoseProject::make(filename, frames, true);
 			}
-			if (project) {
-				printf("Code reloaded.\n");
-			}
 			fflush(stdout);
 			filestat = newfilestat;
 			if (playing) {

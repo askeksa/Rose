@@ -23,6 +23,8 @@ SYNTAX
 Rose is whitespace-agnostic: line breaks can be inserted or omitted anywhere
 between tokens.
 
+Comments start with # and extend to the end of the line.
+
 Just for the fun of it, and because I enjoy using a thesaurus, all keywords
 in Rose have four letters.
 
@@ -46,6 +48,8 @@ where <name> and <param> are identifiers, and <statement> is one of:
 
 - move <expression>
   Move forward a number of pixels.
+- jump <expression> <expression>
+  Jump to a pixel coordinate position.
 - turn <expression>
   Turn a number of 256-on-a-circle degrees clockwise.
 - face <expression>

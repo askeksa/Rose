@@ -218,7 +218,9 @@ private:
 		s.getY().apply(*this);
 		s.getX().apply(*this);
 		emit(BC_WSTATE(ST_X));
+		emit(BC_LOCAL(0));
 		emit(BC_WSTATE(ST_Y));
+		emit(BC_POP(1));
 	}
 
 	void caseADrawStatement(ADrawStatement s) override {

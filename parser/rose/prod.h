@@ -434,6 +434,45 @@ public:
 private:
   void replaceBy (PStatement node);
 };
+class AJumpStatement : public PStatement {
+protected:
+  inline AJumpStatement (_GenericNode *obj) : PStatement (obj) { }
+
+public:
+  inline AJumpStatement () : PStatement() { }
+
+  static inline AJumpStatement make () { return initProd (&type_info); }
+
+  static inline AJumpStatement make (
+      TJump _token_,
+      PExpression _x_,
+      PExpression _y_
+  )
+  {
+    void *args[] = {
+        &_token_,
+        &_x_,
+        &_y_
+    };
+    return initProd (&type_info, args);
+  }
+
+  static const _TypeInfo type_info;
+
+  inline AJumpStatement clone () const { return Node::clone().unsafe_cast<AJumpStatement>(); }
+
+  inline void replaceBy (AJumpStatement node) { Node::replaceBy (node); }
+
+  inline TJump getToken () { return getChildNode(0).unsafe_cast<TJump>(); }
+  inline void setToken (TJump _token_) { setChildNode (0, _token_); }
+  inline PExpression getX () { return getChildNode(1).unsafe_cast<PExpression>(); }
+  inline void setX (PExpression _x_) { setChildNode (1, _x_); }
+  inline PExpression getY () { return getChildNode(2).unsafe_cast<PExpression>(); }
+  inline void setY (PExpression _y_) { setChildNode (2, _y_); }
+
+private:
+  void replaceBy (PStatement node);
+};
 class ASizeStatement : public PStatement {
 protected:
   inline ASizeStatement (_GenericNode *obj) : PStatement (obj) { }

@@ -414,6 +414,19 @@ private:
 		}
 	}
 
+	void caseAJumpStatement(AJumpStatement s) override {
+		Value x = apply(s.getX());
+		Value y = apply(s.getY());
+		if (x.kind != ValueKind::NUMBER) {
+			throw CompileException(s.getToken(), "X is not a number");
+		}
+		if (y.kind != ValueKind::NUMBER) {
+			throw CompileException(s.getToken(), "Y is not a number");
+		}
+		state.x = x.number;
+		state.y = y.number;
+	}
+
 	void caseADrawStatement(ADrawStatement s) override {
 		output.push_back({NUMBER_TO_INT(state.time), NUMBER_TO_INT(state.x), NUMBER_TO_INT(state.y),
 			NUMBER_TO_INT(state.size), NUMBER_TO_INT(state.tint)});

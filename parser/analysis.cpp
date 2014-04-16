@@ -20,6 +20,7 @@ void rose::AnalysisAdapter::caseTDraw (TDraw node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTElse (TElse node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTFace (TFace node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTFork (TFork node) { defaultCase(node); }
+void rose::AnalysisAdapter::caseTJump (TJump node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTMove (TMove node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTPlan (TPlan node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTProc (TProc node) { defaultCase(node); }
@@ -65,6 +66,7 @@ void rose::AnalysisAdapter::caseADefyStatement (ADefyStatement node) { defaultCa
 void rose::AnalysisAdapter::caseADrawStatement (ADrawStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAForkStatement (AForkStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAMoveStatement (AMoveStatement node) { defaultCase(node); }
+void rose::AnalysisAdapter::caseAJumpStatement (AJumpStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseASizeStatement (ASizeStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseATempStatement (ATempStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseATintStatement (ATintStatement node) { defaultCase(node); }
@@ -188,6 +190,16 @@ void rose::DepthFirstAdapter::caseAMoveStatement (AMoveStatement node)
   outAMoveStatement (node);
 }
 void rose::DepthFirstAdapter::outAMoveStatement (AMoveStatement node) { defaultOut(node); }
+void rose::DepthFirstAdapter::inAJumpStatement (AJumpStatement node) { defaultIn(node); }
+void rose::DepthFirstAdapter::caseAJumpStatement (AJumpStatement node)
+{
+  inAJumpStatement (node);
+  if ( node.getToken() ) node.getToken().apply(*this);
+  if ( node.getX() ) node.getX().apply(*this);
+  if ( node.getY() ) node.getY().apply(*this);
+  outAJumpStatement (node);
+}
+void rose::DepthFirstAdapter::outAJumpStatement (AJumpStatement node) { defaultOut(node); }
 void rose::DepthFirstAdapter::inASizeStatement (ASizeStatement node) { defaultIn(node); }
 void rose::DepthFirstAdapter::caseASizeStatement (ASizeStatement node)
 {
@@ -524,6 +536,16 @@ void rose::ReversedDepthFirstAdapter::caseAMoveStatement (AMoveStatement node)
   outAMoveStatement (node);
 }
 void rose::ReversedDepthFirstAdapter::outAMoveStatement (AMoveStatement node) { defaultOut(node); }
+void rose::ReversedDepthFirstAdapter::inAJumpStatement (AJumpStatement node) { defaultIn(node); }
+void rose::ReversedDepthFirstAdapter::caseAJumpStatement (AJumpStatement node)
+{
+  inAJumpStatement (node);
+  if ( node.getY() ) node.getY().apply(*this);
+  if ( node.getX() ) node.getX().apply(*this);
+  if ( node.getToken() ) node.getToken().apply(*this);
+  outAJumpStatement (node);
+}
+void rose::ReversedDepthFirstAdapter::outAJumpStatement (AJumpStatement node) { defaultOut(node); }
 void rose::ReversedDepthFirstAdapter::inASizeStatement (ASizeStatement node) { defaultIn(node); }
 void rose::ReversedDepthFirstAdapter::caseASizeStatement (ASizeStatement node)
 {

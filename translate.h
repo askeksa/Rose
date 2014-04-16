@@ -37,6 +37,7 @@ struct RoseStatistics {
 			if (turtles_alive > max_turtles) max_turtles = turtles_alive;
 			turtles_alive -= turtles_died_in_frame[i];
 		}
+		fprintf(out, "\n");
 		fprintf(out, "Number of frames:     %5d\n", frames);
 		fprintf(out, "Max extra wait:       %5d\n", max_overwait);
 		fprintf(out, "Max circles in frame: %5d\n", max_circles);

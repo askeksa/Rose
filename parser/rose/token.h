@@ -260,6 +260,23 @@ private:
   void replaceBy (Token node);
 };
 
+class TJump : public Token {
+public:
+  static inline TJump make () { return make(0, 0); }
+  static inline TJump make (int line, int pos)
+  { return Token::make(&type_info, line, pos, "jump").unsafe_cast<TJump>(); }
+
+  static const _TypeInfo type_info;
+
+  inline TJump clone () const { return Node::clone().unsafe_cast<TJump>(); }
+
+  inline void replaceBy (TJump node) { Node::replaceBy (node); }
+
+private:
+  void setText (const std::string& text); // Get error at compile time
+  void replaceBy (Token node);
+};
+
 class TMove : public Token {
 public:
   static inline TMove make () { return make(0, 0); }

@@ -21,6 +21,7 @@ Tokens
 	else = 'else';
 	face = 'face';
 	fork = 'fork';
+	jump = 'jump';
 	move = 'move';
 	plan = 'plan';
 	proc = 'proc';
@@ -99,6 +100,8 @@ Productions
 							{-> New statement.draw(draw)}
 				|	{move}	move exp
 							{-> New statement.move(move, exp.expression)}
+				|	{jump}	jump [x]:exp [y]:exp
+							{-> New statement.jump(jump, x.expression, y.expression)}
 				|	{turn}	turn exp
 							{-> New statement.turn(turn, exp.expression)}
 				|	{face}	face exp
@@ -210,6 +213,7 @@ Abstract Syntax Tree
 				|	{draw}	[token]:draw
 				|	{fork}	[token]:fork [proc]:expression [args]:expression*
 				|	{move}	[token]:move expression
+				|	{jump}	[token]:jump [x]:expression [y]:expression
 				|	{size}	[token]:size expression
 				|	{temp}	[var]:local expression
 				|	{tint}	[token]:tint expression

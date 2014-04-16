@@ -3,10 +3,8 @@ plan
 	0:112 1:421 2:F00 3:3C3
 
 proc main
-	move 176
-	turn 64
-	move 250
-	turn 128
+	jump 176 250
+	face ~64
 	seed 42
 	fork tree 8 30
 

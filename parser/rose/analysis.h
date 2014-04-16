@@ -18,6 +18,7 @@ public:
   virtual void caseTElse (TElse node) = 0;
   virtual void caseTFace (TFace node) = 0;
   virtual void caseTFork (TFork node) = 0;
+  virtual void caseTJump (TJump node) = 0;
   virtual void caseTMove (TMove node) = 0;
   virtual void caseTPlan (TPlan node) = 0;
   virtual void caseTProc (TProc node) = 0;
@@ -63,6 +64,7 @@ public:
   virtual void caseADrawStatement (ADrawStatement node) = 0;
   virtual void caseAForkStatement (AForkStatement node) = 0;
   virtual void caseAMoveStatement (AMoveStatement node) = 0;
+  virtual void caseAJumpStatement (AJumpStatement node) = 0;
   virtual void caseASizeStatement (ASizeStatement node) = 0;
   virtual void caseATempStatement (ATempStatement node) = 0;
   virtual void caseATintStatement (ATintStatement node) = 0;
@@ -106,6 +108,7 @@ public:
   virtual void caseTElse (TElse node);
   virtual void caseTFace (TFace node);
   virtual void caseTFork (TFork node);
+  virtual void caseTJump (TJump node);
   virtual void caseTMove (TMove node);
   virtual void caseTPlan (TPlan node);
   virtual void caseTProc (TProc node);
@@ -151,6 +154,7 @@ public:
   virtual void caseADrawStatement (ADrawStatement node);
   virtual void caseAForkStatement (AForkStatement node);
   virtual void caseAMoveStatement (AMoveStatement node);
+  virtual void caseAJumpStatement (AJumpStatement node);
   virtual void caseASizeStatement (ASizeStatement node);
   virtual void caseATempStatement (ATempStatement node);
   virtual void caseATintStatement (ATintStatement node);
@@ -219,6 +223,9 @@ public:
   virtual void inAMoveStatement (AMoveStatement node);
   virtual void caseAMoveStatement (AMoveStatement node);
   virtual void outAMoveStatement (AMoveStatement node);
+  virtual void inAJumpStatement (AJumpStatement node);
+  virtual void caseAJumpStatement (AJumpStatement node);
+  virtual void outAJumpStatement (AJumpStatement node);
   virtual void inASizeStatement (ASizeStatement node);
   virtual void caseASizeStatement (ASizeStatement node);
   virtual void outASizeStatement (ASizeStatement node);
@@ -343,6 +350,9 @@ public:
   virtual void inAMoveStatement (AMoveStatement node);
   virtual void caseAMoveStatement (AMoveStatement node);
   virtual void outAMoveStatement (AMoveStatement node);
+  virtual void inAJumpStatement (AJumpStatement node);
+  virtual void caseAJumpStatement (AJumpStatement node);
+  virtual void outAJumpStatement (AJumpStatement node);
   virtual void inASizeStatement (ASizeStatement node);
   virtual void caseASizeStatement (ASizeStatement node);
   virtual void outASizeStatement (ASizeStatement node);

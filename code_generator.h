@@ -214,6 +214,13 @@ private:
 		emit(BC_MOVE);
 	}
 
+	void caseAJumpStatement(AJumpStatement s) override {
+		s.getY().apply(*this);
+		s.getX().apply(*this);
+		emit(BC_WSTATE(ST_X));
+		emit(BC_WSTATE(ST_Y));
+	}
+
 	void caseADrawStatement(ADrawStatement s) override {
 		emit(BC_DRAW);
 	}

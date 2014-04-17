@@ -587,7 +587,7 @@ class TEq : public Token {
 public:
   static inline TEq make () { return make(0, 0); }
   static inline TEq make (int line, int pos)
-  { return Token::make(&type_info, line, pos, "--").unsafe_cast<TEq>(); }
+  { return Token::make(&type_info, line, pos, "==").unsafe_cast<TEq>(); }
 
   static const _TypeInfo type_info;
 

@@ -310,7 +310,7 @@ int main(int argc, char *argv[]) {
 	int frame = 0;
 	bool playing = true;
 	double lasttime = Pa_GetStreamTime(stream);
-	Pa_StartStream(stream);
+	if (wav_file) Pa_StartStream(stream);
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && !glfwWindowShouldClose(window)) {
 		bool frame_set = false;
 
@@ -354,9 +354,9 @@ int main(int argc, char *argv[]) {
 				if (playing) {
 					startframe = frame;
 					lasttime = Pa_GetStreamTime(stream);
-					Pa_StartStream(stream);
+					if (wav_file) Pa_StartStream(stream);
 				} else {
-					Pa_StopStream(stream);
+					if (wav_file) Pa_StopStream(stream);
 					frame_set = true;
 				}
 				break;

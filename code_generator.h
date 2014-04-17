@@ -142,6 +142,7 @@ private:
 	}
 
 	void caseACondExpression(ACondExpression exp) override {
+		cmp_code = CMP_NE;
 		exp.getCond().apply(*this);
 		emit(BC_WHEN(cmp_code));
 		exp.getWhen().apply(*this);
@@ -151,6 +152,7 @@ private:
 	}
 
 	void caseAWhenStatement(AWhenStatement s) override {
+		cmp_code = CMP_NE;
 		s.getCond().apply(*this);
 		emit(BC_WHEN(cmp_code));
 		s.getWhen().apply(*this);

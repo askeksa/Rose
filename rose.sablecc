@@ -41,7 +41,7 @@ Tokens
 	minus = '-';
 	mul = '*';
 	div = '/';
-	eq = '--';
+	eq = '==';
 	ne = '!=';
 	lt = '<';
 	le = '<=';

@@ -87,13 +87,13 @@ public:
 		while (!pending.empty()) {
 			state = std::move(pending.front());
 			pending.pop();
-			if (state.time < MAKE_NUMBER(stats.frames)) {
+			if (NUMBER_TO_INT(state.time) < stats.frames) {
 				state.proc.getBody().apply(*this);
+				stats.turtles_died_in_frame[NUMBER_TO_INT(state.time)]++;
 			} else {
 				int overwait = NUMBER_TO_INT(state.time) - stats.frames;
 				if (overwait > stats.max_overwait) stats.max_overwait = overwait;
 			}
-			stats.turtles_died_in_frame[NUMBER_TO_INT(state.time)]++;
 		}
 
 		return output;
@@ -340,7 +340,9 @@ private:
 			args.push_back(apply(a));
 		}
 		pending.emplace(proc.proc, state, std::move(args));
-		stats.turtles_born_in_frame[NUMBER_TO_INT(state.time)]++;
+		if (NUMBER_TO_INT(state.time) < stats.frames) {
+			stats.turtles_born_in_frame[NUMBER_TO_INT(state.time)]++;
+		}
 	}
 
 	void caseATempStatement(ATempStatement s) override {
@@ -430,7 +432,9 @@ private:
 	void caseADrawStatement(ADrawStatement s) override {
 		output.push_back({NUMBER_TO_INT(state.time), NUMBER_TO_INT(state.x), NUMBER_TO_INT(state.y),
 			NUMBER_TO_INT(state.size), NUMBER_TO_INT(state.tint)});
-		stats.circles_in_frame[NUMBER_TO_INT(state.time)]++;
+		if (NUMBER_TO_INT(state.time) < stats.frames) {
+			stats.circles_in_frame[NUMBER_TO_INT(state.time)]++;
+		}
 	}
 
 };

@@ -64,7 +64,7 @@ where <name> and <param> are identifiers, and <statement> is one of:
   Wait a number of frames.
 - fork <procedure> <expression>*
   Branch off a new turtle with a copy of this turtle's state, running the
-  given procedure with the given arguments. This turtle continues executing
+  given procedure with the given arguments. The old turtle continues executing
   the rest of the current procedure in parallel.
 - temp <variable> = <expression>
   Assign a value to a local variable.

@@ -1,0 +1,247 @@
+
+plan
+	0:000 1:000 2:000 3:000
+	wait 300
+	0:321 1:DDC 2:D00 3:080
+
+
+proc main
+	tint 0 draw
+	wait 20
+	fork paper
+	wait 50
+	fork tegning1
+	wait 9000
+	jump 250 100
+	fork apple 1
+	wait 10
+	jump 280 80
+	fork apple 1
+	wait 10
+	jump 310 130
+	fork apple 1
+	wait 10
+	jump 260 140
+	fork apple 1
+	wait 10
+	jump 330 100
+	fork apple 1
+	wait 10
+	jump 320 80
+	fork apple 1
+
+proc apple s
+	tint 2
+	size s
+	draw
+	wait 2
+	when s < 8
+		fork apple s+1
+	done
+
+proc tegning1
+	# grass
+	tint 3 fork streg 1 240 0 2 22 40
+#	wait 60
+
+	# house
+	tint 0
+	fork streg 50 240 ~64 1.5 4 16
+#	wait 20
+	fork streg 48 178 0 1.5 4 16
+#	wait 20
+	fork streg 110 180 64 1.5 4 16
+#	wait 30
+	fork streg 32 190 ~32 1.5 4 16
+#	wait 20
+	fork streg 78 144 32 1.5 4 16
+
+	# tree
+#	wait 50
+	fork streg 285 220 ~64 3 8 24 
+#	wait 40
+	jump 300 144
+	size 9 tint 3
+	face 0
+	fork smoke 5.75 322
+
+	# Flag
+	tint 0
+#	wait 200
+	fork streg 163 140 64 1.5 6 16
+	tint 2
+#	wait 40
+	fork streg 170 145 0 2.5 1 8
+#	wait 20
+	fork streg 200 145 0 2.5 2 16
+#	wait 40
+	fork streg 170 165 0 2.5 1 8
+#	wait 20
+	fork streg 200 165 0 2.5 2 16
+
+	# chimney
+	tint 0
+#	wait 50
+	fork streg 90 152 ~64 1.5 1 8
+#	wait 10
+	fork streg 90 138 0 1.5 1 8
+#	wait 10
+	fork streg 105 138 64 1.5 2 16
+
+	# smoke
+#	wait 50
+	jump 100 128
+	face ~64
+	size 1 fork smoke 5.25 175
+
+proc tegning2
+	# water
+	tint 2 size 4
+	jump ~5 212 face 0
+	fork smoke 0 212
+	wait 120
+
+	# boat
+	tint 0
+	fork streg 120 180 32 1.5 2 16
+	wait 20
+	fork streg 140 205 0 1.5 5 32
+	wait 32
+	fork streg 220 210 ~32 1.5 2 16
+	wait 20
+	fork streg 240 188 130 1.5 8 32
+
+	# mast
+	wait 50
+	fork streg 180 188 ~64 1.5 7 32
+
+	# sail
+	tint 3
+	wait 50
+	fork streg 188 80 36 1 5 32
+	wait 32
+	fork streg 230 144 128 1 3 32
+
+	# waves
+	tint 2 size 2 face 0
+	wait 50
+	jump 50 250
+	fork smoke 0 87
+	wait 80
+	jump 140 260
+	fork smoke 0 87
+	wait 80
+
+	# sun
+	tint 3 size 2
+	jump 80 60
+	fork sun 52
+
+proc sun n
+	when n
+		when (n & 7) == 0
+			fork sunbeam n
+		done
+		draw
+		move 2
+		turn 5
+		wait 1
+		fork sun n-1
+	done
+
+proc sunbeam n
+	turn ~64
+	move 10
+	wait 180-n*2
+	fork streg x y dir 1.5 1 8
+
+proc smoke c n
+	when n
+		draw
+		move 2
+		defy turn ~c + sine(n/50)*3
+		wait 0.5
+		fork smoke c n-1
+	done
+
+proc streg x0 y0 d step l t
+	jump x0 y0
+	face d
+	temp s = step*step
+	size s
+	defy seed x*y
+	temp n = (l/step*16)&~1
+	fork stregstep d step t*step/l/16 n
+
+proc stregstep d step w n
+	when n
+		draw
+		wait w
+		move step
+		temp rel = dir-d
+		defy turn (rand-0.4-rel*0.0078125)*5
+		fork stregstep d step w n-1
+	done
+
+
+proc paper
+	tint 1
+	jump 0 0
+	face 0
+	fork lines 12 16 24 16 18
+
+#proc lines s m l d n
+
+
+proc wipe a d
+	jump 176 140
+	face a
+	move 256
+	turn 87*d
+	fork wipe2 21 d
+
+proc wipe2 n d
+	fork cone
+	turn 4*d
+	wait 1
+	when n fork wipe2 n-1 d done
+
+proc cone
+	move 32
+	fork conesec 2 0.0625 44
+
+proc conesec s f n
+	size s draw
+	move s
+	when n fork conesec s+s*f f n-1 done
+
+proc lineswipe a s m w
+	fork linewipe a s m
+	wait w
+	fork linewipe a+128 s m
+
+proc linewipe a s m
+	jump 176 140
+	face a
+	move 256
+	turn 64
+	move 208
+	turn 64
+	fork lines s m (512/m)&~1 64 7
+
+proc lines s m l d n
+	when n
+		fork line s m 0.5 l
+		turn 64
+		move d
+		turn ~64
+		fork lines s m l d n-1
+	done
+
+proc line s m w n
+	when n
+		size s draw
+		move m
+		wait w
+		fork line s m w n-1
+	done

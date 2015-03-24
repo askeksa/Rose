@@ -27,6 +27,8 @@ struct WavInfo {
 	short *wavdata;
 	unsigned samplepos;
 	unsigned n_samples;
+	double sample_rate;
+	double time_offset;
 };
 
 struct WavHeader {
@@ -49,11 +51,12 @@ int stream_callback(const void *input, void *output, unsigned long frameCount,
 					const PaStreamCallbackTimeInfo *timeInfo, PaStreamCallbackFlags statusFlags, void *userData)
 {
 	struct WavInfo *info = (struct WavInfo *) userData;
-	unsigned long remaining = info->n_samples - info->samplepos;
-	unsigned long copy = std::min(frameCount, remaining);
+	info->time_offset = timeInfo->outputBufferDacTime - info->samplepos / info->sample_rate;
+	int remaining = info->n_samples - info->samplepos;
+	int copy = std::max(0, std::min((int)frameCount, remaining));
 	memset(output, 0, frameCount * 4);
 	memcpy(output, &info->wavdata[info->samplepos * 2], copy * 4);
-	info->samplepos += copy;
+	info->samplepos += frameCount;
 	return paContinue;
 }
 
@@ -232,7 +235,7 @@ int main(int argc, char *argv[]) {
 	char *filename = argv[1];
 	void *wav_file = nullptr;
 	double sample_rate = 44100.0;
-	struct WavInfo info = { nullptr, 0, 0 };
+	struct WavInfo info = { nullptr, 0, 0, 0.0, 0.0 };
 
 	int framerate = FRAMERATE;
 	if (argc > 2) {
@@ -263,6 +266,8 @@ int main(int argc, char *argv[]) {
 		frames = (int) ((wh->data_length / 4) / sample_rate * framerate);
 		info.wavdata = (short *) &wh[1];
 		info.n_samples = wh->data_length / 4;
+		info.sample_rate = sample_rate;
+		info.time_offset = 0.0;
 	}
 
 	// Initialize GLFW
@@ -314,7 +319,7 @@ int main(int argc, char *argv[]) {
 	int startframe = 0;
 	int frame = 0;
 	bool playing = true;
-	double lasttime = Pa_GetStreamTime(stream);
+	info.time_offset = Pa_GetStreamTime(stream);
 	if (wav_file) Pa_StartStream(stream);
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && !glfwWindowShouldClose(window)) {
 		bool frame_set = false;
@@ -336,7 +341,6 @@ int main(int argc, char *argv[]) {
 			if (playing) {
 				frame = startframe;
 				frame_set = true;
-				lasttime = Pa_GetStreamTime(stream);
 			}
 		}
 
@@ -358,7 +362,7 @@ int main(int argc, char *argv[]) {
 				playing = !playing;
 				if (playing) {
 					startframe = frame;
-					lasttime = Pa_GetStreamTime(stream);
+					info.time_offset = Pa_GetStreamTime(stream) - frame / (double) framerate;
 					if (wav_file) Pa_StartStream(stream);
 				} else {
 					if (wav_file) Pa_StopStream(stream);
@@ -398,6 +402,7 @@ int main(int argc, char *argv[]) {
 
 		if (frame_set) {
 			info.samplepos = (int) (frame * sample_rate / framerate);
+			info.time_offset = Pa_GetStreamTime(stream) - frame / (double) framerate;
 		}
 
 		// Clear
@@ -418,9 +423,12 @@ int main(int argc, char *argv[]) {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 
-		while (playing && frame < frames && Pa_GetStreamTime(stream) - lasttime > 1.0 / framerate) {
-			frame++;
-			lasttime += 1.0 / framerate;
+		if (playing) {
+			int prev_frame = frame;
+			do {
+				double music_time = Pa_GetStreamTime(stream) - info.time_offset;
+				frame = (int)(music_time * framerate);
+			} while (frame == prev_frame);
 		}
 	}
 

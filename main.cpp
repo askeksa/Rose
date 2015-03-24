@@ -26,6 +26,7 @@
 struct WavInfo {
 	short *wavdata;
 	unsigned samplepos;
+	unsigned n_samples;
 };
 
 struct WavHeader {
@@ -48,8 +49,11 @@ int stream_callback(const void *input, void *output, unsigned long frameCount,
 					const PaStreamCallbackTimeInfo *timeInfo, PaStreamCallbackFlags statusFlags, void *userData)
 {
 	struct WavInfo *info = (struct WavInfo *) userData;
-	memcpy(output, &info->wavdata[info->samplepos * 2], frameCount * 4);
-	info->samplepos += frameCount;
+	unsigned long remaining = info->n_samples - info->samplepos;
+	unsigned long copy = std::min(frameCount, remaining);
+	memset(output, 0, frameCount * 4);
+	memcpy(output, &info->wavdata[info->samplepos * 2], copy * 4);
+	info->samplepos += copy;
 	return paContinue;
 }
 
@@ -228,7 +232,7 @@ int main(int argc, char *argv[]) {
 	char *filename = argv[1];
 	void *wav_file = nullptr;
 	double sample_rate = 44100.0;
-	struct WavInfo info = { nullptr, 0 };
+	struct WavInfo info = { nullptr, 0, 0 };
 
 	int framerate = FRAMERATE;
 	if (argc > 2) {
@@ -258,6 +262,7 @@ int main(int argc, char *argv[]) {
 		}
 		frames = (int) ((wh->data_length / 4) / sample_rate * framerate);
 		info.wavdata = (short *) &wh[1];
+		info.n_samples = wh->data_length / 4;
 	}
 
 	// Initialize GLFW
@@ -389,7 +394,7 @@ int main(int argc, char *argv[]) {
 
 		// Clamp frame
 		if (frame < 0) frame = 0;
-		if (frame > frames) frame = frames;
+		if (frame > frames-1) frame = frames-1;
 
 		if (frame_set) {
 			info.samplepos = (int) (frame * sample_rate / framerate);

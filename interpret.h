@@ -177,13 +177,13 @@ private:
 				if (a >= 128 << 16 || a < -128 << 16) {
 					warning(token, "Left operand overflows");
 				}
-				if (a < 1 << 8 && a >= -1 << 8) {
+				if (a < 1 << 8 && a >= -1 << 8 && a != 0) {
 					warning(token, "Left operand underflows");
 				}
 				if (b >= 128 << 16 || b < -128 << 16) {
 					warning(token, "Right operand overflows");
 				}
-				if (b < 1 << 8 && b >= -1 << 8) {
+				if (b < 1 << 8 && b >= -1 << 8 && b != 0) {
 					warning(token, "Right operand underflows");
 				}
 				return (a << 8 >> 16) * (b << 8 >> 16);
@@ -224,7 +224,7 @@ private:
 			token = op.cast<AGtBinop>().getGt();
 		} else if (op.is<AGeBinop>()) {
 			eval = [&](number_t a, number_t b) { return a >= b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };
-			token = op.cast<AGtBinop>().getGt();
+			token = op.cast<AGeBinop>().getGe();
 		} else if (op.is<AAndBinop>()) {
 			eval = [&](number_t a, number_t b) { return a & b; };
 			token = op.cast<AAndBinop>().getAnd();
@@ -315,7 +315,7 @@ private:
 		if (cond.kind != ValueKind::NUMBER) {
 			throw CompileException(s.getToken(), "Condition is not a number");
 		}
-		if (cond.number > 0) {
+		if (cond.number != 0) {
 			s.getWhen().apply(*this);
 			state.stack.resize(state.stack.size() - sym.when_pop[s]);
 		} else {

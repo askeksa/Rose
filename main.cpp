@@ -75,6 +75,7 @@ GLuint makeShader(GLenum kind, const char **source) {
 	log.resize(log_length);
 	glGetShaderInfoLog(s, log_length, nullptr, &log[0]);
 	printf("%s", &log[0]);
+	fflush(stdout);
 	return s;
 }
 
@@ -111,10 +112,13 @@ public:
 			if (a.t != b.t) return a.t < b.t;
 			return a.y - a.r < b.y - b.r;
 		});
-		const float corners[3][2] = {
-			{ 1.75, -1.0 },
-			{ -1.75, -1.0 },
-			{ 0.0, 2.0 }
+		const float corners[6][2] = {
+			{ 1.0, -1.0 },
+			{ -1.0, -1.0 },
+			{ -1.0, 1.0 },
+			{ -1.0, 1.0 },
+			{ 1.0, 1.0 },
+			{ 1.0, -1.0 }
 		};
 
 		std::vector<CircleVertex> vertex_data;
@@ -122,11 +126,11 @@ public:
 			float x = p.x + 0.5f;
 			float y = p.y + 0.5f;
 			float r = p.r + 0.5f;
-			for (int c = 0 ; c < 3 ; c++) {
+			for (int c = 0 ; c < 6 ; c++) {
 				float u = corners[c][0];
 				float v = corners[c][1];
 				CircleVertex vert = {
-					(x + u*r) / WIDTH * 2 - 1, (y + v*r) / HEIGHT * -2 + 1, u, v, (float) p.c
+					(x + u*r) / WIDTH * 2 - 1, (y + v*r) / HEIGHT * -2 + 1, u, v, (float) (p.c & 511)
 				};
 				vertex_data.push_back(vert);
 			}
@@ -164,22 +168,28 @@ public:
 
 		// Initialize colors
 		std::vector<float> colors;
-		for (int i = 0 ; i < 256 ; i++) {
+		for (int i = 0 ; i < 512 ; i++) {
 			colors.push_back(1.0);
 			colors.push_back(0.0);
 			colors.push_back(1.0);
-			colors.push_back(0.5);
+			colors.push_back(i >= 256);
 		}
 
 		// Update colors
 		int script_index = 0;
 		while (script_index < script.size() && script[script_index].t <= frame) {
 			short rgb = script[script_index].rgb;
-			float *color = &colors[script[script_index].i * 4];
+			short index = script[script_index].i & 255;
+			float *color = &colors[index * 4];
 			color[0] = ((rgb >> 8) & 15) / 15.0f;
 			color[1] = ((rgb >> 4) & 15) / 15.0f;
 			color[2] = ((rgb >> 0) & 15) / 15.0f;
-			color[3] = 1.0f;
+			color[3] = 0.0f;
+			float *square_color = &colors[(index ^ 511) * 4];
+			square_color[0] = color[0];
+			square_color[1] = color[1];
+			square_color[2] = color[2];
+			square_color[3] = 1.0f;
 			script_index++;
 		}
 
@@ -193,14 +203,14 @@ public:
 		// Set program and uniforms
 		glUseProgram(program);
 		GLuint colors_loc = glGetUniformLocation(program, "colors");
-		glUniform4fv(colors_loc, 256, &colors[0]);
+		glUniform4fv(colors_loc, 512, &colors[0]);
 
 		// Draw
 		glClearColor(colors[0],colors[1],colors[2],colors[3]);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_NOTEQUAL, 0.0);
-		glDrawArrays(GL_TRIANGLES, 0, schedule[frame] * 3);
+		glDrawArrays(GL_TRIANGLES, 0, schedule[frame] * 6);
 
 		// Cleanup
 		glDisable(GL_ALPHA_TEST);

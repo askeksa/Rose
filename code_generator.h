@@ -8,6 +8,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <algorithm>
 
 class CodeGenerator : private AnalysisAdapter {
 	SymbolLinking& sym;
@@ -21,6 +22,7 @@ class CodeGenerator : private AnalysisAdapter {
 	std::vector<int> saved_stack_height;
 	int op_code;
 	int cmp_code;
+	nodemap<bool> tail_fork;
 
 public:
 	CodeGenerator(SymbolLinking& sym, const char *filename, RoseStatistics& stats)
@@ -36,6 +38,9 @@ public:
 private:
 	void emit(bytecode_t code) {
 		out.push_back(code);
+		if (stack_height == STACK_AFTER_TAIL && code != BC_ELSE && code != BC_DONE && code != BC_END) {
+			throw Exception("Instruction after tail call");
+		}
 		stack_height += stack_change(code);
 		if ((code & 0xF0) == BC_WHEN(0)) {
 			saved_stack_height.push_back(stack_height);
@@ -44,11 +49,17 @@ private:
 		} else if (code == BC_DONE) {
 			int when_height = saved_stack_height.back();
 			saved_stack_height.pop_back();
-			if (when_height != stack_height) {
+			if (when_height == STACK_AFTER_TAIL || stack_height == STACK_AFTER_TAIL) {
+				stack_height = std::min(when_height, stack_height);
+			} else if (when_height != stack_height) {
 				throw Exception(std::string("Mismatching stack heights: ") + std::to_string(when_height) + " vs " + std::to_string(stack_height));
 			}
+		} else if (code == BC_TAIL) {
+			stack_height = STACK_AFTER_TAIL;
 		}
-		if (stack_height > stats.max_stack_height) stats.max_stack_height = stack_height;
+		if (stack_height != STACK_AFTER_TAIL && stack_height > stats.max_stack_height) {
+			stats.max_stack_height = stack_height;
+		}
 	}
 
 	void emit_constant(int c) {
@@ -63,7 +74,22 @@ private:
 		emit(BC_CONST(index));
 	}
 
+	void mark_tail(PStatement s) {
+		if (s.is<AForkStatement>()) {
+			tail_fork[s] = true;
+		} else if (s.is<AWhenStatement>()) {
+			AWhenStatement when = s.cast<AWhenStatement>();
+			if (!when.getWhen().empty()) {
+				mark_tail(when.getWhen().back());
+			}
+			if (!when.getElse().empty()) {
+				mark_tail(when.getElse().back());
+			}
+		}
+	}
+
 	void caseAProcedure(AProcedure proc) override {
+		mark_tail(proc.getBody().back());
 		stack_height = proc.getParams().size();
 		proc.getBody().apply(*this);
 		emit(BC_END);		
@@ -128,8 +154,7 @@ private:
 
 	void caseANegExpression(ANegExpression exp) override {
 		exp.getExpression().apply(*this);
-		emit_constant(MAKE_NUMBER(0));
-		emit(BC_OP(OP_SUB));
+		emit(BC_NEG);
 	}
 
 	void caseASineExpression(ASineExpression exp) override {
@@ -156,23 +181,74 @@ private:
 		s.getCond().apply(*this);
 		emit(BC_WHEN(cmp_code));
 		s.getWhen().apply(*this);
-		if (sym.when_pop[s] > 0) {
+		if (stack_height != STACK_AFTER_TAIL && sym.when_pop[s] > 0) {
 			emit(BC_POP(sym.when_pop[s]));
 		}
 		if (!s.getElse().empty()) {
 			emit(BC_ELSE);
 			s.getElse().apply(*this);
-			if (sym.else_pop[s] > 0) {
+			if (stack_height != STACK_AFTER_TAIL && sym.else_pop[s] > 0) {
 				emit(BC_POP(sym.else_pop[s]));
 			}
 		}
 		emit(BC_DONE);
 	}
 
+	bool makeTailCall(AForkStatement s) {
+		if (tail_fork[s]) {
+			// Not enough space for arguments?
+			if (s.getArgs().size() > stack_height) {
+				sym.warning(s.getToken(), "Tail fork not optimized because of too little stack space");
+				return false;
+			}
+
+			// Find non-identity arguments
+			std::vector<std::pair<int,PExpression>> args;
+			int index = 0;
+			for (PExpression exp : s.getArgs()) {
+				bool identity = false;
+				if (exp.is<AVarExpression>()) {
+					VarRef var = sym.var_ref[exp];
+					if (var.kind == VarKind::LOCAL && var.index == index) {
+						identity = true;
+					}
+				}
+				if (!identity) {
+					args.emplace_back(index, exp);
+				}
+				index++;
+			}
+
+			// Overflowing WSTATE range?
+			if (!args.empty() && args.back().first >= 8) {
+				sym.warning(s.getToken(), "Tail fork not optimized because of non-identity argument after 8th");
+				return false;
+			}
+
+			// Generate code
+			s.getProc().apply(*this);
+			for (auto& a : args) {
+				a.second.apply(*this);
+			}
+			std::reverse(args.begin(), args.end());
+			for (auto& a : args) {
+				emit(BC_WSTATE(7 - a.first));
+			}
+			emit(BC_WSTATE(ST_PROC));
+			emit(BC_POP(stack_height - s.getArgs().size()));
+			emit(BC_TAIL);
+
+			return true;
+		}
+		return false;
+	}
+
 	void caseAForkStatement(AForkStatement s) override {
-		s.getArgs().reverse_apply(*this);
-		s.getProc().apply(*this);
-		emit(BC_FORK(s.getArgs().size()));
+		if (!makeTailCall(s)) {
+			s.getArgs().apply(*this);
+			s.getProc().apply(*this);
+			emit(BC_FORK(s.getArgs().size()));
+		}
 	}
 
 	void caseATempStatement(ATempStatement s) override {
@@ -220,9 +296,7 @@ private:
 		s.getY().apply(*this);
 		s.getX().apply(*this);
 		emit(BC_WSTATE(ST_X));
-		emit(BC_LOCAL(0));
 		emit(BC_WSTATE(ST_Y));
-		emit(BC_POP(1));
 	}
 
 	void caseADrawStatement(ADrawStatement s) override {

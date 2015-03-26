@@ -3,7 +3,7 @@
 #include <string>
 
 static inline int verify(int base, int v, int max, const char *what) {
-	if (v > max) {
+	if (v < 0 || v > max) {
 		throw Exception(std::string("Argument out of range for ") + what + " instruction: " + std::to_string(v));
 	}
 	return base + v;
@@ -14,12 +14,14 @@ static inline int verify(int base, int v, int max, const char *what) {
 #define BC_END   0x02
 #define BC_RAND  0x03
 #define BC_DRAW  0x04
-#define BC_MUL   0x05
-#define BC_SEED  0x06
-#define BC_DIV   0x07
-#define BC_WAIT  0x08
-#define BC_SINE  0x09
-#define BC_MOVE  0x0A
+#define BC_TAIL  0x06
+#define BC_MUL   0x07
+#define BC_SEED  0x08
+#define BC_DIV   0x09
+#define BC_WAIT  0x0A
+#define BC_SINE  0x0B
+#define BC_NEG   0x0D
+#define BC_MOVE  0x0E
 #define BC_WHEN(cond)  (verify(0x10, cond,  15, "WHEN"))
 #define BC_FORK(nargs) (verify(0x20, nargs, 15, "FORK"))
 #define BC_OP(op)      (verify(0x30, op,    15, "OP"))
@@ -44,20 +46,23 @@ static inline int verify(int base, int v, int max, const char *what) {
 #define OP_AND   12
 #define OP_ADD   13
 
-#define ST_X    0
-#define ST_Y    1
-#define ST_SIZE 2
-#define ST_TINT 3
-#define ST_RAND 4
-#define ST_DIR  5
-#define ST_TIME 6
-#define ST_PROC 7
+// RSTATE and WSTATE offsets
+#define ST_X    8
+#define ST_Y    9
+#define ST_SIZE 10
+#define ST_TINT 11
+#define ST_RAND 12
+#define ST_DIR  13
+#define ST_TIME 14
+#define ST_PROC 15
 
+// Special stack height to mark tail call
+#define STACK_AFTER_TAIL 0x7A17
 
 typedef unsigned char bytecode_t;
 
 static inline int stack_change(bytecode_t bc) {
-	static const int single[11] = { 0,0,0,1,0,-1,-1,-1,-1,0,-1 };
+	static const int single[15] = { 0,0,0,1,0,0,0,-1,-1,-1,-1,0,0,0,-1 };
 	int arg = bc & 15;
 	switch (bc >> 4) {
 	case 0: // Misc

@@ -64,10 +64,14 @@ public:
 };
 
 class SymbolLinking : public DepthFirstAdapter {
+	const char *filename;
+
 	int current_local_index;
 	Scope* current_scope;
 
 	nodemap<int> when_local_index;
+	std::unordered_set<int> defied_lines;
+	nodemap<std::unordered_set<std::string>> warning_nodes;
 
 public:
 	std::vector<AProcedure> procs;
@@ -75,7 +79,15 @@ public:
 	nodemap<int> literal_number;
 	nodemap<int> when_pop;
 	nodemap<int> else_pop;
-	std::unordered_set<int> defied_lines;
+
+	SymbolLinking(const char *filename) : filename(filename) {}
+
+	void warning(Token token, std::string message) {
+		if (!defied_lines.count(token.getLine()) && !warning_nodes[token].count(message)) {
+			printf("%s:%d:%d: Warning: %s\n", filename, token.getLine(), token.getPos(), message.c_str());
+			warning_nodes[token].insert(message);
+		}
+	}
 
 	void inAProgram(AProgram prog) override {
 		current_scope = new Scope(nullptr, prog);

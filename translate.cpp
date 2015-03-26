@@ -34,7 +34,7 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 
 		Lexer lexer(filename);
 		Start ast = rose::Parser(&lexer).parse();
-		SymbolLinking sl;
+		SymbolLinking sl(filename);
 		ast.apply(sl);
 		Interpreter in(sl, filename, stats);
 		AProgram program = ast.getPProgram().cast<AProgram>();

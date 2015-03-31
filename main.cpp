@@ -12,6 +12,7 @@
 
 #include <sys/stat.h>
 #include <unistd.h>
+#include <time.h>
 
 #include "translate.h"
 #include "shaders.h"
@@ -339,6 +340,7 @@ int main(int argc, char *argv[]) {
 		stat(filename, &newfilestat);
 		if (newfilestat.st_mtime != filestat.st_mtime) {
 			// Reload code
+			printf("\nReloading at %s\n", ctime(&newfilestat.st_mtime));
 			delete project;
 			project = RoseProject::make(filename, frames, false);
 			if (!project) {

@@ -3,6 +3,7 @@
 #include "ast.h"
 
 #include <cstdlib>
+#include <cstring>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -132,11 +133,26 @@ public:
 	void inANumberExpression(ANumberExpression lit) override {
 		const char *num = lit.getNumber().getText().c_str();
 		char *end;
-		double val = strtod(num, &end);
+		int value;
+		if (num[0] == '$') {
+			if (strlen(num) > 9) {
+				throw CompileException(lit.getNumber(), "Hex number too large");
+			}
+			value = strtol(&num[1], &end, 16);
+		} else {
+			double fvalue = strtod(num, &end);
+			if (fvalue >= 65536) {
+				throw CompileException(lit.getNumber(), "Number too large");
+			}
+			if (fvalue >= 32768) {
+				warning(lit.getNumber(), "Number overflows to negative");
+			}
+			value = int(fvalue * 65536);
+		}
 		if (*end != '\0') {
 			throw CompileException(lit.getNumber(), "Number format error");
 		}
-		literal_number[lit] = int(val * 65536);
+		literal_number[lit] = value;
 	}
 
 	void inAWhenStatement(AWhenStatement when) override {

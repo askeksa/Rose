@@ -169,14 +169,8 @@ private:
 				if (a >= 128 << 16 || a < -128 << 16) {
 					sym.warning(token, "Left operand overflows");
 				}
-				if (a < 1 << 8 && a >= -1 << 8 && a != 0) {
-					sym.warning(token, "Left operand underflows");
-				}
 				if (b >= 128 << 16 || b < -128 << 16) {
 					sym.warning(token, "Right operand overflows");
-				}
-				if (b < 1 << 8 && b >= -1 << 8 && b != 0) {
-					sym.warning(token, "Right operand underflows");
 				}
 				return (a << 8 >> 16) * (b << 8 >> 16);
 			};
@@ -185,9 +179,6 @@ private:
 			eval = [&](number_t a, number_t b) {
 				if (b >= 128 << 16 || b < -128 << 16) {
 					sym.warning(token, "Right operand overflows");
-				}
-				if (b < 1 << 8 && b >= -1 << 8) {
-					sym.warning(token, "Right operand underflows");
 				}
 				int divisor = b << 8 >> 16;
 				if (divisor == 0) {

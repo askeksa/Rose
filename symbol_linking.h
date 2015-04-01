@@ -138,7 +138,7 @@ public:
 			if (strlen(num) > 9) {
 				throw CompileException(lit.getNumber(), "Hex number too large");
 			}
-			value = strtol(&num[1], &end, 16);
+			value = strtoll(&num[1], &end, 16);
 		} else {
 			double fvalue = strtod(num, &end);
 			if (fvalue >= 65536) {

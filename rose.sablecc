@@ -7,6 +7,9 @@ Helpers
 	digit = ['0' .. '9'];
 	hexdigit = digit | ['A' .. 'F'] | ['a' .. 'f'];
 	letter = ['A' .. 'Z'] | ['a' .. 'z'] | '_';
+	decnumber = digit+ ('.' digit+) ?;
+	hexnumber = '$' hexdigit+;
+
 	tab = 9;
 	cr = 13;
 	lf = 10;
@@ -54,7 +57,7 @@ Tokens
 	question = '?';
 	colon = ':';
 
-	number = digit+ ('.' digit+) ?;
+	number = decnumber | hexnumber;
 	identifier = letter (letter | digit)*;
 	color = digit+ ':' hexdigit hexdigit hexdigit;
 

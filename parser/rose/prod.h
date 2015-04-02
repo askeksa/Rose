@@ -23,6 +23,22 @@ protected:
 private:
   void replaceBy (Node node);
 };
+class PProcMarker : public Node {
+public:
+  inline PProcMarker () : Node () { }
+
+  static const _TypeInfo type_info;
+
+  inline PProcMarker clone () const { return Node::clone().unsafe_cast<PProcMarker>(); }
+
+  inline void replaceBy (PProcMarker node) { Node::replaceBy (node); }
+
+protected:
+  inline PProcMarker (_GenericNode *obj) : Node(obj) { }
+
+private:
+  void replaceBy (Node node);
+};
 class PEvent : public Node {
 public:
   inline PEvent () : Node () { }
@@ -147,11 +163,13 @@ public:
 
   static inline AProgram make (
       List<PEvent>& _event_,
+      PProcMarker _proc_marker_,
       List<PProcedure>& _procedure_
   )
   {
     void *args[] = {
         &getListGuts(_event_),
+        &_proc_marker_,
         &getListGuts(_procedure_)
     };
     return initProd (&type_info, args);
@@ -164,10 +182,38 @@ public:
   inline void replaceBy (AProgram node) { Node::replaceBy (node); }
 
   inline List<PEvent>& getEvent () { return reinterpret_cast<List<PEvent>& >(getChildList(0)); }
-  inline List<PProcedure>& getProcedure () { return reinterpret_cast<List<PProcedure>& >(getChildList(1)); }
+  inline PProcMarker getProcMarker () { return getChildNode(1).unsafe_cast<PProcMarker>(); }
+  inline void setProcMarker (PProcMarker _proc_marker_) { setChildNode (1, _proc_marker_); }
+  inline List<PProcedure>& getProcedure () { return reinterpret_cast<List<PProcedure>& >(getChildList(2)); }
 
 private:
   void replaceBy (PProgram node);
+};
+class AProcMarker : public PProcMarker {
+protected:
+  inline AProcMarker (_GenericNode *obj) : PProcMarker (obj) { }
+
+public:
+  inline AProcMarker () : PProcMarker() { }
+
+
+  static inline AProcMarker make (
+  )
+  {
+    void *args[] = {
+    };
+    return initProd (&type_info, args);
+  }
+
+  static const _TypeInfo type_info;
+
+  inline AProcMarker clone () const { return Node::clone().unsafe_cast<AProcMarker>(); }
+
+  inline void replaceBy (AProcMarker node) { Node::replaceBy (node); }
+
+
+private:
+  void replaceBy (PProcMarker node);
 };
 class AWaitEvent : public PEvent {
 protected:

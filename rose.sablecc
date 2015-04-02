@@ -71,7 +71,7 @@ Ignored Tokens
 Productions
 
 	program		=			script? decl*
-							{-> New program ([script.event], [decl.procedure])}
+							{-> New program ([script.event], New proc_marker(), [decl.procedure])}
 				;
 
 	script		{-> event*} =
@@ -200,7 +200,9 @@ Productions
 
 Abstract Syntax Tree
 
-	program		=			event* procedure*;
+	program		=			event* proc_marker procedure*;
+
+	proc_marker	=			;
 
 	event		=	
 					{wait}	expression

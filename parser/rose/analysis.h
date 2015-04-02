@@ -56,6 +56,7 @@ public:
   virtual void caseTComment (TComment node) = 0;
 
   virtual void caseAProgram (AProgram node) = 0;
+  virtual void caseAProcMarker (AProcMarker node) = 0;
   virtual void caseAWaitEvent (AWaitEvent node) = 0;
   virtual void caseAColorEvent (AColorEvent node) = 0;
   virtual void caseAProcedure (AProcedure node) = 0;
@@ -146,6 +147,7 @@ public:
   virtual void caseTComment (TComment node);
 
   virtual void caseAProgram (AProgram node);
+  virtual void caseAProcMarker (AProcMarker node);
   virtual void caseAWaitEvent (AWaitEvent node);
   virtual void caseAColorEvent (AColorEvent node);
   virtual void caseAProcedure (AProcedure node);
@@ -199,6 +201,9 @@ public:
   virtual void inAProgram (AProgram node);
   virtual void caseAProgram (AProgram node);
   virtual void outAProgram (AProgram node);
+  virtual void inAProcMarker (AProcMarker node);
+  virtual void caseAProcMarker (AProcMarker node);
+  virtual void outAProcMarker (AProcMarker node);
   virtual void inAWaitEvent (AWaitEvent node);
   virtual void caseAWaitEvent (AWaitEvent node);
   virtual void outAWaitEvent (AWaitEvent node);
@@ -326,6 +331,9 @@ public:
   virtual void inAProgram (AProgram node);
   virtual void caseAProgram (AProgram node);
   virtual void outAProgram (AProgram node);
+  virtual void inAProcMarker (AProcMarker node);
+  virtual void caseAProcMarker (AProcMarker node);
+  virtual void outAProcMarker (AProcMarker node);
   virtual void inAWaitEvent (AWaitEvent node);
   virtual void caseAWaitEvent (AWaitEvent node);
   virtual void outAWaitEvent (AWaitEvent node);

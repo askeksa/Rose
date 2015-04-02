@@ -69,6 +69,31 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 
 		stats.print(stdout);
 
+		printf("\n");
+		int n = sl.constants.size() - program.getProcedure().size();
+		int n_columns = 4;
+		int n_rows = (n - 1) / n_columns + 1;
+		for (int r = 0 ; r < n_rows ; r++) {
+			for (int c = 0 ; c < n_columns ; c++) {
+				int i = r + c * n_rows;
+				if (i < n) {
+					if (c > 0) {
+						printf(" ");
+					}
+					int value = sl.constants[program.getProcedure().size() + i];
+					int frac = 16;
+					while (frac > 0 && ((value >> (16 - frac)) & 1) == 0) {
+						frac--;
+					}
+					int float_width = 6 + (frac > 0) + frac;
+					int count = sl.constant_count[value];
+					printf("%08X %c%*.*f%*s", value, count > 9 ? '*' : '0' + count, float_width, frac, value / 65536.0, 23 - float_width, "");
+				}
+			}
+			printf("\n");
+		}
+		fflush(stdout);
+
 	} catch (const CompileException& exc) {
 		if (print) {
 			printf("%s:%d:%d: Error: %s\n", filename, exc.getToken().getLine(), exc.getToken().getPos(), exc.getMessage().c_str());

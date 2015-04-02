@@ -38,37 +38,37 @@ struct reduce_command {
   const _TypeInfo *type_info;  // for makenode
 };
 
-static int rargs0[] = {0, 1};
-static int rargs1[] = {0, 1};
-static int rargs2[] = {0, 1};
-static int rargs3[] = {0, 1};
-static int rargs4[] = {0};
-static int rargs5[] = {0};
-static int rargs6[] = {0, 0, 1};
+static int rargs0[] = {};
+static int rargs1[] = {0, 0, 1};
+static int rargs2[] = {};
+static int rargs3[] = {0, 0, 1};
+static int rargs4[] = {};
+static int rargs5[] = {0, 0, 1};
+static int rargs6[] = {};
 static int rargs7[] = {0, 0, 1};
-static int rargs8[] = {0, 0, 1};
-static int rargs9[] = {0, 0, 1};
-static int rargs10[] = {0};
-static int rargs11[] = {0};
-static int rargs12[] = {0};
-static int rargs13[] = {0, 1};
-static int rargs14[] = {0, 1, 2};
-static int rargs15[] = {0, 1};
-static int rargs16[] = {0, 1};
+static int rargs8[] = {0};
+static int rargs9[] = {0};
+static int rargs10[] = {0, 0, 1};
+static int rargs11[] = {0, 0, 1};
+static int rargs12[] = {0, 0, 1};
+static int rargs13[] = {0, 0, 1};
+static int rargs14[] = {0};
+static int rargs15[] = {0};
+static int rargs16[] = {0};
 static int rargs17[] = {0, 1};
-static int rargs18[] = {0, 1};
+static int rargs18[] = {0, 1, 2};
 static int rargs19[] = {0, 1};
-static int rargs20[] = {1};
-static int rargs21[] = {0, 2, 0};
-static int rargs22[] = {1};
-static int rargs23[] = {0, 2, 0};
-static int rargs24[] = {0};
-static int rargs25[] = {1, 2};
-static int rargs26[] = {0, 1};
-static int rargs27[] = {};
-static int rargs28[] = {0, 1, 0, 2, 1};
-static int rargs29[] = {};
-static int rargs30[] = {0, 1, 0, 2, 1};
+static int rargs20[] = {0, 1};
+static int rargs21[] = {0, 1};
+static int rargs22[] = {0, 1};
+static int rargs23[] = {0, 1};
+static int rargs24[] = {1};
+static int rargs25[] = {0, 2, 0};
+static int rargs26[] = {1};
+static int rargs27[] = {0, 2, 0};
+static int rargs28[] = {0};
+static int rargs29[] = {1, 2};
+static int rargs30[] = {0, 1};
 static int rargs31[] = {};
 static int rargs32[] = {0, 1, 0, 2, 1};
 static int rargs33[] = {};
@@ -77,11 +77,11 @@ static int rargs35[] = {};
 static int rargs36[] = {0, 1, 0, 2, 1};
 static int rargs37[] = {};
 static int rargs38[] = {0, 1, 0, 2, 1};
-static int rargs39[] = {0, 1, 2, 3};
-static int rargs40[] = {0};
-static int rargs41[] = {1, 2, 3};
-static int rargs42[] = {0};
-static int rargs43[] = {1, 2, 3};
+static int rargs39[] = {};
+static int rargs40[] = {0, 1, 0, 2, 1};
+static int rargs41[] = {};
+static int rargs42[] = {0, 1, 0, 2, 1};
+static int rargs43[] = {0, 1, 2, 3};
 static int rargs44[] = {0};
 static int rargs45[] = {1, 2, 3};
 static int rargs46[] = {0};
@@ -102,17 +102,22 @@ static int rargs60[] = {0};
 static int rargs61[] = {1, 2, 3};
 static int rargs62[] = {0};
 static int rargs63[] = {1, 2, 3};
-static int rargs64[] = {0, 1};
-static int rargs65[] = {0};
+static int rargs64[] = {0};
+static int rargs65[] = {1, 2, 3};
 static int rargs66[] = {0};
-static int rargs67[] = {0, 1};
-static int rargs68[] = {0};
+static int rargs67[] = {1, 2, 3};
+static int rargs68[] = {0, 1};
+static int rargs69[] = {0};
+static int rargs70[] = {0};
+static int rargs71[] = {0, 1};
+static int rargs72[] = {0};
 
 static reduce_command rcmd0[] = {
   {CMD_MAKELIST, 0, -1, -1, 0, 0}, 
   {CMD_MAKELIST, 1, -1, -1, 0, 0}, 
-  {CMD_MAKENODE, 0, -1, -1, rargs0, &AProgram::type_info}, 
-  {CMD_RETURNNODE, -1, 0, -1, 0, 0}
+  {CMD_MAKENODE, 0, -1, -1, rargs0, &AProcMarker::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs1, &AProgram::type_info}, 
+  {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd1[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
@@ -120,17 +125,19 @@ static reduce_command rcmd1[] = {
   {CMD_MAKELIST, 1, -1, -1, 0, 0}, 
   {CMD_FETCHLIST, 2, 0, 0, 0, 0}, 
   {CMD_ADDLIST, 0, 2, -1, 0, 0}, 
-  {CMD_MAKENODE, 0, -1, -1, rargs1, &AProgram::type_info}, 
-  {CMD_RETURNNODE, -1, 0, -1, 0, 0}
+  {CMD_MAKENODE, 0, -1, -1, rargs2, &AProcMarker::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs3, &AProgram::type_info}, 
+  {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd2[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_MAKELIST, 0, -1, -1, 0, 0}, 
   {CMD_MAKELIST, 1, -1, -1, 0, 0}, 
+  {CMD_MAKENODE, 0, -1, -1, rargs4, &AProcMarker::type_info}, 
   {CMD_FETCHLIST, 2, 0, 0, 0, 0}, 
   {CMD_ADDLIST, 1, 2, -1, 0, 0}, 
-  {CMD_MAKENODE, 0, -1, -1, rargs2, &AProgram::type_info}, 
-  {CMD_RETURNNODE, -1, 0, -1, 0, 0}
+  {CMD_MAKENODE, 1, -1, -1, rargs5, &AProgram::type_info}, 
+  {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd3[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
@@ -139,10 +146,11 @@ static reduce_command rcmd3[] = {
   {CMD_MAKELIST, 1, -1, -1, 0, 0}, 
   {CMD_FETCHLIST, 2, 1, 0, 0, 0}, 
   {CMD_ADDLIST, 0, 2, -1, 0, 0}, 
+  {CMD_MAKENODE, 0, -1, -1, rargs6, &AProcMarker::type_info}, 
   {CMD_FETCHLIST, 3, 0, 0, 0, 0}, 
   {CMD_ADDLIST, 1, 3, -1, 0, 0}, 
-  {CMD_MAKENODE, 0, -1, -1, rargs3, &AProgram::type_info}, 
-  {CMD_RETURNNODE, -1, 0, -1, 0, 0}
+  {CMD_MAKENODE, 1, -1, -1, rargs7, &AProgram::type_info}, 
+  {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd4[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
@@ -161,13 +169,13 @@ static reduce_command rcmd6[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs4, &AWaitEvent::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs8, &AWaitEvent::type_info}, 
   {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd7[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs5, &AColorEvent::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs9, &AColorEvent::type_info}, 
   {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd8[] = {
@@ -176,7 +184,7 @@ static reduce_command rcmd8[] = {
   {CMD_MAKELIST, 0, -1, -1, 0, 0}, 
   {CMD_MAKELIST, 1, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs6, &AProcedure::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs10, &AProcedure::type_info}, 
   {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd9[] = {
@@ -188,7 +196,7 @@ static reduce_command rcmd9[] = {
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
   {CMD_FETCHLIST, 2, 0, 0, 0, 0}, 
   {CMD_ADDLIST, 0, 2, -1, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs7, &AProcedure::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs11, &AProcedure::type_info}, 
   {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd10[] = {
@@ -200,7 +208,7 @@ static reduce_command rcmd10[] = {
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
   {CMD_FETCHLIST, 2, 0, 0, 0, 0}, 
   {CMD_ADDLIST, 1, 2, -1, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs8, &AProcedure::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs12, &AProcedure::type_info}, 
   {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd11[] = {
@@ -215,25 +223,25 @@ static reduce_command rcmd11[] = {
   {CMD_ADDLIST, 0, 2, -1, 0, 0}, 
   {CMD_FETCHLIST, 3, 0, 0, 0, 0}, 
   {CMD_ADDLIST, 1, 3, -1, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs9, &AProcedure::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs13, &AProcedure::type_info}, 
   {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd12[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs10, &ALocal::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs14, &ALocal::type_info}, 
   {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd13[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs11, &ADefyStatement::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs15, &ADefyStatement::type_info}, 
   {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd14[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs12, &ADrawStatement::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs16, &ADrawStatement::type_info}, 
   {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd15[] = {
@@ -241,7 +249,7 @@ static reduce_command rcmd15[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs13, &AMoveStatement::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs17, &AMoveStatement::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
 static reduce_command rcmd16[] = {
@@ -251,7 +259,7 @@ static reduce_command rcmd16[] = {
   {CMD_FETCHNODE, 0, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 1, 0, 0, 0}, 
   {CMD_FETCHNODE, 2, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 3, -1, -1, rargs14, &AJumpStatement::type_info}, 
+  {CMD_MAKENODE, 3, -1, -1, rargs18, &AJumpStatement::type_info}, 
   {CMD_RETURNNODE, -1, 3, -1, 0, 0}
 };
 static reduce_command rcmd17[] = {
@@ -259,7 +267,7 @@ static reduce_command rcmd17[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs15, &ATurnStatement::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs19, &ATurnStatement::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
 static reduce_command rcmd18[] = {
@@ -267,7 +275,7 @@ static reduce_command rcmd18[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs16, &AFaceStatement::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs20, &AFaceStatement::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
 static reduce_command rcmd19[] = {
@@ -275,7 +283,7 @@ static reduce_command rcmd19[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs17, &ATintStatement::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs21, &ATintStatement::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
 static reduce_command rcmd20[] = {
@@ -283,7 +291,7 @@ static reduce_command rcmd20[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs18, &ASizeStatement::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs22, &ASizeStatement::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
 static reduce_command rcmd21[] = {
@@ -291,7 +299,7 @@ static reduce_command rcmd21[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs19, &AWaitStatement::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs23, &AWaitStatement::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
 static reduce_command rcmd22[] = {
@@ -300,8 +308,8 @@ static reduce_command rcmd22[] = {
   {CMD_MAKELIST, 0, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs20, &AVarExpression::type_info}, 
-  {CMD_MAKENODE, 3, -1, -1, rargs21, &AForkStatement::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs24, &AVarExpression::type_info}, 
+  {CMD_MAKENODE, 3, -1, -1, rargs25, &AForkStatement::type_info}, 
   {CMD_RETURNNODE, -1, 3, -1, 0, 0}
 };
 static reduce_command rcmd23[] = {
@@ -311,10 +319,10 @@ static reduce_command rcmd23[] = {
   {CMD_MAKELIST, 0, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs22, &AVarExpression::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs26, &AVarExpression::type_info}, 
   {CMD_FETCHLIST, 1, 0, 0, 0, 0}, 
   {CMD_ADDLIST, 0, 1, -1, 0, 0}, 
-  {CMD_MAKENODE, 3, -1, -1, rargs23, &AForkStatement::type_info}, 
+  {CMD_MAKENODE, 3, -1, -1, rargs27, &AForkStatement::type_info}, 
   {CMD_RETURNNODE, -1, 3, -1, 0, 0}
 };
 static reduce_command rcmd24[] = {
@@ -323,9 +331,9 @@ static reduce_command rcmd24[] = {
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_POP, 3, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 2, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs24, &ALocal::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs28, &ALocal::type_info}, 
   {CMD_FETCHNODE, 2, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 3, -1, -1, rargs25, &ATempStatement::type_info}, 
+  {CMD_MAKENODE, 3, -1, -1, rargs29, &ATempStatement::type_info}, 
   {CMD_RETURNNODE, -1, 3, -1, 0, 0}
 };
 static reduce_command rcmd25[] = {
@@ -333,7 +341,7 @@ static reduce_command rcmd25[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs26, &ASeedStatement::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs30, &ASeedStatement::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
 static reduce_command rcmd26[] = {
@@ -344,8 +352,8 @@ static reduce_command rcmd26[] = {
   {CMD_MAKELIST, 1, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs27, &AElseMarker::type_info}, 
-  {CMD_MAKENODE, 3, -1, -1, rargs28, &AWhenStatement::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs31, &AElseMarker::type_info}, 
+  {CMD_MAKENODE, 3, -1, -1, rargs32, &AWhenStatement::type_info}, 
   {CMD_RETURNNODE, -1, 3, -1, 0, 0}
 };
 static reduce_command rcmd27[] = {
@@ -359,8 +367,8 @@ static reduce_command rcmd27[] = {
   {CMD_FETCHNODE, 1, 2, 0, 0, 0}, 
   {CMD_FETCHLIST, 2, 1, 0, 0, 0}, 
   {CMD_ADDLIST, 0, 2, -1, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs29, &AElseMarker::type_info}, 
-  {CMD_MAKENODE, 3, -1, -1, rargs30, &AWhenStatement::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs33, &AElseMarker::type_info}, 
+  {CMD_MAKENODE, 3, -1, -1, rargs34, &AWhenStatement::type_info}, 
   {CMD_RETURNNODE, -1, 3, -1, 0, 0}
 };
 static reduce_command rcmd28[] = {
@@ -372,8 +380,8 @@ static reduce_command rcmd28[] = {
   {CMD_MAKELIST, 1, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 3, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 2, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs31, &AElseMarker::type_info}, 
-  {CMD_MAKENODE, 3, -1, -1, rargs32, &AWhenStatement::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs35, &AElseMarker::type_info}, 
+  {CMD_MAKENODE, 3, -1, -1, rargs36, &AWhenStatement::type_info}, 
   {CMD_RETURNNODE, -1, 3, -1, 0, 0}
 };
 static reduce_command rcmd29[] = {
@@ -388,8 +396,8 @@ static reduce_command rcmd29[] = {
   {CMD_FETCHNODE, 1, 3, 0, 0, 0}, 
   {CMD_FETCHLIST, 2, 2, 0, 0, 0}, 
   {CMD_ADDLIST, 0, 2, -1, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs33, &AElseMarker::type_info}, 
-  {CMD_MAKENODE, 3, -1, -1, rargs34, &AWhenStatement::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs37, &AElseMarker::type_info}, 
+  {CMD_MAKENODE, 3, -1, -1, rargs38, &AWhenStatement::type_info}, 
   {CMD_RETURNNODE, -1, 3, -1, 0, 0}
 };
 static reduce_command rcmd30[] = {
@@ -402,10 +410,10 @@ static reduce_command rcmd30[] = {
   {CMD_MAKELIST, 1, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 4, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 3, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs35, &AElseMarker::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs39, &AElseMarker::type_info}, 
   {CMD_FETCHLIST, 2, 1, 0, 0, 0}, 
   {CMD_ADDLIST, 1, 2, -1, 0, 0}, 
-  {CMD_MAKENODE, 3, -1, -1, rargs36, &AWhenStatement::type_info}, 
+  {CMD_MAKENODE, 3, -1, -1, rargs40, &AWhenStatement::type_info}, 
   {CMD_RETURNNODE, -1, 3, -1, 0, 0}
 };
 static reduce_command rcmd31[] = {
@@ -421,10 +429,10 @@ static reduce_command rcmd31[] = {
   {CMD_FETCHNODE, 1, 4, 0, 0, 0}, 
   {CMD_FETCHLIST, 2, 3, 0, 0, 0}, 
   {CMD_ADDLIST, 0, 2, -1, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs37, &AElseMarker::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs41, &AElseMarker::type_info}, 
   {CMD_FETCHLIST, 3, 1, 0, 0, 0}, 
   {CMD_ADDLIST, 1, 3, -1, 0, 0}, 
-  {CMD_MAKENODE, 3, -1, -1, rargs38, &AWhenStatement::type_info}, 
+  {CMD_MAKENODE, 3, -1, -1, rargs42, &AWhenStatement::type_info}, 
   {CMD_RETURNNODE, -1, 3, -1, 0, 0}
 };
 static reduce_command rcmd32[] = {
@@ -442,7 +450,7 @@ static reduce_command rcmd33[] = {
   {CMD_FETCHNODE, 1, 4, 0, 0, 0}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs39, &ACondExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs43, &ACondExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd34[] = {
@@ -455,10 +463,10 @@ static reduce_command rcmd35[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs40, &AOrBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs44, &AOrBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs41, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs45, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd36[] = {
@@ -471,10 +479,10 @@ static reduce_command rcmd37[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs42, &AAndBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs46, &AAndBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs43, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs47, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd38[] = {
@@ -487,10 +495,10 @@ static reduce_command rcmd39[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs44, &AEqBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs48, &AEqBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs45, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs49, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd40[] = {
@@ -498,10 +506,10 @@ static reduce_command rcmd40[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs46, &ANeBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs50, &ANeBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs47, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs51, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd41[] = {
@@ -509,10 +517,10 @@ static reduce_command rcmd41[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs48, &ALtBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs52, &ALtBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs49, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs53, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd42[] = {
@@ -520,10 +528,10 @@ static reduce_command rcmd42[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs50, &ALeBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs54, &ALeBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs51, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs55, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd43[] = {
@@ -531,10 +539,10 @@ static reduce_command rcmd43[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs52, &AGtBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs56, &AGtBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs53, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs57, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd44[] = {
@@ -542,10 +550,10 @@ static reduce_command rcmd44[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs54, &AGeBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs58, &AGeBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs55, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs59, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd45[] = {
@@ -558,10 +566,10 @@ static reduce_command rcmd46[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs56, &APlusBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs60, &APlusBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs57, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs61, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd47[] = {
@@ -569,10 +577,10 @@ static reduce_command rcmd47[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs58, &AMinusBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs62, &AMinusBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs59, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs63, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd48[] = {
@@ -585,10 +593,10 @@ static reduce_command rcmd49[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs60, &AMultiplyBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs64, &AMultiplyBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs61, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs65, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd50[] = {
@@ -596,10 +604,10 @@ static reduce_command rcmd50[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_POP, 2, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs62, &ADivideBinop::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs66, &ADivideBinop::type_info}, 
   {CMD_FETCHNODE, 2, 2, 0, 0, 0}, 
   {CMD_FETCHNODE, 3, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 4, -1, -1, rargs63, &ABinaryExpression::type_info}, 
+  {CMD_MAKENODE, 4, -1, -1, rargs67, &ABinaryExpression::type_info}, 
   {CMD_RETURNNODE, -1, 4, -1, 0, 0}
 };
 static reduce_command rcmd51[] = {
@@ -607,19 +615,19 @@ static reduce_command rcmd51[] = {
   {CMD_POP, 1, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 1, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs64, &ANegExpression::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs68, &ANegExpression::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
 static reduce_command rcmd52[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs65, &AVarExpression::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs69, &AVarExpression::type_info}, 
   {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd53[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs66, &ANumberExpression::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs70, &ANumberExpression::type_info}, 
   {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd54[] = {
@@ -636,13 +644,13 @@ static reduce_command rcmd55[] = {
   {CMD_POP, 3, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 3, 0, 0, 0}, 
   {CMD_FETCHNODE, 1, 1, 0, 0, 0}, 
-  {CMD_MAKENODE, 2, -1, -1, rargs67, &ASineExpression::type_info}, 
+  {CMD_MAKENODE, 2, -1, -1, rargs71, &ASineExpression::type_info}, 
   {CMD_RETURNNODE, -1, 2, -1, 0, 0}
 };
 static reduce_command rcmd56[] = {
   {CMD_POP, 0, -1, -1, 0, 0}, 
   {CMD_FETCHNODE, 0, 0, 0, 0, 0}, 
-  {CMD_MAKENODE, 1, -1, -1, rargs68, &ARandExpression::type_info}, 
+  {CMD_MAKENODE, 1, -1, -1, rargs72, &ARandExpression::type_info}, 
   {CMD_RETURNNODE, -1, 1, -1, 0, 0}
 };
 static reduce_command rcmd57[] = {
@@ -736,10 +744,10 @@ static struct {
   int go_to;
   reduce_command *commands;
 } reduce_commands[] = {
-  {4, 0, rcmd0},
-  {7, 0, rcmd1},
-  {7, 0, rcmd2},
-  {10, 0, rcmd3},
+  {5, 0, rcmd0},
+  {8, 0, rcmd1},
+  {8, 0, rcmd2},
+  {11, 0, rcmd3},
   {3, 1, rcmd4},
   {6, 1, rcmd5},
   {5, 2, rcmd6},

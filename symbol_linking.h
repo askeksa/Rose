@@ -75,6 +75,8 @@ class SymbolLinking : public DepthFirstAdapter {
 	std::unordered_set<int> defied_lines;
 	nodemap<std::unordered_set<std::string>> warning_nodes;
 
+	bool procedure_phase = false;
+
 public:
 	std::vector<AProcedure> procs;
 	nodemap<VarRef> var_ref;
@@ -94,7 +96,8 @@ public:
 		}
 	}
 
-	void inAProgram(AProgram prog) override {
+	void outAProcMarker(AProcMarker proc_marker) override {
+		AProgram prog = proc_marker.parent().cast<AProgram>();
 		constants.resize(prog.getProcedure().size(), 0);
 		current_scope = new Scope(nullptr, prog);
 		current_scope->add(TIdentifier::make("x"), VarKind::GLOBAL, GlobalKind::X);
@@ -106,6 +109,7 @@ public:
 			procs.push_back(proc);
 			current_scope->add(proc.getName(), VarKind::PROCEDURE, current_proc_index++);
 		}
+		procedure_phase = true;
 	}
 
 	void outAProgram(AProgram prog) override {
@@ -139,6 +143,9 @@ public:
 	}
 
 	void inAVarExpression(AVarExpression var) override {
+		if (!procedure_phase) {
+			throw CompileException(var.getName(), "Variable in color plan");
+		}
 		VarRef ref = current_scope->lookup(var.getName());
 		var_ref[var] = ref;
 	}
@@ -167,11 +174,13 @@ public:
 		}
 		literal_number[lit] = value;
 
-		if (constant_index.count(value) == 0) {
-			constant_index[value] = constants.size();
-			constants.push_back(value);
+		if (procedure_phase) {
+			if (constant_index.count(value) == 0) {
+				constant_index[value] = constants.size();
+				constants.push_back(value);
+			}
+			constant_count[value]++;
 		}
-		constant_count[value]++;
 	}
 
 	void inAWhenStatement(AWhenStatement when) override {

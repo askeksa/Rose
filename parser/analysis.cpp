@@ -58,6 +58,7 @@ void rose::AnalysisAdapter::caseTBlank (TBlank node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTComment (TComment node) { defaultCase(node); }
 
 void rose::AnalysisAdapter::caseAProgram (AProgram node) { defaultCase(node); }
+void rose::AnalysisAdapter::caseAProcMarker (AProcMarker node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAWaitEvent (AWaitEvent node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAColorEvent (AColorEvent node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAProcedure (AProcedure node) { defaultCase(node); }
@@ -117,10 +118,18 @@ void rose::DepthFirstAdapter::caseAProgram (AProgram node)
 {
   inAProgram (node);
   node.getEvent().apply(*this);
+  if ( node.getProcMarker() ) node.getProcMarker().apply(*this);
   node.getProcedure().apply(*this);
   outAProgram (node);
 }
 void rose::DepthFirstAdapter::outAProgram (AProgram node) { defaultOut(node); }
+void rose::DepthFirstAdapter::inAProcMarker (AProcMarker node) { defaultIn(node); }
+void rose::DepthFirstAdapter::caseAProcMarker (AProcMarker node)
+{
+  inAProcMarker (node);
+  outAProcMarker (node);
+}
+void rose::DepthFirstAdapter::outAProcMarker (AProcMarker node) { defaultOut(node); }
 void rose::DepthFirstAdapter::inAWaitEvent (AWaitEvent node) { defaultIn(node); }
 void rose::DepthFirstAdapter::caseAWaitEvent (AWaitEvent node)
 {
@@ -463,10 +472,18 @@ void rose::ReversedDepthFirstAdapter::caseAProgram (AProgram node)
 {
   inAProgram (node);
   node.getProcedure().reverse_apply(*this);
+  if ( node.getProcMarker() ) node.getProcMarker().apply(*this);
   node.getEvent().reverse_apply(*this);
   outAProgram (node);
 }
 void rose::ReversedDepthFirstAdapter::outAProgram (AProgram node) { defaultOut(node); }
+void rose::ReversedDepthFirstAdapter::inAProcMarker (AProcMarker node) { defaultIn(node); }
+void rose::ReversedDepthFirstAdapter::caseAProcMarker (AProcMarker node)
+{
+  inAProcMarker (node);
+  outAProcMarker (node);
+}
+void rose::ReversedDepthFirstAdapter::outAProcMarker (AProcMarker node) { defaultOut(node); }
 void rose::ReversedDepthFirstAdapter::inAWaitEvent (AWaitEvent node) { defaultIn(node); }
 void rose::ReversedDepthFirstAdapter::caseAWaitEvent (AWaitEvent node)
 {

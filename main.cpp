@@ -438,6 +438,7 @@ int main(int argc, char *argv[]) {
 		if (playing) {
 			int prev_frame = frame;
 			do {
+				usleep(1000);
 				double music_time = Pa_GetStreamTime(stream) - info.time_offset;
 				frame = (int)(music_time * framerate);
 			} while (frame == prev_frame);

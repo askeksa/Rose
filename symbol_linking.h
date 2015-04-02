@@ -7,6 +7,7 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <algorithm>
 
 enum class VarKind {
 	GLOBAL,
@@ -80,6 +81,9 @@ public:
 	nodemap<int> literal_number;
 	nodemap<int> when_pop;
 	nodemap<int> else_pop;
+	std::vector<number_t> constants;
+	std::unordered_map<number_t,int> constant_index;
+	std::unordered_map<number_t,int> constant_count;
 
 	SymbolLinking(const char *filename) : filename(filename) {}
 
@@ -91,6 +95,7 @@ public:
 	}
 
 	void inAProgram(AProgram prog) override {
+		constants.resize(prog.getProcedure().size(), 0);
 		current_scope = new Scope(nullptr, prog);
 		current_scope->add(TIdentifier::make("x"), VarKind::GLOBAL, GlobalKind::X);
 		current_scope->add(TIdentifier::make("y"), VarKind::GLOBAL, GlobalKind::Y);
@@ -105,6 +110,14 @@ public:
 
 	void outAProgram(AProgram prog) override {
 		current_scope = current_scope->pop();
+
+		// Sort constants
+		std::sort(constants.begin() + prog.getProcedure().size(), constants.end(), [](int a, int b) {
+			return (unsigned)a < (unsigned)b;
+		});
+		for (int i = 0 ; i < constants.size() ; i++) {
+			constant_index[constants[i]] = i;
+		}
 	}
 
 	void inAProcedure(AProcedure proc) override {
@@ -153,6 +166,12 @@ public:
 			throw CompileException(lit.getNumber(), "Number format error");
 		}
 		literal_number[lit] = value;
+
+		if (constant_index.count(value) == 0) {
+			constant_index[value] = constants.size();
+			constants.push_back(value);
+		}
+		constant_count[value]++;
 	}
 
 	void inAWhenStatement(AWhenStatement when) override {

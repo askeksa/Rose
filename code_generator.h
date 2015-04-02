@@ -13,8 +13,6 @@
 class CodeGenerator : private AnalysisAdapter {
 	SymbolLinking& sym;
 	const char *filename;
-	std::vector<number_t> constants;
-	std::unordered_map<int,int> constant_index;
 	std::vector<bytecode_t> out;
 	RoseStatistics& stats;
 
@@ -29,10 +27,9 @@ public:
 		: sym(sym), filename(filename), stats(stats) {}
 
 	std::pair<std::vector<bytecode_t>,std::vector<number_t>> generate(AProgram program) {
-		constants.resize(program.getProcedure().size(), 0);
 		program.getProcedure().apply(*this);
 
-		return make_pair(std::move(out), std::move(constants));
+		return make_pair(std::move(out), sym.constants);
 	}
 
 private:
@@ -62,16 +59,8 @@ private:
 		}
 	}
 
-	void emit_constant(int c) {
-		int index;
-		if (constant_index.count(c)) {
-			index = constant_index[c];
-		} else {
-			index = constants.size();
-			constant_index[c] = index;
-			constants.push_back(c);
-		}
-		emit(BC_CONST(index));
+	void emit_constant(int value) {
+		emit(BC_CONST(sym.constant_index[value]));
 	}
 
 	void mark_tail(PStatement s) {

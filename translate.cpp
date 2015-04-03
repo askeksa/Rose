@@ -38,7 +38,8 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 		ast.apply(sl);
 		Interpreter in(sl, filename, stats);
 		AProgram program = ast.getPProgram().cast<AProgram>();
-		if (program.getProcedure().size() == 0) {
+		int n_proc = program.getProcedure().size();
+		if (n_proc == 0) {
 			throw Exception("No procedures");
 		}
 		AProcedure mainproc = program.getProcedure().front().cast<AProcedure>();
@@ -70,24 +71,21 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 		stats.print(stdout);
 
 		printf("\n");
-		int n = sl.constants.size() - program.getProcedure().size();
+		int n = sl.constants.size() - n_proc;
 		int n_columns = 4;
 		int n_rows = (n - 1) / n_columns + 1;
 		for (int r = 0 ; r < n_rows ; r++) {
 			for (int c = 0 ; c < n_columns ; c++) {
 				int i = r + c * n_rows;
 				if (i < n) {
-					if (c > 0) {
-						printf(" ");
-					}
-					int value = sl.constants[program.getProcedure().size() + i];
+					int value = sl.constants[n_proc + i];
 					int frac = 16;
 					while (frac > 0 && ((value >> (16 - frac)) & 1) == 0) {
 						frac--;
 					}
 					int float_width = 6 + (frac > 0) + frac;
 					int count = sl.constant_count[value];
-					printf("%08X %c%*.*f%*s", value, count > 9 ? '*' : '0' + count, float_width, frac, value / 65536.0, 23 - float_width, "");
+					printf(" %2d %08X%*.*f%*s", count, value, float_width, frac, value / 65536.0, 23 - float_width, "");
 				}
 			}
 			printf("\n");

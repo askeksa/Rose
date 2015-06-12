@@ -20,8 +20,8 @@ static inline int verify(int base, int v, int max, const char *what) {
 #define BC_END   0x02                                      //
 #define BC_RAND  0x03                                      //  o
 #define BC_DRAW  0x04                                      //
-//               0x05                                      //  o
-#define BC_TAIL  0x06                                      //
+#define BC_TAIL  0x05                                      //  o
+//               0x06                                      //
 #define BC_MUL   0x07                                      // io
 #define BC_SEED  0x08                                      // i
 #define BC_DIV   0x09                                      // io

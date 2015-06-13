@@ -1,0 +1,611 @@
+
+plan
+	# flimmer
+	0:843 1:C53 2:F82 3:344
+	wait 352-44
+
+	# flash
+	2:FCC
+	wait 2
+	2:F82
+	wait 6
+	2:FCC
+	wait 2
+	2:F82
+	wait 6
+	2:FCC
+	wait 2
+	2:F82
+	wait 6
+	2:FCC
+	wait 2
+	2:F82
+
+	# more flimmer
+	wait 18+352-11
+
+	# trans
+	0:005
+	wait 11
+
+	# flimmer + circlepops
+	1:55F 2:AAF
+	wait 352+352-11
+
+	# flimmer + circlepops 2
+	0:202 1:506 2:CAE
+	wait 352+352
+
+	# patterns
+	0:300 1:C53 2:F82
+	wait 33
+	3:FC8
+	wait 88-22
+	0:000
+	wait 11
+	0:300
+	wait 88-11
+	0:000
+	wait 11
+	0:300
+	wait 88-11
+	0:000
+	wait 11
+	0:300
+	wait 88-33
+	0:633
+	wait 5
+	0:300
+	wait 6
+	0:633
+	wait 5
+	0:300
+	wait 6
+	0:000
+	wait 11
+	0:003 1:55F 2:AAF 3:AFF
+	wait 88-11
+	0:000
+	wait 11
+	0:003
+	wait 88-11
+	0:000
+	wait 11
+	0:003
+	wait 88-11
+	3:344
+	wait 55
+	1:C53 2:F82
+	wait 22
+
+	# Flowers
+	0:303 3:626
+	wait 33
+	1:55F 2:AAF
+	wait 88*8
+	1:C53 2:F82
+	wait 88*8-95
+
+	# Booms
+	0:003
+	wait 117
+	3:FC8
+	wait 352-66
+	0:336
+	wait 5
+	0:003
+	wait 6
+	0:336
+	wait 5
+	0:003
+	1:C8C 2:2FC
+ 	wait 6+352-22
+	0:336
+	wait 5
+	0:003
+	wait 6
+	0:336
+	wait 5
+	0:003
+	1:C53 2:F82
+	wait 6+352-22
+	0:336
+	wait 5
+	0:003
+	wait 6
+	0:336
+	wait 5
+	0:003
+	1:C8C 2:2FC
+	wait 6+352-22-88
+ 	1:55F
+ 	wait 88
+	0:336
+	wait 5
+	0:003
+	wait 6
+	0:336
+	wait 5
+	0:003
+	1:C53 2:F82
+	wait 6+352+352
+	0:FFF 3:000
+	wait 15
+	0:000
+
+proc main
+	# Position 0
+	fork boxflimmer ~20 ~60 7 168
+	wait 168
+	fork clear 0
+	wait 8
+	fork boxflimmer ~42 ~5 6 168
+	wait 168
+	fork clear 0
+	wait 8
+
+	# Position 1
+	fork boxflimmer ~30 ~13 5 168
+	wait 168 
+	fork clear 0
+	wait 8
+	fork boxflimmer 11 5 4 100
+	wait 99
+	jump 10 310
+	fork bars 3 0 192 1 1/20 5 10
+	wait 66
+	jump ~5 5 fork wipe 0 9 64 0 15 10
+	wait 11
+
+	# Position 2
+	fork boxflimmer ~24 6 3 330
+	seed 11
+	fork circlepops 210 $82088208
+	wait 176
+	fork circlepops 210 $82089410
+	wait 165
+	jump 167 5 fork wipe 3 9 64 128 15 10
+	jump 356 5 fork wipe 0 9 64 128 15 10
+	wait 11
+
+	# Position 3
+	fork boxflimmer 185 6 3 330
+	seed 176
+	fork circlepops 40 $8208B508
+	wait 176
+	fork circlepops 40 $82089240
+	wait 165-11
+	jump 185 5 fork wipe 3 9 64 0 15 10
+	jump 167 5 fork wipe 3 9 64 128 15 10
+	wait 11
+	jump ~5 5 fork wipe 0 9 64 0 15 10
+	wait 11
+
+	# Position 4
+	fork boxflimmer ~24 6 3 330
+	seed 22
+	fork circlepops 210 $82088208
+	wait 176
+	fork circlepops 210 $82082080
+	wait 165
+	jump 167 5 fork wipe 3 9 64 128 15 10
+	jump 356 5 fork wipe 0 9 64 128 15 10
+	wait 11
+
+	# Position 5
+	fork boxflimmer 185 6 3 330
+	seed 15
+	fork circlepops 40 $82089260
+	wait 176
+	fork circlepops 40 $8802F140
+	wait 165-11
+	jump 185 5 fork wipe 3 9 64 0 15 10
+	jump 167 5 fork wipe 3 9 64 128 15 10
+	wait 22
+
+	# Position 6
+	jump ~5 275 fork wipe 0 9 0 ~64 20 15
+	fork patterns1
+	wait 88
+	fork patterns2
+	wait 88
+	fork patterns1
+	wait 88
+	fork patterns2
+	wait 88
+
+	# Position 7
+	fork patterns1
+	wait 88
+	fork patterns2
+	wait 88
+	fork patterns1
+	wait 88
+	jump 10 ~22
+	fork bars 3 0 64 2 1/20 5 10
+	wait 66-11
+	jump 356 5 fork wipe 1 9 64 128 15 10
+	wait 11
+	jump ~5 5 fork wipe 2 9 64 0 15 10
+	wait 22
+
+	# Position 8
+	jump 185 5 fork wipe 3 9 64 0 15 10
+	jump 167 5 fork wipe 3 9 64 128 15 10
+	fork flowerscene 0
+	wait 176
+	wait 176
+	# Position 9
+	fork flowerscene 0
+	wait 176
+	wait 176
+	# Position 10
+	fork flowerscene 0
+	wait 176
+	wait 176
+	# Position 11
+	fork flowerscene 1
+	wait 176
+	wait 88+5
+	jump 356 16 fork wipe 0 20 64 128 7 10
+	wait 88
+
+	# Position 12
+	seed 1
+	seed rand
+	fork boomscene 0 330 20
+	wait 352
+
+	# Position 13
+	seed rand
+	fork boomscene 0 330 20
+	wait 352
+
+	# Position 14
+	seed rand
+	fork boomscene 0 167 167
+	seed rand
+	fork boomscene 0 210+330 ~200
+	wait 352
+
+	# Position 15
+	seed rand
+	fork boomscene 1 167 167
+	seed rand
+	fork boomscene 1 210+330 ~200
+	wait 88*3
+	jump 10 ~22
+	fork bars 1 0 64 2 1/20 5 10
+	wait 11
+	fork bars 0 0 64 2 1/20 5 10
+	wait 77
+
+	fork boomflowers
+
+	# Position 16
+	seed rand
+	fork boomscene 0 330 20
+	wait 352
+
+	# Position 17
+	seed rand
+	fork boomscene 0 167 167
+	seed rand
+	fork boomscene 0 210+330 ~200
+	wait 352
+
+	# Position 18
+	jump 185 5 fork wipe 3 9 64 0 15 10
+	jump 167 5 fork wipe 3 9 64 128 15 10
+
+proc boomflowers
+	wait 30
+	jump 70 50 face 60
+	fork flowers 1 120 ~42 1 3
+	wait 88
+	jump 275 167 face 100
+	fork flowers 1 120 42 1 3
+	wait 88
+	jump 275 214 face ~60
+	fork flowers 1 120 ~42 1 3
+	wait 66
+	jump 275 214 face ~60
+	fork flowers 1 120 ~42 3 3
+	wait 22
+	wait 88
+	jump 70 50 face 50
+	fork flowers 1 120 ~42 1 3
+	wait 88
+	jump 275 167 face 100
+	fork flowers 1 120 60 1 3
+	wait 88
+	jump 210 214 face ~35
+	fork flowers 1 100 ~42 1 3
+	wait 66
+	jump 275 214 face ~64
+	fork flowers 1 120 ~42 3 2
+
+proc boomscene e xs ys
+	jump xs 50 face 64
+	seed rand
+	fork booms 3 1 4
+	wait 88
+	seed rand
+	fork booms 3 1 4
+	wait 88
+	jump 50 ys face 0
+	seed rand
+	fork booms 4 1 4
+	when e == 0
+		wait 88
+		seed rand
+		fork booms 4 1 4
+	done
+
+proc flowerscene e
+	wait 22-3
+	jump 10 265
+	fork pattern 7 0 0 0 10 ~70 14 13
+	wait 11
+	jump 70 214 face 200
+	fork flowers 0 100 42 1 3
+	wait 66
+	jump ~5 16 fork wipe 3 20 64 0 7 10
+	wait 11
+	jump 330 265
+	fork pattern 7 0 0 0 120 200 14 13
+	wait 11
+	jump 265 210 face 190
+	fork flowers 0 100 ~42 1 3
+	wait 66
+	jump 356 16 fork wipe 3 20 64 128 7 10
+	wait 11
+	jump 10 265
+	fork pattern 7 0 0 0 10 ~70 14 13
+	wait 11
+	jump 128 214 face 190
+	fork flowers 0 88 60 1 3
+	wait 66
+	jump 310 210 face 190
+	fork flowers e 100 ~30 3 3
+	when e == 0
+		wait 88
+		jump 356 16 fork wipe 3 20 64 128 7 10
+	done
+
+proc booms r n2 n3
+	when n3
+		fork boom rand*64*r ((rand*3)&~1)+1
+		when n2
+			wait 11
+			fork booms r n2-1 n3
+		else
+			wait 5.5
+			wait 11
+			fork booms r n2 n3-1
+		done
+	done
+
+proc flowers e d a n2 n3
+	when n3
+		fork flower e rand*64*64 6
+		move d
+		turn a
+		when n2
+			wait 11
+			fork flowers e d a n2-1 n3
+		else
+			wait 5.5
+			wait 11
+			fork flowers e d a n2 n3-1
+		done
+	done
+
+proc boom m t
+	move m
+	turn 64
+	tint t
+	fork line 22 0 8
+	wait 6
+	tint 0
+	fork line 22 0 8
+
+proc flower e t n
+	turn t
+	when n
+		tint 1 fork leaf 2 1
+		fork flower e 42 n-1
+	else
+		wait 3
+		tint 2 fork patterndot 10 0
+		wait 14
+		tint 0 fork patterndot 3 0
+		when e
+			wait 5
+			tint 0 size 42 draw
+		done
+	done
+
+proc leaf s ds
+	when s > 0
+		size s draw
+		move 2
+		wait 1
+		fork leaf s+ds ds-0.125
+	done
+
+proc patterns1
+	wait 22
+	jump 10 10
+	fork pattern 5 1 2 3 ~10 70 14 13
+	wait 11
+	fork pattern 5 0 0 0 ~10 70 14 13
+	wait 22
+	jump 330 265
+	fork pattern 5 1 2 3 120 200 14 13
+	wait 11
+	fork pattern 5 0 0 0 120 200 14 13
+
+proc patterns2
+	wait 22
+	jump 10 265
+	fork pattern 5 1 2 3 10 ~70 14 13
+	wait 11
+	fork pattern 5 0 0 0 10 ~70 14 13
+	wait 22
+	jump 330 10
+	fork pattern 5 1 2 3 ~120 ~200 14 13
+	wait 11
+	fork pattern 5 0 0 0 ~120 ~200 14 13
+
+
+proc pattern s t1 t2 t3 f1 f2 n1 n2
+	when n2
+		face f1
+		fork patternline s t2 t3 t1 n1
+		face f2
+		move 30
+		wait 0.5
+		fork pattern s t2 t3 t1 f1 f2 n1 n2-1
+	done
+
+proc patternline s t1 t2 t3 n
+	when n
+		tint t1 fork patterndot s 0
+		move 30
+		wait 0.5
+		fork patternline s t2 t3 t1 n-1
+	done
+
+proc patterndot ms s
+	when s < ms
+		size s draw
+		wait 2
+		fork patterndot ms s+1
+	done
+
+proc circlepops minx mask
+	when mask != 0
+		when mask & $80000000
+			temp cx = minx + rand*100
+			temp cy = 70 + rand*70*2
+			temp dx = (cx-x)/16
+			temp dy = (cy-y)/16
+			temp d = dx*dx+dy*dy
+			when d < 22
+				fork circlepops minx mask
+			else
+				temp csize = mask+mask == 0 ? 22 : ((1.5+rand)*16)&~1
+				jump cx cy
+				fork circlepop 0 csize*0.0625
+				when (mask & $7C000000) == 0
+					when mask != $80000000
+						fork popsquare csize
+					done
+				done
+				wait 5.5
+				fork circlepops minx mask+mask
+			done
+		else
+			wait 5.5
+			fork circlepops minx mask+mask
+		done
+	done
+
+proc popsquare csize
+	wait 22
+	face rand*16*16
+	tint 1
+	temp sn = csize-22
+	fork popsquare2 (csize*0.125)&~1 sine(sine(rand))*10/sn sn
+
+proc popsquare2 s r n
+	when n
+		fork square s
+		turn n*r
+		wait 1
+		fork popsquare2 s r n-1
+	done
+
+proc circlepop s n
+	when n
+		tint 0 size s draw
+		when s >= 5
+			tint 2 size s-5 draw
+		done
+		wait 1
+		fork circlepop s+n n-0.0625
+	done
+
+proc boxflimmer x0 y0 s dur
+	when dur
+		temp s2 = s*s
+		temp bs = s2+s2+1
+		temp x = (rand*11) & ~1
+		temp y = (rand*15) & ~1
+		temp col = (rand*3) & ~1
+		jump x0 + x*bs y0 + y*bs
+		tint col size s2 plot
+		wait 0.25
+		fork boxflimmer x0 y0 s dur-0.25
+	done
+
+proc wipe col s f1 f2 n1 n2
+	when n2
+		tint col
+		face f1
+		fork line s 0 n1
+		face f2
+		move s+s+1
+		wait 1
+		fork wipe col s f1 f2 n1 n2-1
+	done
+
+proc line s w n
+	when n
+		size s plot
+		move s+s+1
+		wait w
+		fork line s w n-1
+	done
+
+proc bars col f1 f2 spd spdd w n
+	when n
+		face f2
+		fork bar col 0 spd spdd
+		face f1
+		move 50-1
+		wait w
+		fork bars col f1 f2 spd spdd w n-1
+	done
+
+proc bar col sp spd spdd
+	when sp >= 0
+		tint col size 24 plot
+		move sp
+		wait 1
+		fork bar col sp+spd spd-spdd spdd
+	done
+
+proc square s
+	size s*s draw
+	turn 32
+	fork square2 s
+	turn 64
+	fork square2 s
+	turn 64
+	fork square2 s
+	turn 64
+	fork square2 s
+
+proc square2 s
+	temp ns = s-1
+	when ns > 0
+		move (s+ns)*1.4140625
+		size ns*ns draw
+		fork square2 ns
+	done
+
+proc clear col
+	jump 35 35
+	fork wipe col 35 64 0 4 5

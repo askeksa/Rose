@@ -85,7 +85,7 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 					}
 					int float_width = 6 + (frac > 0) + frac;
 					int count = sl.constant_count[value];
-					printf(" %2d %08X%*.*f%*s", count, value, float_width, frac, value / 65536.0, 23 - float_width, "");
+					printf("%3d %08X%*.*f%*s", count, value, float_width, frac, value / 65536.0, 23 - float_width, "");
 				}
 			}
 			printf("\n");

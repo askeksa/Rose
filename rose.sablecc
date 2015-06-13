@@ -27,6 +27,7 @@ Tokens
 	jump = 'jump';
 	move = 'move';
 	plan = 'plan';
+	plot = 'plot';
 	proc = 'proc';
 	rand = 'rand';
 	seed = 'seed';
@@ -101,6 +102,8 @@ Productions
 							{-> New statement.defy(defy)}
 				|	{draw}	draw
 							{-> New statement.draw(draw)}
+				|	{plot}	plot
+							{-> New statement.plot(plot)}
 				|	{move}	move exp
 							{-> New statement.move(move, exp.expression)}
 				|	{jump}	jump [x]:exp [y]:exp
@@ -216,6 +219,7 @@ Abstract Syntax Tree
 	statement	=	
 					{defy}	[token]:defy
 				|	{draw}	[token]:draw
+				|	{plot}	[token]:plot
 				|	{fork}	[token]:fork [proc]:expression [args]:expression*
 				|	{move}	[token]:move expression
 				|	{jump}	[token]:jump [x]:expression [y]:expression

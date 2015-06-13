@@ -23,6 +23,7 @@ void rose::AnalysisAdapter::caseTFork (TFork node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTJump (TJump node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTMove (TMove node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTPlan (TPlan node) { defaultCase(node); }
+void rose::AnalysisAdapter::caseTPlot (TPlot node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTProc (TProc node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTRand (TRand node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseTSeed (TSeed node) { defaultCase(node); }
@@ -65,6 +66,7 @@ void rose::AnalysisAdapter::caseAProcedure (AProcedure node) { defaultCase(node)
 void rose::AnalysisAdapter::caseALocal (ALocal node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseADefyStatement (ADefyStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseADrawStatement (ADrawStatement node) { defaultCase(node); }
+void rose::AnalysisAdapter::caseAPlotStatement (APlotStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAForkStatement (AForkStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAMoveStatement (AMoveStatement node) { defaultCase(node); }
 void rose::AnalysisAdapter::caseAJumpStatement (AJumpStatement node) { defaultCase(node); }
@@ -180,6 +182,14 @@ void rose::DepthFirstAdapter::caseADrawStatement (ADrawStatement node)
   outADrawStatement (node);
 }
 void rose::DepthFirstAdapter::outADrawStatement (ADrawStatement node) { defaultOut(node); }
+void rose::DepthFirstAdapter::inAPlotStatement (APlotStatement node) { defaultIn(node); }
+void rose::DepthFirstAdapter::caseAPlotStatement (APlotStatement node)
+{
+  inAPlotStatement (node);
+  if ( node.getToken() ) node.getToken().apply(*this);
+  outAPlotStatement (node);
+}
+void rose::DepthFirstAdapter::outAPlotStatement (APlotStatement node) { defaultOut(node); }
 void rose::DepthFirstAdapter::inAForkStatement (AForkStatement node) { defaultIn(node); }
 void rose::DepthFirstAdapter::caseAForkStatement (AForkStatement node)
 {
@@ -534,6 +544,14 @@ void rose::ReversedDepthFirstAdapter::caseADrawStatement (ADrawStatement node)
   outADrawStatement (node);
 }
 void rose::ReversedDepthFirstAdapter::outADrawStatement (ADrawStatement node) { defaultOut(node); }
+void rose::ReversedDepthFirstAdapter::inAPlotStatement (APlotStatement node) { defaultIn(node); }
+void rose::ReversedDepthFirstAdapter::caseAPlotStatement (APlotStatement node)
+{
+  inAPlotStatement (node);
+  if ( node.getToken() ) node.getToken().apply(*this);
+  outAPlotStatement (node);
+}
+void rose::ReversedDepthFirstAdapter::outAPlotStatement (APlotStatement node) { defaultOut(node); }
 void rose::ReversedDepthFirstAdapter::inAForkStatement (AForkStatement node) { defaultIn(node); }
 void rose::ReversedDepthFirstAdapter::caseAForkStatement (AForkStatement node)
 {

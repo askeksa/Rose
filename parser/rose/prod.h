@@ -407,6 +407,37 @@ public:
 private:
   void replaceBy (PStatement node);
 };
+class APlotStatement : public PStatement {
+protected:
+  inline APlotStatement (_GenericNode *obj) : PStatement (obj) { }
+
+public:
+  inline APlotStatement () : PStatement() { }
+
+  static inline APlotStatement make () { return initProd (&type_info); }
+
+  static inline APlotStatement make (
+      TPlot _token_
+  )
+  {
+    void *args[] = {
+        &_token_
+    };
+    return initProd (&type_info, args);
+  }
+
+  static const _TypeInfo type_info;
+
+  inline APlotStatement clone () const { return Node::clone().unsafe_cast<APlotStatement>(); }
+
+  inline void replaceBy (APlotStatement node) { Node::replaceBy (node); }
+
+  inline TPlot getToken () { return getChildNode(0).unsafe_cast<TPlot>(); }
+  inline void setToken (TPlot _token_) { setChildNode (0, _token_); }
+
+private:
+  void replaceBy (PStatement node);
+};
 class AForkStatement : public PStatement {
 protected:
   inline AForkStatement (_GenericNode *obj) : PStatement (obj) { }

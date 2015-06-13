@@ -311,6 +311,23 @@ private:
   void replaceBy (Token node);
 };
 
+class TPlot : public Token {
+public:
+  static inline TPlot make () { return make(0, 0); }
+  static inline TPlot make (int line, int pos)
+  { return Token::make(&type_info, line, pos, "plot").unsafe_cast<TPlot>(); }
+
+  static const _TypeInfo type_info;
+
+  inline TPlot clone () const { return Node::clone().unsafe_cast<TPlot>(); }
+
+  inline void replaceBy (TPlot node) { Node::replaceBy (node); }
+
+private:
+  void setText (const std::string& text); // Get error at compile time
+  void replaceBy (Token node);
+};
+
 class TProc : public Token {
 public:
   static inline TProc make () { return make(0, 0); }

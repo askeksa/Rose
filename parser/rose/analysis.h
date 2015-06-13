@@ -21,6 +21,7 @@ public:
   virtual void caseTJump (TJump node) = 0;
   virtual void caseTMove (TMove node) = 0;
   virtual void caseTPlan (TPlan node) = 0;
+  virtual void caseTPlot (TPlot node) = 0;
   virtual void caseTProc (TProc node) = 0;
   virtual void caseTRand (TRand node) = 0;
   virtual void caseTSeed (TSeed node) = 0;
@@ -63,6 +64,7 @@ public:
   virtual void caseALocal (ALocal node) = 0;
   virtual void caseADefyStatement (ADefyStatement node) = 0;
   virtual void caseADrawStatement (ADrawStatement node) = 0;
+  virtual void caseAPlotStatement (APlotStatement node) = 0;
   virtual void caseAForkStatement (AForkStatement node) = 0;
   virtual void caseAMoveStatement (AMoveStatement node) = 0;
   virtual void caseAJumpStatement (AJumpStatement node) = 0;
@@ -112,6 +114,7 @@ public:
   virtual void caseTJump (TJump node);
   virtual void caseTMove (TMove node);
   virtual void caseTPlan (TPlan node);
+  virtual void caseTPlot (TPlot node);
   virtual void caseTProc (TProc node);
   virtual void caseTRand (TRand node);
   virtual void caseTSeed (TSeed node);
@@ -154,6 +157,7 @@ public:
   virtual void caseALocal (ALocal node);
   virtual void caseADefyStatement (ADefyStatement node);
   virtual void caseADrawStatement (ADrawStatement node);
+  virtual void caseAPlotStatement (APlotStatement node);
   virtual void caseAForkStatement (AForkStatement node);
   virtual void caseAMoveStatement (AMoveStatement node);
   virtual void caseAJumpStatement (AJumpStatement node);
@@ -222,6 +226,9 @@ public:
   virtual void inADrawStatement (ADrawStatement node);
   virtual void caseADrawStatement (ADrawStatement node);
   virtual void outADrawStatement (ADrawStatement node);
+  virtual void inAPlotStatement (APlotStatement node);
+  virtual void caseAPlotStatement (APlotStatement node);
+  virtual void outAPlotStatement (APlotStatement node);
   virtual void inAForkStatement (AForkStatement node);
   virtual void caseAForkStatement (AForkStatement node);
   virtual void outAForkStatement (AForkStatement node);
@@ -352,6 +359,9 @@ public:
   virtual void inADrawStatement (ADrawStatement node);
   virtual void caseADrawStatement (ADrawStatement node);
   virtual void outADrawStatement (ADrawStatement node);
+  virtual void inAPlotStatement (APlotStatement node);
+  virtual void caseAPlotStatement (APlotStatement node);
+  virtual void outAPlotStatement (APlotStatement node);
   virtual void inAForkStatement (AForkStatement node);
   virtual void caseAForkStatement (AForkStatement node);
   virtual void outAForkStatement (AForkStatement node);

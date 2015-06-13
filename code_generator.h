@@ -292,4 +292,8 @@ private:
 		emit(BC_DRAW);
 	}
 
+	void caseAPlotStatement(APlotStatement s) override {
+		emit(BC_PLOT);
+	}
+
 };

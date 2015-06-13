@@ -60,6 +60,8 @@ where <name> and <param> are identifiers, and <statement> is one of:
   Set the current tint (rounded down to an integer).
 - draw
   Draw a circular dot at the current position.
+- plot
+  Draw a square dot at the current position.
 - wait <expression>
   Wait a number of frames.
 - fork <procedure> <expression>*
@@ -82,6 +84,10 @@ An <expression> is one of:
 
 - <digit>+[.<digit>+]
   Constant value.
+- $<hexdigit>+
+  Constant value in hexadecimal. The value is used directly as the
+  32-bit fixed-point representation, i.e. the last four digits are
+  implicitly fractional.
 - <name>
   Procedure or value of parameter, temporary variable or global variable.
 - <expression> op <expression>

@@ -94,18 +94,19 @@ class RoseProject {
 	GLuint fb, rb;
 	std::pair<std::vector<Plot>, std::vector<TintColor>> plots_and_script;
 	std::vector<int> schedule;
+	int width, height;
 
 public:
-	static RoseProject* make(const char *filename, int frames, bool print_errors) {
+	static RoseProject* make(const char *filename, int frames, int width, int height, bool print_errors) {
 		auto pas = translate(filename, frames, print_errors);
 		if (pas.first.empty() && pas.second.empty()) {
 			return nullptr;
 		}
-		return new RoseProject(std::move(pas), frames);
+		return new RoseProject(std::move(pas), frames, width, height);
 	}
 
-	RoseProject(std::pair<std::vector<Plot>, std::vector<TintColor>> pas, int frames)
-			: frames(frames), plots_and_script(std::move(pas))
+	RoseProject(std::pair<std::vector<Plot>, std::vector<TintColor>> pas, int frames, int width, int height)
+			: frames(frames), plots_and_script(std::move(pas)), width(width), height(height)
 	{
 		std::vector<Plot>& plots = plots_and_script.first;
 
@@ -132,7 +133,7 @@ public:
 				float u = corners[c][0];
 				float v = corners[c][1];
 				CircleVertex vert = {
-					(x + u*r) / WIDTH * 2 - 1, (y + v*r) / HEIGHT * -2 + 1, u, v, (float) (p.c & 511)
+					(x + u*r) / width * 2 - 1, (y + v*r) / height * -2 + 1, u, v, (float) (p.c & 511)
 				};
 				vertex_data.push_back(vert);
 			}
@@ -149,7 +150,7 @@ public:
 		glBindRenderbuffer(GL_RENDERBUFFER, rb);
 		glGenFramebuffers(1, &fb);
 		glBindFramebuffer(GL_FRAMEBUFFER, fb);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, WIDTH, HEIGHT);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, width, height);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, rb);
 		GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 		if (status != GL_FRAMEBUFFER_COMPLETE) {
@@ -217,7 +218,7 @@ public:
 
 		// Render to FBO
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb);
-		glViewport(0,0,WIDTH,HEIGHT);
+		glViewport(0,0,width,height);
 
 		// Set up vertex streams
 		glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
@@ -248,7 +249,7 @@ public:
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, target);
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, fb);
 		glViewport(vp[0],vp[1],vp[2],vp[3]);
-		glBlitFramebuffer(0,0,WIDTH,HEIGHT, vp[0],vp[1],vp[2],vp[3], GL_COLOR_BUFFER_BIT, GL_NEAREST);
+		glBlitFramebuffer(0,0,width,height, vp[0],vp[1],vp[2],vp[3], GL_COLOR_BUFFER_BIT, GL_NEAREST);
 	}
 
 	~RoseProject() {
@@ -332,7 +333,7 @@ int main(int argc, char *argv[]) {
 	// Load code
 	struct stat filestat;
 	stat(filename, &filestat);
-	RoseProject* project = RoseProject::make(filename, frames, true);
+	RoseProject* project = RoseProject::make(filename, frames, WIDTH, HEIGHT, true);
 
 	// Set up key callback
 	std::queue<int> key_queue;
@@ -361,11 +362,11 @@ int main(int argc, char *argv[]) {
 			// Reload code
 			printf("\nReloading at %s\n", ctime(&newfilestat.st_mtime));
 			delete project;
-			project = RoseProject::make(filename, frames, false);
+			project = RoseProject::make(filename, frames, WIDTH, HEIGHT, false);
 			if (!project) {
 				// Try again
 				usleep(100*1000);
-				project = RoseProject::make(filename, frames, true);
+				project = RoseProject::make(filename, frames, WIDTH, HEIGHT, true);
 			}
 			fflush(stdout);
 			filestat = newfilestat;

@@ -91,6 +91,7 @@ class RoseProject {
 	static GLuint tint_loc;
 	int frames;
 	GLuint vertex_buffer;
+	GLuint fb, rb;
 	std::pair<std::vector<Plot>, std::vector<TintColor>> plots_and_script;
 	std::vector<int> schedule;
 
@@ -137,10 +138,24 @@ public:
 			}
 		}
 
+		// Make vertex buffer
 		glGenBuffers(1, &vertex_buffer);
 		glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
 		glBufferData(GL_ARRAY_BUFFER, vertex_data.size() * sizeof(CircleVertex), &vertex_data[0], GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		// Make frame buffer
+		glGenFramebuffers(1, &fb);
+		glBindFramebuffer(GL_FRAMEBUFFER, fb);
+		glGenRenderbuffers(1, &rb);
+		glBindRenderbuffer(GL_RENDERBUFFER, rb);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, WIDTH, HEIGHT);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, rb);
+		GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+		if (status != GL_FRAMEBUFFER_COMPLETE) {
+			printf("Framebuffer not complete (%d)\n", status);
+			fflush(stdout);
+		}
 
 		// Construct schedule
 		int n = 0;
@@ -194,6 +209,16 @@ public:
 			script_index++;
 		}
 
+		// Save target state
+		GLuint target;
+		glGetIntegerv(GL_FRAMEBUFFER_BINDING, (GLint *) &target);
+		GLint vp[4];
+		glGetIntegerv(GL_VIEWPORT, vp);
+
+		// Render to FBO
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb);
+		glViewport(0,0,WIDTH,HEIGHT);
+
 		// Set up vertex streams
 		glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
 		glVertexAttribPointer(xyuv_loc, 4, GL_FLOAT, GL_FALSE, sizeof(CircleVertex), &((CircleVertex *)0)->x);
@@ -218,6 +243,12 @@ public:
 		glDisableVertexAttribArray(xyuv_loc);
 		glDisableVertexAttribArray(tint_loc);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		// Copy FBO to screen
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, target);
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, fb);
+		glViewport(vp[0],vp[1],vp[2],vp[3]);
+		glBlitFramebuffer(0,0,WIDTH,HEIGHT, vp[0],vp[1],vp[2],vp[3], GL_COLOR_BUFFER_BIT, GL_NEAREST);
 	}
 
 	~RoseProject() {
@@ -295,20 +326,6 @@ int main(int argc, char *argv[]) {
 	glewInit();
 	glfwSwapInterval(1);
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-
-	// Make frame buffer
-	GLuint fb, rb;
-	glGenFramebuffers(1, &fb);
-	glBindFramebuffer(GL_FRAMEBUFFER, fb);
-	glGenRenderbuffers(1, &rb);
-	glBindRenderbuffer(GL_RENDERBUFFER, rb);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, WIDTH, HEIGHT);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, rb);
-	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if (status != GL_FRAMEBUFFER_COMPLETE) {
-		printf("Framebuffer not complete (%d)\n", status);
-		fflush(stdout);
-	}
 
 	// Load code
 	struct stat filestat;
@@ -422,15 +439,8 @@ int main(int argc, char *argv[]) {
 		glClearColor(1,0,0,0);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// Render to FBO
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb);
-		glViewport(0,0,WIDTH,HEIGHT);
+		// Render
 		if (project) project->draw(frame);
-
-		// Copy FBO to screen
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, fb);
-		glBlitFramebuffer(0,0,WIDTH,HEIGHT, 0,0,WIDTH*2,HEIGHT*2, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

@@ -145,10 +145,10 @@ public:
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		// Make frame buffer
-		glGenFramebuffers(1, &fb);
-		glBindFramebuffer(GL_FRAMEBUFFER, fb);
 		glGenRenderbuffers(1, &rb);
 		glBindRenderbuffer(GL_RENDERBUFFER, rb);
+		glGenFramebuffers(1, &fb);
+		glBindFramebuffer(GL_FRAMEBUFFER, fb);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, WIDTH, HEIGHT);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, rb);
 		GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -253,6 +253,8 @@ public:
 
 	~RoseProject() {
 		glFinish();
+		glDeleteFramebuffers(1, &fb);
+		glDeleteRenderbuffers(1, &rb);
 		glDeleteBuffers(1, &vertex_buffer);
 	}
 };

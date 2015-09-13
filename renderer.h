@@ -17,6 +17,8 @@ class RoseRenderer {
 	std::vector<int> schedule;
 	int width, height;
 
+	int prev_frame;
+
 public:
 	RoseRenderer(RoseResult rose_result, int width, int height);
 

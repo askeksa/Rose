@@ -26,9 +26,8 @@ void writefile(std::vector<T> data, const char *filename) {
 	fclose(out);
 }
 
-std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filename, int max_time, bool print) {
-	std::vector<Plot> plots;
-	std::vector<TintColor> colors;
+RoseResult translate(const char *filename, int max_time, bool print) {
+	RoseResult result;
 	try {
 		RoseStatistics stats(max_time);
 
@@ -46,8 +45,8 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 		if (mainproc.getParams().size() != 0) {
 			throw CompileException(mainproc.getName(), "Entry procedure must not have any parameters");
 		}
-		plots = in.interpret(mainproc);
-		colors = in.get_colors(program);
+		result.plots = in.interpret(mainproc);
+		result.colors = in.get_colors(program);
 
 		// Output
 		CodeGenerator codegen(sl, filename, stats);
@@ -56,7 +55,7 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 		std::vector<number_t> constants = bytecodes_and_constants.second;
 		std::vector<unsigned short> colorscript;
 		int color_frame = -1;
-		for (auto c : colors) {
+		for (auto c : result.colors) {
 			if (c.t != color_frame) {
 				int delta = c.t - color_frame;
 				color_frame = c.t;
@@ -104,6 +103,6 @@ std::pair<std::vector<Plot>, std::vector<TintColor>> translate(const char *filen
 		}
 	}
 
-	return std::make_pair(std::move(plots), std::move(colors));
+	return result;
 }
 

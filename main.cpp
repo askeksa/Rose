@@ -91,18 +91,16 @@ class RoseRenderer {
 	static GLuint tint_loc;
 	GLuint vertex_buffer;
 	GLuint fb, rb;
-	std::pair<std::vector<Plot>, std::vector<TintColor>> plots_and_script;
+	RoseResult rose_data;
 	std::vector<int> schedule;
 	int width, height;
 
 public:
-	RoseRenderer(std::pair<std::vector<Plot>, std::vector<TintColor>> pas, int width, int height)
-			: plots_and_script(std::move(pas)), width(width), height(height)
+	RoseRenderer(RoseResult rose_result, int width, int height)
+			: rose_data(std::move(rose_result)), width(width), height(height)
 	{
-		std::vector<Plot>& plots = plots_and_script.first;
-
 		// Make vertex data
-		stable_sort(plots.begin(), plots.end(), [](const Plot& a, const Plot& b) {
+		stable_sort(rose_data.plots.begin(), rose_data.plots.end(), [](const Plot& a, const Plot& b) {
 			if (a.t != b.t) return a.t < b.t;
 			return a.y - a.r < b.y - b.r;
 		});
@@ -116,7 +114,7 @@ public:
 		};
 
 		std::vector<CircleVertex> vertex_data;
-		for (auto p : plots) {
+		for (auto p : rose_data.plots) {
 			float x = p.x + 0.5f;
 			float y = p.y + 0.5f;
 			float r = p.r + 0.5f;
@@ -151,9 +149,9 @@ public:
 
 		// Construct schedule
 		int n = 0;
-		for (int f = 0 ; n < plots.size() ; f++) {
+		for (int f = 0 ; n < rose_data.plots.size() ; f++) {
 			schedule.push_back(n);
-			while (n < plots.size() && plots[n].t <= f) n++;
+			while (n < rose_data.plots.size() && rose_data.plots[n].t <= f) n++;
 		}
 		schedule.push_back(n);
 
@@ -172,8 +170,6 @@ public:
 	}
 
 	void draw(int frame) {
-		std::vector<TintColor>& script = plots_and_script.second;
-
 		// Initialize colors
 		std::vector<float> colors;
 		for (int i = 0 ; i < 512 ; i++) {
@@ -185,9 +181,9 @@ public:
 
 		// Update colors
 		int script_index = 0;
-		while (script_index < script.size() && script[script_index].t <= frame) {
-			short rgb = script[script_index].rgb;
-			short index = script[script_index].i & 255;
+		while (script_index < rose_data.colors.size() && rose_data.colors[script_index].t <= frame) {
+			short rgb = rose_data.colors[script_index].rgb;
+			short index = rose_data.colors[script_index].i & 255;
 			float *color = &colors[index * 4];
 			color[0] = ((rgb >> 8) & 15) / 15.0f;
 			color[1] = ((rgb >> 4) & 15) / 15.0f;
@@ -258,11 +254,11 @@ GLuint RoseRenderer::tint_loc = 0;
 
 
 static RoseRenderer* make_renderer(const char *filename, int frames, int width, int height, bool print_errors) {
-	auto pas = translate(filename, frames, print_errors);
-	if (pas.first.empty() && pas.second.empty()) {
+	RoseResult rose_data = translate(filename, frames, print_errors);
+	if (rose_data.empty()) {
 		return nullptr;
 	}
-	return new RoseRenderer(std::move(pas), width, height);
+	return new RoseRenderer(std::move(rose_data), width, height);
 }
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {

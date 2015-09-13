@@ -32,12 +32,19 @@ GLuint makeShader(GLenum kind, const char **source) {
 }
 
 GLuint makeProgram(const char *vsource, const char *psource) {
+	std::vector<char> log;
+	GLsizei log_length;
 	GLuint program = glCreateProgram();
 	GLuint vs = makeShader(GL_VERTEX_SHADER, &vsource);
 	glAttachShader(program, vs);
 	GLuint ps = makeShader(GL_FRAGMENT_SHADER, &psource);
 	glAttachShader(program, ps);
 	glLinkProgram(program);
+	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &log_length);
+	log.resize(log_length);
+	glGetProgramInfoLog(program, log_length, nullptr, &log[0]);
+	printf("%s", &log[0]);
+	fflush(stdout);
 	return program;
 }
 
@@ -134,11 +141,10 @@ RoseRenderer::RoseRenderer(RoseResult rose_result, int width, int height)
 void RoseRenderer::draw(int frame) {
 	// Initialize colors
 	std::vector<float> colors;
-	for (int i = 0 ; i < 512 ; i++) {
+	for (int i = 0 ; i < 256 ; i++) {
 		colors.push_back(1.0);
 		colors.push_back(0.0);
 		colors.push_back(1.0);
-		colors.push_back(i >= 256);
 	}
 
 	// Update colors
@@ -151,11 +157,6 @@ void RoseRenderer::draw(int frame) {
 		color[1] = ((rgb >> 4) & 15) / 15.0f;
 		color[2] = ((rgb >> 0) & 15) / 15.0f;
 		color[3] = 0.0f;
-		float *square_color = &colors[(index ^ 511) * 4];
-		square_color[0] = color[0];
-		square_color[1] = color[1];
-		square_color[2] = color[2];
-		square_color[3] = 1.0f;
 		script_index++;
 	}
 
@@ -178,14 +179,12 @@ void RoseRenderer::draw(int frame) {
 	glVertexAttribPointer(tint_loc, 1, GL_FLOAT, GL_FALSE, sizeof(CircleVertex), &((CircleVertex *)0)->tint);
 	glEnableVertexAttribArray(tint_loc);
 
-	// Set program and uniforms
+	// Set program
 	glUseProgram(plot_program);
-	GLuint colors_loc = glGetUniformLocation(plot_program, "colors");
-	glUniform4fv(colors_loc, 512, &colors[0]);
 
 	// Draw
 	int schedule_frame = std::min(frame, (int) (schedule.size() - 1));
-	glClearColor(colors[0],colors[1],colors[2],colors[3]);
+	glClearColor(0,0,0,0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_NOTEQUAL, 0.0);
@@ -209,9 +208,13 @@ void RoseRenderer::draw(int frame) {
 	glVertexAttribPointer(xy_loc, 2, GL_FLOAT, GL_FALSE, sizeof(QuadVertex), &((QuadVertex *)0)->x);
 	glEnableVertexAttribArray(xy_loc);
 
-	// Set program and uniforms
+	// Set program
 	glUseProgram(quad_program);
-	GLuint image_loc = glGetUniformLocation(plot_program, "image");
+
+	// Set uniforms
+	GLuint colors_loc = glGetUniformLocation(quad_program, "colors");
+	glUniform4fv(colors_loc, 256, &colors[0]);
+	GLuint image_loc = glGetUniformLocation(quad_program, "image");
 	glUniform1i(image_loc, 0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, render_tex);
@@ -223,12 +226,6 @@ void RoseRenderer::draw(int frame) {
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glDisableVertexAttribArray(xy_loc);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	// Copy framebufO to screen
-	//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, target);
-	//glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuf);
-	//glViewport(vp[0],vp[1],vp[2],vp[3]);
-	//glBlitFramebuffer(0,0,width,height, vp[0],vp[1],vp[2],vp[3], GL_COLOR_BUFFER_BIT, GL_NEAREST);
 }
 
 RoseRenderer::~RoseRenderer() {

@@ -13,6 +13,10 @@ struct CircleVertex {
 	float tint;
 };
 
+struct QuadVertex {
+	float x,y;
+};
+
 GLuint makeShader(GLenum kind, const char **source) {
 	std::vector<char> log;
 	GLsizei log_length;
@@ -27,9 +31,21 @@ GLuint makeShader(GLenum kind, const char **source) {
 	return s;
 }
 
-GLuint RoseRenderer::program = 0;
+GLuint makeProgram(const char *vsource, const char *psource) {
+	GLuint program = glCreateProgram();
+	GLuint vs = makeShader(GL_VERTEX_SHADER, &vsource);
+	glAttachShader(program, vs);
+	GLuint ps = makeShader(GL_FRAGMENT_SHADER, &psource);
+	glAttachShader(program, ps);
+	glLinkProgram(program);
+	return program;
+}
+
+GLuint RoseRenderer::plot_program = 0;
 GLuint RoseRenderer::xyuv_loc = 0;
 GLuint RoseRenderer::tint_loc = 0;
+GLuint RoseRenderer::quad_program = 0;
+GLuint RoseRenderer::xy_loc = 0;
 
 RoseRenderer::RoseRenderer(RoseResult rose_result, int width, int height)
 	: rose_data(std::move(rose_result)), width(width), height(height)
@@ -48,7 +64,8 @@ RoseRenderer::RoseRenderer(RoseResult rose_result, int width, int height)
 		{ 1.0, -1.0 }
 	};
 
-	std::vector<CircleVertex> vertex_data;
+	// Data for plot vertex buffer
+	std::vector<CircleVertex> plot_vertex_data;
 	for (auto p : rose_data.plots) {
 		float x = p.x + 0.5f;
 		float y = p.y + 0.5f;
@@ -59,23 +76,34 @@ RoseRenderer::RoseRenderer(RoseResult rose_result, int width, int height)
 			CircleVertex vert = {
 				(x + u*r) / width * 2 - 1, (y + v*r) / height * -2 + 1, u, v, (float) (p.c & 511)
 			};
-			vertex_data.push_back(vert);
+			plot_vertex_data.push_back(vert);
 		}
 	}
 
-	// Make vertex buffer
-	glGenBuffers(1, &vertex_buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-	glBufferData(GL_ARRAY_BUFFER, vertex_data.size() * sizeof(CircleVertex), &vertex_data[0], GL_STATIC_DRAW);
+	// Make plot vertex buffer
+	glGenBuffers(1, &plot_vertex_buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, plot_vertex_buffer);
+	glBufferData(GL_ARRAY_BUFFER, plot_vertex_data.size() * sizeof(CircleVertex), &plot_vertex_data[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+	// Make quad vertex buffer
+	glGenBuffers(1, &quad_vertex_buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, quad_vertex_buffer);
+	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(QuadVertex), &corners[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// Make render texture
+	glGenTextures(1, &render_tex);
+	glBindTexture(GL_TEXTURE_2D, render_tex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	// Make frame buffer
-	glGenRenderbuffers(1, &rb);
-	glBindRenderbuffer(GL_RENDERBUFFER, rb);
-	glGenFramebuffers(1, &fb);
-	glBindFramebuffer(GL_FRAMEBUFFER, fb);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, width, height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, rb);
+	glGenFramebuffers(1, &framebuf);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuf);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, render_tex, 0);
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (status != GL_FRAMEBUFFER_COMPLETE) {
 		printf("Framebuffer not complete (%d)\n", status);
@@ -91,15 +119,14 @@ RoseRenderer::RoseRenderer(RoseResult rose_result, int width, int height)
 	schedule.push_back(n);
 
 	// Compile shaders
-	if (!program) {
-		program = glCreateProgram();
-		GLuint vs = makeShader(GL_VERTEX_SHADER, &vshader);
-		glAttachShader(program, vs);
-		GLuint ps = makeShader(GL_FRAGMENT_SHADER, &pshader);
-		glAttachShader(program, ps);
-		glLinkProgram(program);
-		xyuv_loc = glGetAttribLocation(program, "xyuv");
-		tint_loc = glGetAttribLocation(program, "tint");
+	if (!plot_program) {
+		plot_program = makeProgram(plot_vshader, plot_pshader);
+		xyuv_loc = glGetAttribLocation(plot_program, "xyuv");
+		tint_loc = glGetAttribLocation(plot_program, "tint");
+	}
+	if (!quad_program) {
+		quad_program = makeProgram(quad_vshader, quad_pshader);
+		xy_loc = glGetAttribLocation(quad_program, "xy");
 	}
 
 }
@@ -138,20 +165,22 @@ void RoseRenderer::draw(int frame) {
 	GLint vp[4];
 	glGetIntegerv(GL_VIEWPORT, vp);
 
+	// Plot pass
+
 	// Render to FBO
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuf);
 	glViewport(0,0,width,height);
 
 	// Set up vertex streams
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, plot_vertex_buffer);
 	glVertexAttribPointer(xyuv_loc, 4, GL_FLOAT, GL_FALSE, sizeof(CircleVertex), &((CircleVertex *)0)->x);
 	glEnableVertexAttribArray(xyuv_loc);
 	glVertexAttribPointer(tint_loc, 1, GL_FLOAT, GL_FALSE, sizeof(CircleVertex), &((CircleVertex *)0)->tint);
 	glEnableVertexAttribArray(tint_loc);
 
 	// Set program and uniforms
-	glUseProgram(program);
-	GLuint colors_loc = glGetUniformLocation(program, "colors");
+	glUseProgram(plot_program);
+	GLuint colors_loc = glGetUniformLocation(plot_program, "colors");
 	glUniform4fv(colors_loc, 512, &colors[0]);
 
 	// Draw
@@ -168,16 +197,44 @@ void RoseRenderer::draw(int frame) {
 	glDisableVertexAttribArray(tint_loc);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	// Copy FBO to screen
+
+	// Copy pass
+
+	// Render to original render target
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, target);
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, fb);
 	glViewport(vp[0],vp[1],vp[2],vp[3]);
-	glBlitFramebuffer(0,0,width,height, vp[0],vp[1],vp[2],vp[3], GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+	// Set up vertex streams
+	glBindBuffer(GL_ARRAY_BUFFER, quad_vertex_buffer);
+	glVertexAttribPointer(xy_loc, 2, GL_FLOAT, GL_FALSE, sizeof(QuadVertex), &((QuadVertex *)0)->x);
+	glEnableVertexAttribArray(xy_loc);
+
+	// Set program and uniforms
+	glUseProgram(quad_program);
+	GLuint image_loc = glGetUniformLocation(plot_program, "image");
+	glUniform1i(image_loc, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, render_tex);
+
+	// Draw
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	// Cleanup
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glDisableVertexAttribArray(xy_loc);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// Copy framebufO to screen
+	//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, target);
+	//glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuf);
+	//glViewport(vp[0],vp[1],vp[2],vp[3]);
+	//glBlitFramebuffer(0,0,width,height, vp[0],vp[1],vp[2],vp[3], GL_COLOR_BUFFER_BIT, GL_NEAREST);
 }
 
 RoseRenderer::~RoseRenderer() {
 	glFinish();
-	glDeleteFramebuffers(1, &fb);
-	glDeleteRenderbuffers(1, &rb);
-	glDeleteBuffers(1, &vertex_buffer);
+	glDeleteFramebuffers(1, &framebuf);
+	glDeleteTextures(1, &render_tex);
+	glDeleteBuffers(1, &quad_vertex_buffer);
+	glDeleteBuffers(1, &plot_vertex_buffer);
 }

@@ -3,11 +3,16 @@
 #include "rose_result.h"
 
 class RoseRenderer {
-	static GLuint program;
+	static GLuint plot_program;
 	static GLuint xyuv_loc;
 	static GLuint tint_loc;
-	GLuint vertex_buffer;
-	GLuint fb, rb;
+	GLuint plot_vertex_buffer;
+
+	static GLuint quad_program;
+	static GLuint xy_loc;
+	GLuint quad_vertex_buffer;
+
+	GLuint framebuf, render_tex;
 	RoseResult rose_data;
 	std::vector<int> schedule;
 	int width, height;

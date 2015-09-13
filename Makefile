@@ -22,9 +22,11 @@ rose: main.o translate.o renderer.o $(patsubst parser/%.cpp,%.o,$(wildcard parse
 %.o: parser/%.cpp parser Makefile
 	$(CC) $(CFLAGS) $< -c
 
-main.o: main.cpp shaders.h translate.h
+main.o: main.cpp translate.h rose_result.h
 
-translate.o: translate.cpp ast.h symbol_linking.h interpret.h code_generator.h bytecode.h parser
+translate.o: translate.cpp translate.h rose_result.h ast.h symbol_linking.h interpret.h code_generator.h bytecode.h parser
+
+renderer.o: renderer.cpp shaders.h rose_result.h
 
 parser: rose.sablecc
 	java -jar sablecc.jar -t cxx -d parser rose.sablecc

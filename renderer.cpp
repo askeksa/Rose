@@ -136,6 +136,8 @@ RoseRenderer::RoseRenderer(RoseResult rose_result, int width, int height)
 		xy_loc = glGetAttribLocation(quad_program, "xy");
 	}
 
+	// Mark contents invalid
+	prev_frame = -1;
 }
 
 void RoseRenderer::draw(int frame) {
@@ -182,13 +184,20 @@ void RoseRenderer::draw(int frame) {
 	// Set program
 	glUseProgram(plot_program);
 
-	// Draw
-	int schedule_frame = std::min(frame, (int) (schedule.size() - 1));
-	glClearColor(0,0,0,0);
-	glClear(GL_COLOR_BUFFER_BIT);
+	// Set render states
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_NOTEQUAL, 0.0);
-	glDrawArrays(GL_TRIANGLES, 0, schedule[schedule_frame] * 6);
+
+	// Draw
+	int draw_frame = std::min(frame, (int) (schedule.size() - 1));
+	if (prev_frame == -1 || draw_frame < prev_frame) {
+		glClearColor(0,0,0,0);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glDrawArrays(GL_TRIANGLES, 0, schedule[draw_frame] * 6);
+	} else {
+		glDrawArrays(GL_TRIANGLES, schedule[prev_frame] * 6, (schedule[draw_frame] - schedule[prev_frame]) * 6);
+	}
+	prev_frame = draw_frame;
 
 	// Cleanup
 	glDisable(GL_ALPHA_TEST);

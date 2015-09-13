@@ -85,11 +85,10 @@ struct CircleVertex {
 	float tint;
 };
 
-class RoseProject {
+class RoseRenderer {
 	static GLuint program;
 	static GLuint xyuv_loc;
 	static GLuint tint_loc;
-	int frames;
 	GLuint vertex_buffer;
 	GLuint fb, rb;
 	std::pair<std::vector<Plot>, std::vector<TintColor>> plots_and_script;
@@ -97,16 +96,8 @@ class RoseProject {
 	int width, height;
 
 public:
-	static RoseProject* make(const char *filename, int frames, int width, int height, bool print_errors) {
-		auto pas = translate(filename, frames, print_errors);
-		if (pas.first.empty() && pas.second.empty()) {
-			return nullptr;
-		}
-		return new RoseProject(std::move(pas), frames, width, height);
-	}
-
-	RoseProject(std::pair<std::vector<Plot>, std::vector<TintColor>> pas, int frames, int width, int height)
-			: frames(frames), plots_and_script(std::move(pas)), width(width), height(height)
+	RoseRenderer(std::pair<std::vector<Plot>, std::vector<TintColor>> pas, int width, int height)
+			: plots_and_script(std::move(pas)), width(width), height(height)
 	{
 		std::vector<Plot>& plots = plots_and_script.first;
 
@@ -160,7 +151,7 @@ public:
 
 		// Construct schedule
 		int n = 0;
-		for (int f = 0 ; f < frames ; f++) {
+		for (int f = 0 ; n < plots.size() ; f++) {
 			schedule.push_back(n);
 			while (n < plots.size() && plots[n].t <= f) n++;
 		}
@@ -233,11 +224,12 @@ public:
 		glUniform4fv(colors_loc, 512, &colors[0]);
 
 		// Draw
+		int schedule_frame = std::min(frame, (int) (schedule.size() - 1));
 		glClearColor(colors[0],colors[1],colors[2],colors[3]);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_NOTEQUAL, 0.0);
-		glDrawArrays(GL_TRIANGLES, 0, schedule[frame] * 6);
+		glDrawArrays(GL_TRIANGLES, 0, schedule[schedule_frame] * 6);
 
 		// Cleanup
 		glDisable(GL_ALPHA_TEST);
@@ -252,7 +244,7 @@ public:
 		glBlitFramebuffer(0,0,width,height, vp[0],vp[1],vp[2],vp[3], GL_COLOR_BUFFER_BIT, GL_NEAREST);
 	}
 
-	~RoseProject() {
+	~RoseRenderer() {
 		glFinish();
 		glDeleteFramebuffers(1, &fb);
 		glDeleteRenderbuffers(1, &rb);
@@ -260,10 +252,18 @@ public:
 	}
 };
 
-GLuint RoseProject::program = 0;
-GLuint RoseProject::xyuv_loc = 0;
-GLuint RoseProject::tint_loc = 0;
+GLuint RoseRenderer::program = 0;
+GLuint RoseRenderer::xyuv_loc = 0;
+GLuint RoseRenderer::tint_loc = 0;
 
+
+static RoseRenderer* make_renderer(const char *filename, int frames, int width, int height, bool print_errors) {
+	auto pas = translate(filename, frames, print_errors);
+	if (pas.first.empty() && pas.second.empty()) {
+		return nullptr;
+	}
+	return new RoseRenderer(std::move(pas), width, height);
+}
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
 	std::queue<int>* key_queue = (std::queue<int>*) glfwGetWindowUserPointer(window);
@@ -333,7 +333,7 @@ int main(int argc, char *argv[]) {
 	// Load code
 	struct stat filestat;
 	stat(filename, &filestat);
-	RoseProject* project = RoseProject::make(filename, frames, WIDTH, HEIGHT, true);
+	RoseRenderer* project = make_renderer(filename, frames, WIDTH, HEIGHT, true);
 
 	// Set up key callback
 	std::queue<int> key_queue;
@@ -362,11 +362,11 @@ int main(int argc, char *argv[]) {
 			// Reload code
 			printf("\nReloading at %s\n", ctime(&newfilestat.st_mtime));
 			delete project;
-			project = RoseProject::make(filename, frames, WIDTH, HEIGHT, false);
+			project = make_renderer(filename, frames, WIDTH, HEIGHT, false);
 			if (!project) {
 				// Try again
 				usleep(100*1000);
-				project = RoseProject::make(filename, frames, WIDTH, HEIGHT, true);
+				project = make_renderer(filename, frames, WIDTH, HEIGHT, true);
 			}
 			fflush(stdout);
 			filestat = newfilestat;

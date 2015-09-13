@@ -13,7 +13,7 @@ CFLAGS += -O3
 LFLAGS += -s
 endif
 
-rose: main.o translate.o $(patsubst parser/%.cpp,%.o,$(wildcard parser/*.cpp))
+rose: main.o translate.o renderer.o $(patsubst parser/%.cpp,%.o,$(wildcard parser/*.cpp))
 	$(CC) $^ $(LFLAGS) -o rose
 
 %.o: %.cpp Makefile

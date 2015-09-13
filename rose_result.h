@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <utility>
+#include <cstdio>
 
 struct Plot {
 	short t,x,y,r,c;

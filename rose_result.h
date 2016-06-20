@@ -26,26 +26,24 @@ struct RoseStatistics {
 	int max_overwait;
 	int max_stack_height;
 	std::vector<int> circles_in_frame;
-	std::vector<int> turtles_born_in_frame;
+	std::vector<int> turtles_survived_frame;
 	std::vector<int> turtles_died_in_frame;
 
 	RoseStatistics(int frames) : frames(frames) {
 		max_overwait = 0;
 		max_stack_height = 0;
 		circles_in_frame.resize(frames, 0);
-		turtles_born_in_frame.resize(frames, 0);
+		turtles_survived_frame.resize(frames, 0);
 		turtles_died_in_frame.resize(frames, 0);
 	}
 
 	void print(FILE *out) {
 		int max_circles = 0;
 		int max_turtles = 0;
-		int turtles_alive = 0;
 		for (int i = 0 ; i < frames ; i++) {
 			if (circles_in_frame[i] > max_circles) max_circles = circles_in_frame[i];
-			turtles_alive += turtles_born_in_frame[i];
+			int turtles_alive = turtles_survived_frame[i] + turtles_died_in_frame[i] + 1;
 			if (turtles_alive > max_turtles) max_turtles = turtles_alive;
-			turtles_alive -= turtles_died_in_frame[i];
 		}
 		fprintf(out, "\n");
 		fprintf(out, "Number of frames:     %5d\n", frames);

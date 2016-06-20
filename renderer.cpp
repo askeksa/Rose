@@ -24,8 +24,9 @@ GLuint makeShader(GLenum kind, const char **source) {
 	glShaderSource(s, 1, source, 0);
 	glCompileShader(s);
 	glGetShaderiv(s, GL_INFO_LOG_LENGTH, &log_length);
-	log.resize(log_length);
+	log.resize(log_length + 1);
 	glGetShaderInfoLog(s, log_length, nullptr, &log[0]);
+	log[log_length] = '\0';
 	printf("%s", &log[0]);
 	fflush(stdout);
 	return s;
@@ -41,8 +42,9 @@ GLuint makeProgram(const char *vsource, const char *psource) {
 	glAttachShader(program, ps);
 	glLinkProgram(program);
 	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &log_length);
-	log.resize(log_length);
+	log.resize(log_length + 1);
 	glGetProgramInfoLog(program, log_length, nullptr, &log[0]);
+	log[log_length] = '\0';
 	printf("%s", &log[0]);
 	fflush(stdout);
 	return program;

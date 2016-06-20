@@ -66,6 +66,7 @@ class Interpreter : private ReturningAdapter<Value> {
 	std::queue<State> pending;
 	std::vector<Plot> output;
 	RoseStatistics& stats;
+	bool forked_in_frame;
 
 public:
 	Interpreter(SymbolLinking& sym, const char *filename, RoseStatistics& stats)
@@ -87,8 +88,11 @@ public:
 			state = std::move(pending.front());
 			pending.pop();
 			if (NUMBER_TO_INT(state.time) < stats.frames) {
+				forked_in_frame = false;
 				state.proc.getBody().apply(*this);
-				stats.turtles_died_in_frame[NUMBER_TO_INT(state.time)]++;
+				if (!forked_in_frame) {
+					stats.turtles_died_in_frame[NUMBER_TO_INT(state.time)]++;
+				}
 			} else {
 				int overwait = NUMBER_TO_INT(state.time) - stats.frames;
 				if (overwait > stats.max_overwait) stats.max_overwait = overwait;
@@ -323,9 +327,7 @@ private:
 			args.push_back(apply(a));
 		}
 		pending.emplace(proc.proc, state, std::move(args));
-		if (NUMBER_TO_INT(state.time) < stats.frames) {
-			stats.turtles_born_in_frame[NUMBER_TO_INT(state.time)]++;
-		}
+		forked_in_frame = true;
 	}
 
 	void caseATempStatement(ATempStatement s) override {
@@ -336,6 +338,12 @@ private:
 		Value wait = apply(s.getExpression());
 		if (wait.kind != ValueKind::NUMBER) {
 			throw CompileException(s.getToken(), "Wait value is not a number");
+		}
+		int frame = NUMBER_TO_INT(state.time);
+		int new_frame = NUMBER_TO_INT(state.time + wait.number);
+		while (frame < stats.frames && frame < new_frame) {
+			stats.turtles_survived_frame[frame++]++;
+			forked_in_frame = false;
 		}
 		state.time += wait.number;
 	}

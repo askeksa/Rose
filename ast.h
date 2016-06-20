@@ -12,8 +12,8 @@ using namespace rose;
 
 // 16:16 fixed point
 typedef int number_t;
-#define MAKE_NUMBER(n) (int(n * 65536))
-#define NUMBER_TO_INT(n) ((short)(n >> 16))
+#define MAKE_NUMBER(n) (int((n) * 65536))
+#define NUMBER_TO_INT(n) ((short)((n) >> 16))
 
 template <class T>
 class nodemap {

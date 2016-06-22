@@ -188,7 +188,7 @@ private:
 		if (tail_fork[s]) {
 			// Not enough space for arguments?
 			if (s.getArgs().size() > stack_height) {
-				sym.warning(s.getToken(), "Tail fork not optimized because of too little stack space");
+				//sym.warning(s.getToken(), "Tail fork not optimized because of too little stack space");
 				return false;
 			}
 

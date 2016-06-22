@@ -108,6 +108,9 @@ public:
 			AProcedure proc = p.cast<AProcedure>();
 			procs.push_back(proc);
 			current_scope->add(proc.getName(), VarKind::PROCEDURE, current_proc_index++);
+			if (current_proc_index > 256) {
+				throw CompileException(proc.getName(), "Too many procedures");
+			}
 		}
 		procedure_phase = true;
 	}

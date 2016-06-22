@@ -22,14 +22,15 @@ static inline int verify(int base, int v, int max, const char *what) {
 #define BC_DRAW  0x04                                      //
 #define BC_TAIL  0x05                                      //  o
 #define BC_PLOT  0x06                                      //
-#define BC_MUL   0x07                                      // io
-#define BC_SEED  0x08                                      // i
+#define BC_PROC  0x07                                      //  o
+//               0x08                                      //
 #define BC_DIV   0x09                                      // io
 #define BC_WAIT  0x0A                                      // i
 #define BC_SINE  0x0B                                      // io
-//               0x0C                                      // i
+#define BC_SEED  0x0C                                      // i
 #define BC_NEG   0x0D                                      // io
 #define BC_MOVE  0x0E                                      // i
+#define BC_MUL   0x0F                                      // io
 #define BC_WHEN(cond)  (verify(0x10, cond,  15, "WHEN"))   // i j
 #define BC_FORK(nargs) (verify(0x20, nargs, 15, "FORK"))   // i
 #define BC_OP(op)      (verify(0x30, op,    15, "OP"))     // io
@@ -70,7 +71,7 @@ static inline int verify(int base, int v, int max, const char *what) {
 typedef unsigned char bytecode_t;
 
 static inline int stack_change(bytecode_t bc) {
-	static const int single[15] = { 0,0,0,1,0,0,0,-1,-1,-1,-1,0,0,0,-1 };
+	static const int single[16] = { 0,0,0,1,0,0,0,1,(0),-1,-1,0,-1,0,-1,-1 };
 	int arg = bc & 15;
 	switch (bc >> 4) {
 	case 0: // Misc

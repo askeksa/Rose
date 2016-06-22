@@ -136,7 +136,8 @@ private:
 			emit(BC_LOCAL(stack_height - var.index - 1));
 			break;
 		case VarKind::PROCEDURE:
-			emit(BC_CONST(var.index));
+			emit(BC_PROC);
+			out.push_back(var.index);
 			break;
 		}
 	}

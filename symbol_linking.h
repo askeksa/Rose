@@ -98,7 +98,7 @@ public:
 
 	void outAProcMarker(AProcMarker proc_marker) override {
 		AProgram prog = proc_marker.parent().cast<AProgram>();
-		constants.resize(prog.getProcedure().size(), 0);
+		constants.clear();
 		current_scope = new Scope(nullptr, prog);
 		current_scope->add(TIdentifier::make("x"), VarKind::GLOBAL, GlobalKind::X);
 		current_scope->add(TIdentifier::make("y"), VarKind::GLOBAL, GlobalKind::Y);
@@ -116,7 +116,7 @@ public:
 		current_scope = current_scope->pop();
 
 		// Sort constants
-		std::sort(constants.begin() + prog.getProcedure().size(), constants.end(), [](int a, int b) {
+		std::sort(constants.begin(), constants.end(), [](int a, int b) {
 			return (unsigned)a < (unsigned)b;
 		});
 		for (int i = 0 ; i < constants.size() ; i++) {

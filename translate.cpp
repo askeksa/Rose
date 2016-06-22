@@ -70,14 +70,14 @@ RoseResult translate(const char *filename, int max_time, bool print) {
 		stats.print(stdout);
 
 		printf("\n");
-		int n = sl.constants.size() - n_proc;
+		int n = sl.constants.size();
 		int n_columns = 4;
 		int n_rows = (n - 1) / n_columns + 1;
 		for (int r = 0 ; r < n_rows ; r++) {
 			for (int c = 0 ; c < n_columns ; c++) {
 				int i = r + c * n_rows;
 				if (i < n) {
-					int value = sl.constants[n_proc + i];
+					int value = sl.constants[i];
 					int frac = 16;
 					while (frac > 0 && ((value >> (16 - frac)) & 1) == 0) {
 						frac--;

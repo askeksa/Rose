@@ -1,0 +1,410 @@
+# Intro for Chiperia issue #5
+# Amiga OCS music disk released June 2016
+# Rose scripting by Blueberry
+
+plan
+	0:445
+	2:FFF
+
+	1:D7F
+	wait 96
+	1:68F
+	wait 96
+	1:5E5
+	wait 96
+	1:FD4
+	wait 84
+
+	3:94B
+	wait 12
+	1:D7F
+	wait 84
+	3:44C
+	wait 12
+	1:68F
+	wait 84
+	3:393
+	wait 12
+	1:5E5
+	wait 84
+	3:B80
+	wait 12
+	1:FD4
+	wait 96
+
+	1:D7F
+	3:94B
+	wait 96
+	1:68F
+	3:44C
+	wait 96
+	1:5E5
+	3:393
+	wait 96
+	1:FD4
+	3:B80
+
+	wait 84
+	0:356
+	wait 3
+	0:267
+	wait 3
+	0:178
+	wait 3
+	0:089
+	wait 3
+	1:000
+
+	wait 210
+	0:B80
+	wait 150
+	0:822
+	wait 200
+	3:428
+	wait 35
+	0:428
+	wait 50
+	0:445
+	wait 28
+
+	1:FFF
+	wait 6
+	1:D7F
+	wait 6
+	1:94B
+	2:FFF
+	wait 6
+	2:68F
+	wait 6
+	1:445
+	2:44C
+	3:FFF
+	wait 6
+	3:5E5
+	wait 6
+	2:445
+	3:393
+	1:FFF
+	wait 6
+	1:FD4
+	wait 6
+	3:445
+	1:B80
+	wait 12
+	1:445
+	wait 12
+	0:334
+	1:334
+	2:334
+	3:334
+	wait 6
+	0:223
+	1:223
+	2:223
+	3:223
+	wait 6
+	0:112
+	1:112
+	2:112
+	3:112
+	wait 6
+	0:000
+	1:000
+	2:000
+	3:000
+
+
+proc main
+	fork cdots without_orbit
+	wait 96
+	fork hdots without_orbit
+	wait 96
+	fork idots without_orbit
+	wait 96
+	fork pdots without_orbit
+
+	fork cdots with_orbit
+	wait 96
+	fork hdots with_orbit
+	wait 96
+	fork idots with_orbit
+	wait 96
+	fork pdots with_orbit
+	wait 96
+	wait 96
+
+	fork cdots without_orbit
+	fork clines
+	wait 96
+	fork hdots without_orbit
+	fork hlines
+	wait 96
+	fork idots without_orbit
+	fork ilines
+	wait 96
+	fork pdots without_orbit
+	fork plines
+	wait 96
+
+	fork sprouts
+
+	wait 672
+	jump 176 100
+	fork beam1 1
+	wait 12
+	fork beam2 2
+	wait 12
+	fork beam3 3
+	fork beam1 0
+	wait 12
+	fork beam4 1
+
+proc beam1 t
+	tint t
+	face 221 fork beam 0.09 0 9 0.06
+	face 163 fork beam 0.09 0 9 0.06
+
+proc beam2 t
+	tint t
+	face 231 fork beam 0.09 0 12 0.06
+	face 153 fork beam 0.09 0 12 0.06
+
+proc beam3 t
+	tint t
+	face 241 fork beam 0.09 0 12 0.06
+	face 143 fork beam 0.09 0 12 0.06
+
+proc beam4 t
+	tint t
+	face 251 fork beam 0.09 0 11 0.06
+	face 133 fork beam 0.09 0 11 0.06
+
+proc beam w s ms ds
+	when s < ms
+		size s draw
+		move 1
+		wait w
+		fork beam w s+ds ms ds
+	done
+
+proc cdots p
+	fork p 231 58 100
+	wait 12
+	fork p 105 75 20
+	wait 12
+	fork p 105 205 10
+	wait 12
+	fork p 231 222 200
+
+proc clines
+	wait 1
+	fork arc dot 180 140 100 206 ~4 1 11
+	wait 12
+	fork arc dot 180 140 100 148 ~4 1 11
+	wait 12
+	fork arc dot 180 140 100 90 ~4 1 11
+
+proc hdots p
+	fork p 140 57 10
+	wait 12
+	fork p 212 57 100
+	wait 12
+	fork p 140 223 210
+	wait 12
+	fork p 212 223 145
+
+proc hlines
+	wait 2
+	fork line dot 140 80 64 12 2 11
+	wait 12
+	fork line dot 212 80 64 12 2 11
+	fork line dot 152 140 0 12 2 5
+
+proc idots p
+	fork p 176 53 10
+	wait 12
+	fork p 176 111 120
+	wait 12
+	fork p 176 169 250
+	wait 12
+	fork p 176 227 180
+
+proc ilines
+	wait 4
+	fork line dot 176 76 64 12 4 2
+	wait 12
+	fork line dot 176 134 64 12 4 2
+	wait 12
+	fork line dot 176 192 64 12 4 2
+
+proc pdots p
+	fork p 150 49 60
+	wait 12
+	fork p 217 109 100
+	wait 12
+	fork p 150 169 136
+	wait 12
+	fork p 150 227 5
+
+proc plines
+	wait 2
+	fork arc dot 160 109 60 203 9 2 5
+	wait 1
+	fork line dot 150 73 64 12 3 7
+	wait 11
+	fork arc dot 160 109 60 17 9 2 5
+	wait 14
+	fork line dot 150 192 64 12 4 2
+
+proc flashdot x y
+	size 15
+	jump x y
+	tint 2 draw
+	wait 6
+	tint 1 draw
+	wait 42
+	tint 0 draw
+
+proc dot
+	size 3
+	tint 2 draw
+	wait 3
+	tint 1 draw
+	wait 6
+	tint 3 draw
+	wait 39
+	tint 0 draw
+
+proc string
+	size 2
+	tint 3 draw
+	wait 20
+	tint 0 draw
+
+proc arc p cx cy r a da w n
+	when n
+		jump cx cy
+		face a
+		move r
+		fork p
+		wait w
+		fork arc p cx cy r a+da da w n-1
+	done
+
+proc line p sx sy a d w n
+	jump sx sy
+	face a
+	fork line2 p d w n
+
+proc line2 p d w n
+	when n
+		fork p
+		wait w
+		move d
+		fork line2 p d w n-1
+	done
+
+proc orbit cx cy ac as w
+	temp lstep = 3
+	temp astep = 5
+	temp nl = 70
+	wait 96-(as+nl)*w
+	jump cx cy face ac-as*astep move 19
+	turn ~64 move nl*lstep turn 128
+	fork line string x y dir lstep w nl
+	wait nl*w
+	fork arc string cx cy 18 ac-as*astep astep w as*2+1
+	wait as*2*w
+	jump cx cy face ac+as*astep move 19
+	turn 64
+	fork line string x y dir lstep w nl
+
+proc with_orbit cx cy a
+	fork orbit cx cy a 10 0.3
+	wait 96
+	fork flashdot cx cy
+
+proc without_orbit cx cy a
+	fork flashdot cx cy
+
+
+proc wipe d s1 s2 n1 n2
+	when n1
+		face d+64
+		fork wipe2 s2 n2
+		face d move s1
+		wait 1
+		fork wipe d s1 s2 n1-1 n2
+	done
+
+proc wipe2 s2 n2
+	when n2
+		draw
+		move s2
+		fork wipe2 s2 n2-1
+	done
+
+
+proc sprouts
+	jump 270 290 face 210 seed 2
+	fork sprout 1 24 200
+	wait 180
+
+	jump 100 430 size 10 tint 3
+	fork wipe 170 17 12 26 37
+	wait 12
+
+	jump ~10 210 face 190 seed 4
+	fork sprout 1 24 200
+	wait 170
+
+	jump ~90 49 size 10 tint 0
+	fork wipe 240 17 12 26 32
+	wait 22
+
+	jump 120 0 face 35 seed 5
+	fork sprout 1 24 180
+	wait 175
+
+	jump 300 430 size 10 tint 3
+	fork wipe 140 17 12 25 36
+	wait 10
+
+	jump 354 238 face 120 seed 9
+	fork sprout 1 24 88
+	wait 80
+
+	jump 100 430 size 10 tint 0
+	fork wipe 170 17 12 26 37
+
+
+proc flower n
+	when n
+		temp a = (rand-0.44)*100
+		temp m = rand*20
+		turn a move m
+		size 0 draw
+		move ~m turn ~a
+		wait 0.5
+		fork flower n-1
+	done
+
+proc sprout t s n
+	when n
+		when s == 12
+			temp a = (rand-0.4)*100
+			turn a
+			fork sprout 3-t 20 n
+			turn ~a
+		done
+		when s
+			tint t size 1 draw
+			move 3
+			turn (rand-0.4)*30
+			wait 1
+			fork sprout t s-1 n-1
+		else
+			fork flower 20
+		done
+	done
+

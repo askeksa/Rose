@@ -1,0 +1,1755 @@
+# Je Suis Rose by Ghostown
+# Amiga OCS 16k for Decrunch 2016
+# Rose scripting by Slayer
+
+plan
+    0:26b
+    1:69d
+    2:69d
+    3:69d
+# 225 all draws done
+    wait 200+20+5
+# first pulse
+    3:fff
+    wait 9
+    2:9cf
+    wait 9
+    3:69d
+    wait 9
+    2:69d
+    wait 20+6
+# second pulse
+    3:fff
+    wait 9
+    2:9cf
+    wait 9
+    3:69d
+    wait 9
+    2:69d
+    wait 20+6
+#third pulse
+    3:fff
+    wait 9
+    2:9cf
+    wait 9
+    3:69d
+    wait 9
+    2:69d
+    wait 9
+
+    wait 200+20+5
+
+# first pulse
+   3:fff
+   wait 9
+   2:9cf
+   wait 9
+   3:69d
+   wait 9
+   2:69d
+   wait 10+6
+# second pulse
+   3:fff
+   wait 9
+   2:9cf
+   wait 9
+   3:69d
+   wait 9
+   2:69d
+   wait 10+6
+#third pulse
+   3:fff
+   wait 9
+   2:9cf
+   wait 9
+   3:69d
+   wait 9
+   2:69d
+   wait 9
+#4 pulse
+   3:fff
+   wait 9
+   2:9cf
+   wait 9
+   3:69d
+   wait 9
+   2:69d
+   wait 9
+
+    wait 15 # wait for gradient pulse
+
+# gradient pulse colors 69d 8be bce def fff
+    1:69d
+    3:69d
+    2:69d
+    wait 2
+    1:8be
+    2:8be
+    3:8be
+    wait 2
+    1:bce
+    2:bce
+    3:bce
+    wait 2
+    1:def
+    2:def
+    3:def
+    wait 2
+    1:fff
+    2:fff
+    3:fff
+    wait 2
+    1:def
+    2:def
+    3:def
+    wait 2
+    1:bce
+    2:bce
+    3:bce
+    wait 2
+    1:8be
+    2:8be
+    3:8be
+    wait 2
+    1:69d
+    3:69d
+    2:69d
+    wait 2
+
+    wait 30 # wait for second gradient pulse
+
+# gradient pulse colors (to backg) 69d 58d 47c 37c 26b
+
+    1:69d
+    2:69d
+    3:69d
+    wait 2
+
+    1:58d
+    2:58d
+    3:58d
+    wait 2
+
+    1:47c
+    2:47c
+    3:47c
+    wait 2
+
+    1:37c
+    2:37c
+    3:37c
+    wait 2
+    2:26b
+    3:26b
+    wait 2
+    1:37c
+    2:37c
+    3:37c
+    wait 2
+    1:47c
+    2:47c
+    3:47c
+    wait 2
+
+    1:58d
+    2:58d
+    3:58d
+    wait 2
+
+    1:69d
+    3:69d
+    2:69d
+    wait 2
+
+    wait 30 # wait for second gradient pulse
+
+# gradient pulse colors 69d 8be bce def fff
+    1:69d
+    3:69d
+    2:69d
+    wait 2
+    1:8be
+    2:8be
+    3:8be
+    wait 2
+    1:bce
+    2:bce
+    3:bce
+    wait 2
+    1:def
+    2:def
+    3:def
+    wait 2
+    1:fff
+    2:fff
+    3:fff
+    wait 2
+    1:def
+    2:def
+    3:def
+    wait 2
+    1:bce
+    2:bce
+    3:bce
+    wait 2
+    1:8be
+    2:8be
+    3:8be
+    wait 2
+    1:69d
+    3:69d
+    2:69d
+    wait 2
+
+    wait 30 # wait for thord gradient pulse
+
+# gradient pulse colors (to backg) 69d 58d 47c 37c 26b
+    1:69d
+    3:69d
+    2:69d
+    wait 2
+    1:58d
+    2:58d
+    3:58d
+    wait 2
+    1:47c
+    2:47c
+    3:47c
+    wait 2
+    1:37c
+    2:37c
+    3:37c
+    wait 2
+    1:26b
+    2:26b
+    3:26b
+    wait 2
+    1:37c
+    2:37c
+    3:37c
+    wait 2
+    1:47c
+    2:47c
+    3:47c
+    wait 2
+    1:58d
+    2:58d
+    3:58d
+    wait 2
+    1:69d
+    3:69d
+    2:69d
+    wait 2
+
+    wait 30 # wait for thord gradient pulse
+
+# gradient pulse colors 69d 8be bce def fff
+    1:69d
+    3:69d
+    2:69d
+    wait 2
+    1:8be
+    2:8be
+    3:8be
+    wait 2
+    1:bce
+    2:bce
+    3:bce
+    wait 2
+    1:def
+    2:def
+    3:def
+    wait 2
+    1:fff
+    2:fff
+    3:fff
+    wait 2
+    1:def
+    2:def
+    3:def
+    wait 2
+    1:bce
+    2:bce
+    3:bce
+    wait 2
+    1:8be
+    2:8be
+    3:8be
+    wait 2
+    1:69d
+    3:69d
+    2:69d
+    wait 2
+# gradient pulse colors (to backg) 69d 58d 47c 37c 26b
+
+    wait 30
+
+    1:69d
+    3:69d
+    2:69d
+    wait 2
+    1:58d
+    2:58d
+    3:58d
+    wait 2
+    1:47c
+    2:47c
+    3:47c
+    wait 2
+    1:37c
+    2:37c
+    3:37c
+    wait 2
+    1:26b
+    2:26b
+    3:26b
+    wait 2
+    1:37c
+    2:37c
+    3:37c
+    wait 2
+    1:47c
+    2:47c
+    3:47c
+    wait 2
+    1:58d
+    2:58d
+    3:58d
+    wait 2
+    1:69d
+    3:69d
+    2:69d
+    wait 2
+
+# cleaning background change
+    wait 30+5
+    1:78A
+    2:78a
+    3:78a
+    0:26a
+    wait 3
+    0:359
+    wait 3
+    0:358
+    wait 3
+    0:457
+# gradiet fade 2266BB 2266AA 335599 335588 445577
+    wait 90
+    1:234
+    0:234
+    wait 2
+    0:657
+
+    wait 90+2
+    2:e67
+    0:e67
+    wait 2
+    0:457
+
+
+
+    wait 90+5
+
+    0:fff
+    wait 2
+    0:457
+    
+    3:def
+
+
+    
+# orange blinks
+# znikanie hot
+   wait 100
+
+    1:e67
+    wait 5
+    1:def
+    wait 5
+    1:e67
+    wait 5
+    1:def
+    wait 5
+    1:e67
+    wait 5
+    1:def
+    wait 5
+    1:e67
+    wait 5
+    1:def
+    wait 5
+    1:e67
+    wait 5
+    1:def
+    wait 5
+    1:e67
+    wait 5
+    1:def
+    wait 5
+
+# background red before hot
+#EE6677
+#CC6677
+#995577
+#665577
+#445577
+
+    wait 200+30+8
+    0:457
+    wait 3
+    0:657
+    wait 3
+    0:957
+    wait 3
+    0:c67
+    wait 3
+    0:e67
+
+    wait 30
+    1:fc1
+    wait 20+7
+    3:e67
+    wait 3
+    0:fc1
+    wait 5
+    0:e67
+    
+    wait 5
+    2:fff
+
+    wait 5
+    2:fff
+
+    wait 50+6
+    wait 4
+    0:fc1
+    wait 2
+    0:fff
+    wait 4
+    0:fc1
+    0:e67
+    
+    wait 40+4
+
+    0:fff
+    wait 3
+    0:e67
+
+    wait 40
+
+    0:fff
+
+    wait 3
+    2:fc1
+    0:657
+
+    wait 50
+
+    2:fff
+    0:fff
+    wait 3
+    0:e67
+    
+    wait 40
+    
+    0:fff
+    wait 3
+    0:657
+    
+    wait 40+5
+    
+    # zolty blysk przy tosh
+    0:fc1
+    wait 3
+    0:e67
+    
+    wait 40+5
+    
+    0:fc1
+    wait 3
+    0:657
+    
+    # tosh napisy pierdolniecie przy h
+    
+    wait 100+20+1
+    0:fc1
+    1:f66
+    wait 3
+    0:26b
+    
+    wait 80
+    
+    0:fc1
+    wait 5
+    0:39f
+    wait 5  
+    0:fc1
+    wait 5
+    0:39f
+    wait 5  
+    0:fc1
+    wait 5
+    0:39f
+    wait 5  
+    0:fc1
+    wait 5
+    0:666
+    1:f93
+    
+    wait 100+30+5
+    0:fff
+    1:3c6
+    wait 5
+    0:399
+    1:3c6
+    2:fff # text
+    3:f66
+    1:39f
+    wait 100+10+5
+  
+    0:fff
+    wait 5
+       
+    0:666
+    wait 50
+    0:fff
+    wait 5
+    0:666
+    1:666
+    2:aaa
+    wait 40
+    1:fff
+    2:fff
+    0:fff
+    wait 5
+    0:666
+    2:666
+    1:666
+    wait 6
+    1:ddd
+    wait 6
+    1:666
+    wait 6
+    1:aaa
+    wait 6
+    1:666
+    wait 8
+    1:999
+    wait 6
+    1:666
+
+    wait 50
+    0:fff
+    wait 3
+    0:457
+    1:234
+    2:f73
+    3:234
+    # pulsacjakrzyza
+    
+    wait 100
+    2:f83
+    wait 3
+    2:fa2
+    wait 3
+    2:fb1
+    wait 3
+    2:fff
+    wait 3
+    2:fb1
+    wait 3
+    2:fa2
+    wait 3
+    2:f83
+    wait 3
+    2:f73
+    
+    wait 80
+    0:fff
+    wait 5
+    0:457
+    3:fc1
+    2:234
+    wait 10
+    2:fc1
+    3:234
+    wait 10
+    3:fc1
+    2:234
+    wait 10
+    2:fc1
+    3:234
+    wait 10 
+    3:fc1
+    2:234
+    wait 10
+    2:fc1
+    3:234
+    wait 30 
+    
+    
+    wait 10
+    0:fff
+    wait 3
+    0:457
+    2:fc1
+    3:69d
+    wait 10
+    3:fc1
+    2:69d
+    wait 10
+    2:fc1
+    3:69d
+    wait 10 
+    3:fc1
+    2:69d
+    wait 10
+    2:fc1
+    3:69d
+    wait 10
+    3:fc1
+    2:69d
+    wait 10
+    2:fc1
+    3:69d
+    wait 10 
+    
+    wait 20
+    0:fff
+    wait 5
+    1:066
+    0:066
+    3:399
+    2:fc1
+    wait 10
+    2:399
+    3:fc1
+    wait 10
+    3:399
+    2:fc1
+    wait 10
+    2:399
+    3:fc1
+    wait 10 
+    3:399
+    2:fc1
+    wait 10
+    2:399
+    3:fc1
+    wait 30 
+    
+    0:fff
+    wait 1
+    3:066
+    0:066
+    2:f83
+    wait 3
+    2:fa2
+    wait 3
+    2:fb1
+    wait 3
+    2:fff
+    wait 3
+    2:fb1
+    wait 3
+    2:fa2
+    wait 3
+    2:f83
+    wait 3
+    2:f73
+
+    wait 1
+    3:066
+    0:066
+    2:f83
+    wait 3
+    2:fa2
+    wait 3
+    2:fb1
+    wait 3
+    2:fff
+    wait 3
+    2:fb1
+    wait 3
+    2:fa2
+    wait 3
+    2:f83
+    wait 3
+    2:f73
+    
+    wait 1
+    3:066
+    0:066
+    2:f83
+    wait 3
+    2:fa2
+    wait 3
+    2:fb1
+    wait 3
+    2:fff
+    wait 3
+    2:fb1
+    wait 3
+    2:fa2
+    wait 3
+    2:f83
+    wait 3
+    2:f73
+    
+    wait 1
+    3:066
+    0:066
+    2:f83
+    wait 3
+    2:fa2
+    wait 3
+    2:fb1
+    wait 3
+    2:fff
+    wait 3
+    2:bdd
+    wait 3
+    2:7be
+    wait 3
+    2:488
+    wait 3
+    2:066
+
+    wait 10
+    0:fff
+    1:fff
+    2:fff
+    3:fff
+    wait 5
+    wait 2
+
+    0:fc1
+    wait 5
+
+    wait 3
+        
+    0:538
+    1:a9c
+    2:538
+    3:538
+    wait 5
+    1:fff
+    0:538
+    
+    wait 30
+
+    #eyes
+    2:737
+    wait 2
+    2:a35
+    wait 2
+    2:c44
+    wait 2
+    2:e43
+    wait 2
+    2:c44
+    wait 2
+    2:a35
+    wait 2  
+    2:737
+    wait 2 
+    2:538
+    
+    wait 10
+    #eyes
+    2:737
+    wait 2
+    2:a35
+    wait 2
+    2:c44
+    wait 2
+    2:e43
+    wait 2
+    2:c44
+    wait 2
+    2:a35
+    wait 2  
+    2:737
+    wait 2 
+    2:538
+    
+    wait 30
+    
+    0:fff
+    1:fff
+    2:fff
+    3:fff
+    wait 6
+    0:538
+    1:538
+    2:538
+    3:538
+
+    #skull fade
+
+     1:76a
+         wait 4
+     1:a9c
+         wait 4
+     1:dce
+         wait 4
+     1:fff
+         wait 4
+     1:dce
+         wait 4
+     1:a9c
+         wait 4
+     1:76a
+         wait 4
+     1:538
+         wait 4
+     1:76a
+         wait 4
+     1:a9c
+         wait 4
+     1:dce
+         wait 4
+     1:fff
+         wait 4
+     1:dce
+         wait 4
+     1:a9c
+         wait 5
+     1:76a
+         wait 5
+     1:538
+         wait 5
+     1:76a
+         wait 5
+     1:a9c
+         wait 6
+     1:dce
+         wait 6
+     1:fff
+
+    
+     
+     #eyes
+     2:737
+     wait 2
+     2:a35
+     wait 2
+     2:c44
+     wait 2
+     2:e43
+     wait 2
+     2:c44
+     wait 2
+     2:a35
+     wait 2  
+     2:737
+     wait 2 
+     2:538
+     
+     2:a35
+     wait 2
+     2:c44
+     wait 2
+     2:e43
+     wait 2
+     2:c44
+     wait 2
+     2:a35
+     wait 2  
+     2:737
+     wait 2 
+     2:538
+     
+     #eyes
+     2:737
+     wait 2
+     2:a35
+     wait 2
+     2:c44
+     wait 2
+     2:e43
+     wait 2
+     2:c44
+     wait 2
+     2:a35
+     wait 2  
+     2:737
+     wait 2 
+     2:538
+     
+     2:a35
+     wait 2
+     2:c44
+     wait 2
+     2:e43
+     wait 2
+     2:c44
+     wait 2
+     2:a35
+     wait 2  
+     2:737
+     wait 2 
+     2:538
+     
+     #eyes
+     2:737
+     wait 2
+     2:a35
+     wait 2
+     2:c44
+     wait 2
+     2:e43
+     wait 2
+     2:c44
+     wait 2
+     2:a35
+     wait 2  
+     2:737
+     wait 2 
+     2:538
+      
+# skull fade out
+wait 20
+    1:dce
+    wait 16
+    1:a9c
+    wait 16
+    1:76a
+    wait 16
+    1:659
+    wait 16
+    1:538
+    0:538
+
+    wait 16+10+5
+    1:333
+    2:e67
+    3:657
+
+    wait 30
+    0:fff
+    3:ffa
+    wait 3
+    3:657
+    0:538
+        
+    wait 30+8
+    0:fff
+    3:ffa
+    wait 3
+    3:657
+    0:538
+    
+    wait 40+4
+    0:fff
+    3:ffa
+    wait 3
+    3:657
+    0:538
+    
+    wait 40+4
+    0:fff
+    3:ffa
+    wait 3
+    3:657
+    0:538
+     
+    wait 40+6
+    0:fff
+    3:ffa
+    wait 3
+    3:657
+    0:538
+    
+    wait 40+6
+    0:fff
+    3:ffa
+    wait 3
+    3:657
+    0:538
+    
+    wait 40+6
+    0:fff
+    3:ffa
+    wait 3
+    3:657
+    0:538
+    
+    wait 40+6
+    0:fff
+    3:ffa
+    wait 3
+    3:657
+    0:538
+    
+    wait 40+6
+    0:fff
+    3:ffa
+    wait 3
+    3:657
+    0:538
+    
+    wait 40+6
+    0:fff
+    3:ffa
+    wait 3
+    3:657
+    0:538
+    
+    wait 40+6
+    0:fff
+    3:ffa
+    wait 3
+    3:657
+    0:538
+    
+    wait 40+6
+    0:fff
+    3:ffa
+    wait 3
+    3:657
+    0:538
+    
+    wait 40+6
+    0:fff
+    3:ffa
+    wait 3
+    3:657
+    0:538
+    
+    wait 35
+    2:657
+    wait 11
+
+    2:e67
+    0:fff
+    wait 3
+    2:fff
+    0:e67
+    3:acf
+     
+    wait 40+6
+    0:fff
+    3:fff
+    wait 3
+    0:acf   
+    3:acf   
+     
+     
+    0:fff
+    0:acf       
+    
+    wait 40
+    0:399
+
+    wait 40
+    0:acf
+    wait 200+10+6
+    2:acf
+    3:acf
+ wait 2
+    0:58d
+    2:58d
+    3:58d
+ wait 2
+    0:037
+    2:037
+    3:037
+    1:fc1
+ 
+ wait 50
+ 
+    1:fc1
+    wait 2
+    1:784
+    wait 2
+    1:037
+    wait 2
+    
+    wait 30
+    
+    1:037
+    wait 2
+    1:784
+    wait 2
+    1:fc1
+    wait 10
+    1:784
+    wait 2
+    1:037
+    wait 2
+    
+    wait 30
+    
+    1:037
+    wait 2
+    1:784
+    wait 2
+    1:fc1
+    wait 10
+    1:784
+    wait 2
+    1:037
+    wait 2
+    
+    wait 20
+    0:136
+    1:136
+    2:136
+    3:136
+    wait 20
+    0:235
+    1:235
+    2:235
+    3:235
+    wait 20
+    0:334
+    1:334
+    2:334
+    3:334
+    wait 20
+    1:556
+    2:645
+    3:778
+    wait 20
+    1:778
+    2:a56
+    3:bbc
+    wait 20
+    1:aab
+    2:e67
+    3:fff
+    
+proc main
+    size 20 tint 1
+#center 180x140
+    jump 90 50 draw wait 9
+    jump 90 90+5 draw wait 9
+    jump 90 100+40 draw wait 9
+    jump 90 100+80+5 draw wait 9
+    jump 90 200+30 draw wait 9
+
+    jump 90+40+5 50 draw wait 9
+    jump 90+40+5 90+5 draw wait 9
+    tint 2 jump 90+40+5 100+40 draw wait 9 tint 1
+    jump 90+40+5 100+80+5 draw wait 9
+    jump 90+40+5 200+30 draw wait 9
+
+    jump 100+80 50 draw wait 9
+    tint 2 jump 100+80 90+5 draw wait 9
+    tint 3 jump 100+80 100+40 draw wait 9
+    tint 2 jump 100+80 100+80+5 draw wait 9 tint 1
+    jump 100+80 200+30 draw wait 9
+
+    jump 200+20+5 50 draw wait 9
+    jump 200+20+5 90+5 draw wait 9
+    tint 2 jump 200+20+5 100+40 draw wait 9 tint 1
+    jump 200+20+5 100+80+5 draw wait 9
+    jump 200+20+5 200+30 draw wait 9
+
+    jump 200+70 50 draw wait 9
+    jump 200+70 90+5 draw wait 9
+    jump 200+70 100+40 draw wait 9
+    jump 200+70 100+80+5 draw wait 9
+    jump 200+70 200+30 draw wait 9
+
+    size 10 tint 0
+    wait 100+40+5
+#center 180x140
+    jump 90 50 draw wait 9
+    jump 90 90+5 draw wait 9
+    jump 90 100+40 draw wait 9
+    jump 90 100+80+5 draw wait 9
+    jump 90 200+30 draw wait 9
+
+    jump 90+40+5 50 draw wait 9
+    jump 90+40+5 90+5 draw wait 9
+    jump 90+40+5 100+40 draw wait 9
+    jump 90+40+5 100+80+5 draw wait 9
+    jump 90+40+5 200+30 draw wait 9
+
+    jump 100+80 50 draw wait 9
+    jump 100+80 90+5 draw wait 9
+    jump 100+80 100+40 draw wait 9
+    jump 100+80 100+80+5 draw wait 9
+    jump 100+80 200+30 draw wait 9
+
+    jump 200+20+5 50 draw wait 9
+    jump 200+20+5 90+5 draw wait 9
+    jump 200+20+5 100+40 draw wait 9
+    jump 200+20+5 100+80+5 draw wait 9
+    jump 200+20+5 200+30 draw wait 9
+
+    jump 200+70 50 draw wait 9
+    jump 200+70 90+5 draw wait 9
+    jump 200+70 100+40 draw wait 9
+    jump 200+70 100+80+5 draw wait 9
+    jump 200+70 200+30 draw wait 9
+
+    # clear corners part one 
+    wait 400+60
+    size 21 tint 0
+    jump 90 50 draw
+    jump 90 90+5 draw
+    jump 100+30+5 50 draw
+
+    jump 200+20+5 200+30 draw
+    jump 200+70 200+30 draw
+    jump 200+70 100+80+5 draw
+
+#clear corners 2
+
+    wait 100
+    jump 200+20+5 50 draw 
+    jump 200+70 50 draw
+    jump 200+70 90+5 draw
+
+    jump 90 100+80+5 draw
+    jump 90 200+30 draw
+    jump 100+30+5 200+30 draw
+
+#clear scren
+    wait 300+50
+    jump 100+80 50 draw
+    jump 100+30+5 90+5 draw
+    jump 100+80 90+5 draw
+    jump 200+20+5 90+5 draw
+    jump 90 100+40 draw
+    jump 100+30+5 100+40 draw
+    jump 100+80 100+40 draw
+    jump 200+20+5 100+40 draw
+    jump 200+70 100+40 draw
+    jump 100+30+5 100+80+5 draw
+    jump 100+80 100+80+5 draw
+    jump 200+20+5 100+80+5 draw
+    jump 100+80 200+30 draw
+
+#start drawing growing boxes
+    wait 20
+    fork squares1
+
+#clear screen
+    wait 300
+    size 40 tint 0
+    jump 100+40 100 plot
+    jump 200+20 100 plot
+    jump 100+40 100+80 plot
+    jump 200+20 100+80 plot
+
+#hot
+    wait 2
+    fork letterh 100+80 100+20 1
+    wait 10
+    fork lettero 100+80+50 100+20 1
+    wait 10
+    fork lettert 100+100+80 100+20 1
+    wait 50 
+    tint 0 size 40
+    jump 200+10 100+40 plot
+    jump 200+90 100+40 plot
+#tosh start
+    jump 100+40+5 80 wait 20+5
+    fork animline 35 0 2 3 50 2
+    jump 200+10+5 80 wait 30+5
+    fork animline 35 64 2 3 50 2
+    jump 200+15 100+50 wait 30+5
+    fork animline 35 128 2 3 50 2
+    jump 100+40+5 100+50 wait 35
+    fork animline 35 192 2 3 50 2
+    jump 100+50 100+50 wait 80
+    fork linefill 100+50 100+40+5 1 60 61
+    wait 30
+    fork lettert 80 100+50+30 2
+    wait 40+2
+    fork lettero 100+40 100+50+30 2
+    wait 40+6
+    fork letters 100+90 100+50+30 2
+    wait 80+4
+    fork letterh 100+100+40 100+50+30 2
+    wait 60+4
+    fork linefill 100+50 100+40+5 0 60 61
+    wait 100
+    fork vlinefill 200+10 100+40+5 1 60 61
+    wait 90
+    fork vlinefilllr 100+50 100+40+5 3 60 61
+    wait 90
+    fork linefilltop 100+50 80+5 1 60 61
+
+
+# clear before dot
+    wait 100+80
+    size 40 tint 0
+    jump 100+80 100+10+5 plot
+    jump 100 200 plot
+    jump 100+80 200 plot
+    jump 200+60 200 plot
+    #dot rotator
+    wait 30+6
+    size 20 tint 1
+    jump 100+80 100+40 draw
+    jump 90 90+5 draw
+    jump 100+30+5 50 draw
+    jump 200+20+5 50 draw
+    jump 200+70 90+5 draw
+    jump 90 100+80+5 draw
+    jump 200+70 100+80+5 draw
+    jump 100+30+5 200+30 draw
+    jump 200+20+5 200+30 draw
+    wait 20+4 tint 2
+    jump 100+30+5 100+40 draw
+    jump 100+80 90+5 draw
+    jump 200+20+5 100+40 draw
+    jump 100+80 100+80+5 draw
+    jump 90 100+40 draw
+    jump 200+70 100+40 draw
+    jump 100+80 50 draw
+    jump 100+80 200+30 draw
+    wait 20+4 tint 3
+    
+    jump 90 50 draw
+    jump 100+30+5 90+5 draw
+    jump 200+70 200+30 draw
+    jump 200+20+5 100+80+5 draw
+    jump 90 200+30 draw
+    jump 100+30+5 100+80+5 draw
+    jump 200+70 50 draw
+    jump 200+20+5 90+5 draw
+    wait 600+40
+# clear screen
+    wait 5
+    tint 0 fork clearscreen
+
+    wait 2 # czekaj na czahe
+   
+    jump 180 140
+    fork skull 90 20
+    wait 100+3
+    fork letterg 80 200+10+5 2
+    fork lettero 100+30 200+10+5 2
+    fork lettert 100+80 200+10+5 2
+    fork letterh 200+40 200+10+5 2
+    wait 100+50
+
+# clear screen
+    tint 0 fork clearscreen
+
+    wait 10 
+    fork shoots
+
+    wait 600+50
+
+# clear screen
+    tint 0 fork clearscreen
+
+    wait 10 
+    size 20
+    jump 0 20
+    fork animline 350 0 2 20 100 1
+    jump 300+60 60
+    fork animline 350 128 2 20 100 1
+    jump 0 100
+    fork animline 350 0 2 20 100 1
+    jump 300+60 100+40
+    fork animline 350 128 2 20 100 1
+    jump 0 100+80
+    fork animline 350 0 2 20 100 1
+    jump 360 200+20
+    fork animline 350 128 2 20 100 1
+    jump 0 200+60
+    fork animline 350 0 2 20 100 1
+    wait 20
+    tint 1
+    wait 100+40
+    fork letters 80 200+10+5 3
+    wait 40+8
+    fork lettern 100+20 200+10+5 3
+    wait 40+8
+    fork lettero 100+80 200+10+5 3
+    wait 40+8
+    fork letterw 200+30 200+10+5 3
+    wait 40+8
+    
+    wait 5
+    fork linefill 100+50 130+40+5 1 60 61
+
+    wait 100+50
+    tint 0 fork clearscreen
+
+proc clearscreen
+    size 70
+    jump 70 210 plot
+    jump 210 210 plot
+    jump 350 210 plot
+    wait 1
+    jump 70 70 plot
+    jump 210 70 plot
+    jump 350 70 plot
+
+proc shoots
+    jump 50 70
+    tint 1 size 15 draw
+    tint 2 size 20 draw
+    wait 40
+    jump 100+20 200+20
+    tint 1 size 15 draw
+    tint 2 size 20 draw
+    wait 40
+    jump 200+80 100
+    tint 1 size 15 draw
+    tint 2 size 20 draw
+    wait 40
+    jump 100+70 50
+    tint 1 size 15 draw
+    tint 2 size 20 draw
+    wait 50
+    jump 300+10 200
+    tint 1 size 15 draw
+    tint 2 size 20 draw
+    wait 50
+    jump 100+80 100+40
+    tint 1 size 20 draw
+    tint 2 size 25 draw
+# blood anim lines
+    jump 10+5 0
+    fork animliner 240 64 2 15 50 2
+    jump 40+5 0
+    fork animliner 240 64 2 15 40 2
+    jump 70+5 0
+    fork animliner 240 64 2 15 30 2
+    jump 100+5 0
+    fork animliner 240 64 2 15 50 2
+    jump 100+30+5 0
+    fork animliner 240 64 2 15 40 2
+    jump 100+60+5 0
+    fork animliner 240 64 2 15 50 2
+    jump 100+90+5 0
+    fork animliner 240 64 2 15 30 2
+    jump 200+20+5 0
+    fork animliner 240 64 2 15 50 2
+    jump 200+50+5 0
+    fork animliner 240 64 2 15 30 2
+    jump 200+80+5 0
+    fork animliner 240 64 2 15 20 2
+    jump 300+10+5 0
+    fork animliner 240 64 2 15 50 2
+    jump 300+40+5 0
+    fork animliner 240 64 2 15 40 2
+    wait 170
+    fork letters 50 100+30 3
+    wait 70
+    fork letterh 100 100+30 3
+    wait 58
+    fork lettero 100+50 100+30 3
+    wait 48
+    fork lettero 100+100 100+30 3
+    wait 48 
+    fork lettert 100+100+50 100+30 3
+    wait 70
+
+
+proc skull xpos ypos
+    size 10 tint 1 face 0
+    jump xpos+40 ypos plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+
+    jump xpos+20 ypos+20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+
+    wait 1
+
+    jump xpos ypos+40 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+
+    jump xpos ypos+60 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+
+    wait 1
+
+    jump xpos ypos+80 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+
+    jump xpos ypos+100 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+
+    wait 1
+
+    jump xpos+20 ypos+100+20 plot
+    move 20 plot
+    move 20 plot
+    move 40 plot
+    move 20 plot
+    move 20 plot
+
+    jump xpos+40 ypos+100+40 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+    move 20 plot
+
+    jump xpos+40 ypos+100+60 plot
+    move 40 plot
+    move 40 plot
+
+    wait 1
+
+#eyes
+    tint 2
+    jump xpos+20 ypos+60 plot
+    move 20 plot
+    move 80 plot
+    move 20 plot
+
+    jump xpos+20 ypos+80 plot
+    move 20 plot
+    move 20 plot
+    move 40 plot
+    move 20 plot
+    move 20 plot
+
+proc letterg xpos ypos col
+#G-letter
+    size 4 tint col
+    jump xpos+10 ypos plot
+    jump xpos+20 ypos plot
+    jump xpos ypos+10 plot
+    jump xpos ypos+20 plot
+    jump xpos ypos+30 plot
+    jump xpos+10 ypos+40 plot
+    jump xpos+20 ypos+40 plot
+    jump xpos+30 ypos+30 plot
+    jump xpos+30 ypos+20 plot
+    jump xpos+20 ypos+20 plot
+
+proc letterh xpos ypos col
+#H-letter
+    size 4 tint col
+    jump xpos ypos plot
+    jump xpos ypos+10 plot
+    jump xpos ypos+20 plot
+    jump xpos ypos+30 plot
+    jump xpos ypos+40 plot
+    jump xpos+10 ypos+20 plot
+    jump xpos+20 ypos+20 plot
+    jump xpos+30 ypos plot
+    jump xpos+30 ypos+10 plot
+    jump xpos+30 ypos+20 plot
+    jump xpos+30 ypos+30 plot
+    jump xpos+30 ypos+40 plot
+
+proc lettero xpos ypos col
+
+#O- letter
+    size 4 tint col
+    jump xpos+10 ypos plot
+    jump xpos+20 ypos plot
+    jump xpos ypos+10 plot
+    jump xpos ypos+20 plot
+    jump xpos ypos+30 plot
+    jump xpos+10 ypos+40 plot
+    jump xpos+20 ypos+40 plot
+    jump xpos+30 ypos+30 plot
+    jump xpos+30 ypos+20 plot
+    jump xpos+30 ypos+10 plot
+
+proc letters xpos ypos col
+
+#S-letter
+    size 4 tint col
+    jump xpos+10 ypos plot
+    jump xpos+20 ypos plot
+    jump xpos+30 ypos plot
+    jump xpos ypos+10 plot
+    jump xpos+10 ypos+20 plot
+    jump xpos+20 ypos+20 plot
+    jump xpos+30 ypos+30 plot
+    jump xpos+20 ypos+40 plot
+    jump xpos+10 ypos+40 plot
+    jump xpos ypos+40 plot
+
+proc lettert xpos ypos col
+
+#T-letter
+    size 4 tint col
+    jump xpos+20 ypos plot
+    jump xpos+20 ypos+10 plot
+    jump xpos+20 ypos+20 plot
+    jump xpos+20 ypos+30 plot
+    jump xpos+20 ypos+40 plot    
+    jump xpos ypos plot    
+    jump xpos+10 ypos plot    
+    jump xpos+30 ypos plot    
+    jump xpos+40 ypos plot   
+
+proc letterw xpos ypos col
+
+#W-letter
+    size 4 tint col
+    jump xpos ypos plot
+    jump xpos ypos+10 plot
+    jump xpos ypos+20 plot
+    jump xpos ypos+30 plot
+    jump xpos+10 ypos+40 plot
+    jump xpos+20 ypos+30 plot
+    jump xpos+30 ypos+40 plot
+    jump xpos+40 ypos+30 plot
+    jump xpos+40 ypos+20 plot
+    jump xpos+40 ypos+10 plot
+    jump xpos+40 ypos plot
+
+proc lettern xpos ypos col
+
+#N-letter
+    size 4 tint col
+    jump xpos+10 ypos plot
+    jump xpos+10 ypos+10 plot
+    jump xpos+10 ypos+20 plot
+    jump xpos+10 ypos+30 plot
+    jump xpos+10 ypos+30 plot
+    jump xpos+10 ypos+40 plot
+    jump xpos+20 ypos+10 plot
+    jump xpos+30 ypos+20 plot
+    jump xpos+40 ypos plot
+    jump xpos+40 ypos+10 plot
+    jump xpos+40 ypos+20 plot
+    jump xpos+40 ypos+30 plot
+    jump xpos+40 ypos+30 plot
+    jump xpos+40 ypos+40 plot
+
+proc solidline n dir col brush
+    face dir
+    tint col
+    size brush
+    plot
+    move brush
+    when n
+        fork solidline n-1 dir col brush
+    done
+
+proc squares1
+    jump 100+80 100+40
+    size 20 tint 1
+    fork growbox 9 21 12
+    wait 20+4 tint 2
+    jump 100+30 100+40
+    fork growbox 9 21 12
+    wait 20+4 tint 3
+    jump 100+30 100+40+50
+    fork growbox 9 21 12
+    wait 20+4 tint 2
+    jump 100+30+50 100+40+50
+    fork growbox 9 21 12
+    wait 20+4 tint 3
+    jump 100+30+100 100+40+50
+    fork growbox 9 21 12
+    wait 20+4 tint 2
+    jump 100+30+100 100+40
+    fork growbox 9 21 12
+    wait 20+4 tint 3
+    jump 100+30+100 40+50
+    fork growbox 9 21 12
+    wait 20+4 tint 2
+    jump 100+30+50 40+50
+    fork growbox 9 21 12
+    wait 20+4 tint 3
+    jump 100+30 40+50
+    fork growbox 9 21 12
+    wait 20+4
+proc growbox min max n
+    when n
+        wait 1
+        size max-n plot
+        fork growbox min max n-1
+    done
+
+proc linefill xpos ypos col width height
+    jump xpos ypos
+    tint col
+    wait 1
+    when height > 0
+        fork solidline width 0 col 1
+        fork linefill xpos ypos-2 col width height-2
+    done
+
+proc linefilltop xpos ypos col width height
+    jump xpos ypos
+    tint col
+    wait 1
+    when height > 0
+        fork solidline width 0 col 1
+        fork linefilltop xpos ypos+2 col width height-2
+    done
+
+proc vlinefill xpos ypos col width height
+    jump xpos ypos
+    tint col
+    wait 1
+    when height > 0
+        fork solidline width 192 col 1
+        fork vlinefill xpos-2 ypos col width height-2
+    done
+
+proc vlinefilllr xpos ypos col width height
+    jump xpos ypos
+    tint col
+    wait 1
+    when height > 0
+        fork solidline width 192 col 1
+        fork vlinefilllr xpos+2 ypos col width height-2
+    done
+
+proc animline n dir col brush speed step
+    face dir
+    tint col
+    size brush
+    plot
+    wait 50/speed
+    move step
+    when n
+        fork animline n-1 dir col brush speed step
+    done
+proc animliner n dir col brush speed step
+    face dir
+    tint col
+    size brush
+    draw
+    wait 50/speed
+    move step
+    when n
+        fork animliner n-1 dir col brush speed step
+    done

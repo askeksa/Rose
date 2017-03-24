@@ -1,0 +1,3874 @@
+############################################################################
+##
+## Everyway by Hoffman
+##
+## An Amiga 64k Intro for Sundown 2016
+##
+## Date: 2016-07-16
+##
+## This Rose script has been made over a period of about a month. During the
+## process I found 1 bug in Rose and broke a couple of the limitations of the
+## engine. Thankfull the man like Blueberry fixed it all :)
+##
+## If you're doing your own production using Rose, please feel free to use
+## the code below for whatever purpose. Learn, rip, mod, play!
+##
+## A lot of this code could be re-written in a better manner but you know
+## how it is, once it's working you don't really want to mess with it!
+##
+## Massive respect to Blueberry for creating such an accessible tool for
+## making cool stuff on the Amiga! It's a stroke of pure genius!!
+##
+## get in touch: ianhoffmanuk@gmail.com
+##
+############################################################################
+
+plan
+
+	##########################################
+	## sparks intro
+	##########################################
+	0:fff
+	1:000  
+	2:000
+	3:000 
+	wait 22*16
+	0:000
+	1:fff
+	wait 22*16
+	
+	##########################################
+	## funky drummer
+	##########################################  ## kick and stuff
+	
+	0:004 
+	1:fff
+	2:000 
+	3:909 
+	wait 22*16
+	wait 22*16
+
+	##########################################
+	## boxgrids
+	##########################################
+	0:606
+	1:ff0
+	2:0ff
+	3:f0f 
+	wait 22*16
+	wait 22*15
+
+	wait 22-16
+	
+	## transition
+	0:606	1:FF0	wait 1
+	0:717	1:FF1	wait 1
+	0:727	1:FF2	wait 1
+	0:838	1:FF3	wait 1
+	0:848	1:EE3	wait 1
+	0:959	1:EE4	wait 1
+	0:A6A	1:EE5	wait 1
+	0:A7A	1:EE6	wait 1
+	0:B8B	1:EE7	wait 1
+	0:B9B	1:EE8	wait 1
+	0:CAC	1:EE9	wait 1
+	0:DBD	1:EEA	wait 1
+	0:DCD	1:DDA	wait 1
+	0:EDE	1:DDB	wait 1
+	0:EEE	1:DDC	wait 1
+	0:FFF	1:DDD	wait 1
+	
+	
+	##########################################
+	## arrows
+	##########################################
+	0:fff
+	1:CCC 
+	2:888  
+	3:ff0
+	 
+	wait 22
+	3:FF0	wait 2 3:FF1	wait 2 3:EE1	wait 2 3:EE2	wait 2 3:DD2	wait 2 3:DD3	wait 2 3:CC3	wait 2 3:CC4	wait 1 3:BB4	wait 1 3:BB5	wait 1 3:AA5	wait 1 3:AA6	wait 1 3:996	wait 1 3:997	wait 1 3:887	wait 1 3:888
+	wait 22
+	3:FF0	wait 2 3:FF1	wait 2 3:EE1	wait 2 3:EE2	wait 2 3:DD2	wait 2 3:DD3	wait 2 3:CC3	wait 2 3:CC4	wait 1 3:BB4	wait 1 3:BB5	wait 1 3:AA5	wait 1 3:AA6	wait 1 3:996	wait 1 3:997	wait 1 3:887	wait 1 3:888
+	wait 22
+	3:FF0	wait 2 3:FF1	wait 2 3:EE1	wait 2 3:EE2	wait 2 3:DD2	wait 2 3:DD3	wait 2 3:CC3	wait 2 3:CC4	wait 1 3:BB4	wait 1 3:BB5	wait 1 3:AA5	wait 1 3:AA6	wait 1 3:996	wait 1 3:997	wait 1 3:887	wait 1 3:888
+	wait 22
+	3:FF0	wait 2 3:FF1	wait 2 3:EE1	wait 2 3:EE2	wait 2 3:DD2	wait 2 3:DD3	wait 2 3:CC3	wait 2 3:CC4	wait 1 3:BB4	wait 1 3:BB5	wait 1 3:AA5	wait 1 3:AA6	wait 1 3:996	wait 1 3:997	wait 1 3:887	wait 1 3:888
+	wait 22
+	3:FF0	wait 2 3:FF1	wait 2 3:EE1	wait 2 3:EE2	wait 2 3:DD2	wait 2 3:DD3	wait 2 3:CC3	wait 2 3:CC4	wait 1 3:BB4	wait 1 3:BB5	wait 1 3:AA5	wait 1 3:AA6	wait 1 3:996	wait 1 3:997	wait 1 3:887	wait 1 3:888
+	wait 22
+	3:FF0	wait 2 3:FF1	wait 2 3:EE1	wait 2 3:EE2	wait 2 3:DD2	wait 2 3:DD3	wait 2 3:CC3	wait 2 3:CC4	wait 1 3:BB4	wait 1 3:BB5	wait 1 3:AA5	wait 1 3:AA6	wait 1 3:996	wait 1 3:997	wait 1 3:887	wait 1 3:888
+	wait 22
+	3:FF0	wait 2 3:FF1	wait 2 3:EE1	wait 2 3:EE2	wait 2 3:DD2	wait 2 3:DD3	wait 2 3:CC3	wait 2 3:CC4	wait 1 3:BB4	wait 1 3:BB5	wait 1 3:AA5	wait 1 3:AA6	wait 1 3:996	wait 1 3:997	wait 1 3:887	wait 1 3:888
+	wait 22
+	3:FF0	wait 2 3:FF1	wait 2 3:EE1	wait 2 3:EE2	wait 2 3:DD2	wait 2 3:DD3	wait 2 3:CC3	wait 2 3:CC4	wait 1 3:BB4	wait 1 3:BB5	wait 1 3:AA5	wait 1 3:AA6	wait 1 3:996	wait 1 3:997	wait 1 3:887	wait 1 3:888
+	2:CCC 	1:888 
+	wait 22
+
+	3:FF0	wait 2 3:FF1	wait 2 3:FF2	wait 2 3:EE2	wait 2 3:EE3	wait 2 3:EE4	wait 2 3:EE5	wait 2 3:EE6	wait 1 3:DD6	wait 1 3:DD7	wait 1 3:DD8	wait 1 3:DD9	wait 1 3:DDA	wait 1 3:CCA	wait 1 3:CCB	wait 1 3:CCC
+	wait 22
+	3:FF0	wait 2 3:FF1	wait 2 3:FF2	wait 2 3:EE2	wait 2 3:EE3	wait 2 3:EE4	wait 2 3:EE5	wait 2 3:EE6	wait 1 3:DD6	wait 1 3:DD7	wait 1 3:DD8	wait 1 3:DD9	wait 1 3:DDA	wait 1 3:CCA	wait 1 3:CCB	wait 1 3:CCC
+	wait 22
+	3:FF0	wait 2 3:FF1	wait 2 3:FF2	wait 2 3:EE2	wait 2 3:EE3	wait 2 3:EE4	wait 2 3:EE5	wait 2 3:EE6	wait 1 3:DD6	wait 1 3:DD7	wait 1 3:DD8	wait 1 3:DD9	wait 1 3:DDA	wait 1 3:CCA	wait 1 3:CCB	wait 1 3:CCC
+	wait 22
+	3:FF0	wait 2 3:FF1	wait 2 3:FF2	wait 2 3:EE2	wait 2 3:EE3	wait 2 3:EE4	wait 2 3:EE5	wait 2 3:EE6	wait 1 3:DD6	wait 1 3:DD7	wait 1 3:DD8	wait 1 3:DD9	wait 1 3:DDA	wait 1 3:CCA	wait 1 3:CCB	wait 1 3:CCC
+	wait 22
+	3:FF0	wait 2 3:FF1	wait 2 3:FF2	wait 2 3:EE2	wait 2 3:EE3	wait 2 3:EE4	wait 2 3:EE5	wait 2 3:EE6	wait 1 3:DD6	wait 1 3:DD7	wait 1 3:DD8	wait 1 3:DD9	wait 1 3:DDA	wait 1 3:CCA	wait 1 3:CCB	wait 1 3:CCC
+	wait 22
+	3:FF0	wait 2 3:FF1	wait 2 3:FF2	wait 2 3:EE2	wait 2 3:EE3	wait 2 3:EE4	wait 2 3:EE5	wait 2 3:EE6	wait 1 3:DD6	wait 1 3:DD7	wait 1 3:DD8	wait 1 3:DD9	wait 1 3:DDA	wait 1 3:CCA	wait 1 3:CCB	wait 1 3:CCC
+	wait 22
+	3:FF0	wait 2 3:FF1	wait 2 3:FF2	wait 2 3:EE2	wait 2 3:EE3	wait 2 3:EE4	wait 2 3:EE5	wait 2 3:EE6	wait 1 3:DD6	wait 1 3:DD7	wait 1 3:DD8	wait 1 3:DD9	wait 1 3:DDA	wait 1 3:CCA	wait 1 3:CCB	wait 1 3:CCC
+	wait 22
+	3:FF0	wait 2 3:FF1	wait 2 3:FF2	wait 2 3:EE2	wait 2 3:EE3	wait 2 3:EE4	wait 2 3:EE5	wait 2 3:EE6	wait 1 3:DD6	wait 1 3:DD7	wait 1 3:DD8	wait 1 3:DD9	wait 1 3:DDA	wait 1 3:CCA	wait 1 3:CCB	wait 1 3:CCC
+ 
+	
+
+	##########################################
+	## fibbers part 2
+	##########################################
+	
+	0:fff
+	3:888
+	2:ccc
+	1:eee 
+	wait 88*2
+	#1:888
+	#2:ccc
+	#3:eee 
+	wait 88*2
+	0:fff
+	1:888
+	2:ccc
+	3:eee 
+	
+#	3:004
+#	2:03a  
+#	1:079 
+	
+#	wait 88*4
+	
+	3:ff0
+	
+	wait  (88*3)
+
+	wait (88*1)-33
+	
+
+	0:000	## black out
+	1:ff0
+	2:ff0
+	3:ff0
+	wait 33
+	
+	
+	##  outward boxes
+	0:000
+	1:f03		## 1
+	2:03a		## 2
+	3:fff		## 3
+	wait 88*3
+	1:888		## 4
+	wait 88
+	2:0c6		## 5
+	wait 88
+	3:f3f		## 6
+	wait 88*3
+
+		
+	## reese
+	
+	
+	1:f00
+	2:0f0
+	3:00f
+	
+	0:444 wait 2 0:333 wait 2 0:222 wait 2 0:111 wait 2 0:000 wait 2 
+	0:000
+	1:f00
+	2:0f0
+	3:00f
+	wait (88*8)-10
+
+
+#	1:f03
+#	wait 88-10 
+#	2:03a
+#	wait 88
+#	1:888
+#	wait 44
+#	2:0c6
+#	wait 88+44
+#	
+#	#3:f03
+#	wait 88
+#	#2:03a
+#	wait 88
+#	#1:888
+#	wait 44
+#	#3:03a
+#	wait 88+44
+	
+	
+
+	
+
+	################################
+	## broken beats bit
+	################################
+	
+	
+	0:000
+	1:f03		## 1
+	2:03a		## 2
+	3:fff		## 3
+
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 7
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1+22
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	#wait 88 
+	
+	1:888		## 4
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 7
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1+11
+	0:444 wait 2 0:333 wait 2 0:222 wait 2 0:111 wait 2 0:000 wait 2 
+	wait 1+11
+	
+	#wait 88
+	2:0c6		## 5
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 7
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1+22
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	#wait 88
+	
+	3:f3f 		## 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 7
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1+11
+	0:444 wait 2 0:333 wait 2 0:222 wait 2 0:111 wait 2 0:000 wait 2 
+	wait 1+11
+	#wait 88 
+	
+	2:03a		## 5
+		0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 7
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1+22
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	#wait 88
+	
+	1:f03		## 4
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 7
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1+11
+	0:444 wait 2 0:333 wait 2 0:222 wait 2 0:111 wait 2 0:000 wait 2 
+	wait 1+11
+	#wait 88
+	
+	2:0c6	
+		0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 7
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1+22
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	#wait 88
+	
+	3:fff		## 6
+		0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 7
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1+11
+	0:444 wait 2 0:333 wait 2 0:222 wait 2 0:111 wait 2 0:000 wait 2 
+	wait 1
+	0:444 wait 2 0:333 wait 2 0:222 wait 2 0:111 wait 2 0:000 wait 2 
+	wait 1
+	#wait 88
+	
+		
+	
+	0:000
+	1:f03		## 1
+	2:03a		## 2
+	3:fff		## 3
+
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 7
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1+22
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	#wait 88 
+	
+	1:888		## 4
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 7
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1+11
+	0:444 wait 2 0:333 wait 2 0:222 wait 2 0:111 wait 2 0:000 wait 2 
+	wait 1+11
+	
+	#wait 88
+	2:0c6		## 5
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 7
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1+22
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	#wait 88
+	
+	3:f3f 		## 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 7
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1+11
+	0:444 wait 2 0:333 wait 2 0:222 wait 2 0:111 wait 2 0:000 wait 2 
+	wait 1+11
+	#wait 88 
+	
+	2:03a		## 5
+		0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 7
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1+22
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	#wait 88
+	
+	1:f03		## 4
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 7
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1+11
+	0:444 wait 2 0:333 wait 2 0:222 wait 2 0:111 wait 2 0:000 wait 2 
+	wait 1+11
+	#wait 88
+	
+	2:0c6	
+		0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 7
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 6
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1+22
+	0:004 wait 2 0:003 wait 2 0:002 wait 2 0:001 wait 2 0:000 wait 2 
+	wait 1
+	#wait 88
+	
+	3:fff		## 6
+	
+	wait 88-16
+
+	0:000 1:F03 2:0C6 3:FFF	wait 1
+	0:111 1:F14 2:1C7 3:fff	wait 1
+	0:222 1:F25 2:2C7 3:fff	wait 1
+	0:333 1:F35 2:3D8 3:fff	wait 1
+	0:444 1:F46 2:4D8 3:fff	wait 1
+	0:555 1:F57 2:5D9 3:fff	wait 1
+	0:666 1:F68 2:6DA 3:fff	wait 1
+	0:777 1:F79 2:7DA 3:fff	wait 1
+	0:888 1:F89 2:8EB 3:fff	wait 1
+	0:999 1:F9A 2:9EB 3:fff	wait 1
+	0:AAA 1:FAB 2:AEC 3:fff	wait 1
+	0:BBB 1:FBC 2:BED 3:fff	wait 1
+	0:CCC 1:FCD 2:CED 3:fff	wait 1
+	0:DDD 1:FDD 2:DFE 3:fff	wait 1
+	0:EEE 1:FEE 2:EFE 3:fff	wait 1
+	0:FFF 1:FFF 2:FFF 3:fff	wait 1
+	
+	################################
+	## beams
+	################################
+	
+	0:FFF 
+	1:0ac 
+	2:4ca  
+	3:ff6
+
+	
+	wait 22
+	1:ff0
+	
+	wait 17
+	2:f83
+	
+	wait 16
+	1:ff3
+	
+	wait 17
+	2:f93
+	
+	wait 16
+	1:ff0
+	
+	wait 17
+	
+	wait 16
+	
+	wait 17
+	
+	wait 16
+
+	wait 22
+
+	################################
+	## rotoboxes
+	################################
+	
+
+	
+	2:007 3:00f	 	1:c0c	## square funkers colourz
+	wait 88-16
+	1:C0C	wait 1
+	1:B1C	wait 1
+	1:A1C	wait 1
+	1:A2C	wait 1
+	1:93B	wait 1
+	1:83B	wait 1
+	1:74B	wait 1
+	1:65B	wait 1
+	1:65B	wait 1
+	1:56B	wait 1
+	1:47B	wait 1
+	1:37B	wait 1
+	1:28A	wait 1
+	1:29A	wait 1
+	1:19A	wait 1
+	1:0AA	wait 1
+
+	2:c0c 3:909		1:0aa
+	wait 88-16
+	1:0AA	wait 1
+	1:19A	wait 1
+	1:19A	wait 1
+	1:28A	wait 1
+	1:27A	wait 1
+	1:37A	wait 1
+	1:46A	wait 1
+	1:45A	wait 1
+	1:559	wait 1
+	1:549	wait 1
+	1:639	wait 1
+	1:739	wait 1
+	1:729	wait 1
+	1:819	wait 1
+	1:819	wait 1
+	1:909	wait 1
+
+	2:0cc 3:0aa		1:909
+	wait 88-16
+	1:909	wait 1
+	1:919	wait 1
+	1:919	wait 1
+	1:929	wait 1
+	1:929	wait 1
+	1:939	wait 1
+	1:939	wait 1
+	1:949	wait 1
+	1:848	wait 1
+	1:858	wait 1
+	1:858	wait 1
+	1:868	wait 1
+	1:868	wait 1
+	1:878	wait 1
+	1:878	wait 1
+	1:888	wait 1
+		
+	2:f0f 3:909		1:888
+	wait 88
+	1:888 2:BBB 3:DDD		## every way
+	wait 88*2
+
+	2:0bb 3:ff0		1:03a  ## square funkers colourz
+	wait 88
+	
+	
+	2:c0c 3:0ac		1:03a
+	wait 88-16
+	1:03A	wait 1
+	1:13A	wait 1
+	1:239	wait 1
+	1:329	wait 1
+	1:428	wait 1
+	1:528	wait 1
+	1:627	wait 1
+	1:727	wait 1
+	1:816	wait 1
+	1:916	wait 1
+	1:A15	wait 1
+	1:B15	wait 1
+	1:C14	wait 1
+	1:D04	wait 1
+	1:E03	wait 1
+	1:F03	wait 1
+	
+	2:0cc 3:00f		1:f03
+	wait 88-16
+	1:F03	wait 1
+	1:F13	wait 1
+	1:F13	wait 1
+	1:F23	wait 1
+	1:F23	wait 1
+	1:F33	wait 1
+	1:F43	wait 1
+	1:F43	wait 1
+	1:F53	wait 1
+	1:F53	wait 1
+	1:F63	wait 1
+	1:F73	wait 1
+	1:F73	wait 1
+	1:F83	wait 1
+	1:F83	wait 1
+	1:F93	wait 1
+	
+	
+	2:f03 3:0ac 	1:f93		##e50
+	wait 88-16
+	1:F93	wait 1
+	1:F93	wait 1
+	1:F84	wait 1
+	1:E84	wait 1
+	1:E85	wait 1
+	1:E75	wait 1
+	1:E76	wait 1
+	1:E76	wait 1
+	1:D67	wait 1
+	1:D67	wait 1
+	1:D68	wait 1
+	1:D58	wait 1
+	1:D59	wait 1
+	1:C59	wait 1
+	1:C4A	wait 1
+	1:C4A	wait 1
+	
+	2:4ca 3:00a		1:c4a   ## square funkers colourz
+	wait 88-16
+	1:C4A	wait 1
+	1:B4A	wait 1
+	1:A4A	wait 1
+	1:A4A	wait 1
+	1:94A	wait 1
+	1:84A	wait 1
+	1:74A	wait 1
+	1:64A	wait 1
+	1:63A	wait 1
+	1:53A	wait 1
+	1:43A	wait 1
+	1:33A	wait 1
+	1:23A	wait 1
+	1:23A	wait 1
+	1:13A	wait 1
+	1:03A	wait 1
+	
+	
+	2:909  3:0ac		1:03a
+	wait 88-16
+	1:03A	wait 1
+	1:13A	wait 1
+	1:14A	wait 1
+	1:24A	wait 1
+	1:249	wait 1
+	1:359	wait 1
+	1:359	wait 1
+	1:459	wait 1
+	1:469	wait 1
+	1:569	wait 1
+	1:569	wait 1
+	1:679	wait 1
+	1:678	wait 1
+	1:778	wait 1
+	1:788	wait 1
+	1:888	wait 1
+	
+	
+	1:888 2:BBB 3:DDD		## every way
+	wait 88*2
+	
+	
+	################################
+	## end part
+	################################
+	
+	0:FFF 
+	2:0ac 
+	1:4ca  
+	3:ff0
+	wait 88*8
+	
+	################################
+	## credits
+	################################
+
+
+	0:FFF 
+	1:0ac 
+	2:4ca  
+	3:ff6
+	wait 88*4
+	wait 44
+	0:fff wait 3
+	0:eee wait 3
+	0:ddd wait 3
+	0:ccc wait 3
+	0:bbb wait 3
+	0:aaa wait 3
+	0:999 wait 3
+	0:888 wait 3
+	0:777 wait 3
+	0:666 wait 3
+	0:555 wait 3
+	0:444 wait 3
+	0:333 wait 3
+	0:222 wait 3
+	0:111 wait 3
+	0:000 wait 3
+	
+#########################################################################
+## THE MAIN DEMO...
+## THE MAIN DEMO...
+## THE MAIN DEMO...
+## THE MAIN DEMO...
+## THE MAIN DEMO...
+###########################################################################
+
+proc main 
+
+		## sparks intro
+	jump 50 130
+	fork sparksintro 
+	wait 22*32
+
+
+		## funky drummer
+	fork funkydrummer
+	wait 22*32
+
+		## boxgrids
+	fork boxgrids
+	wait 22*32
+
+	
+		## rotator
+	fork arrows
+	wait 22*32
+	
+		## fibbers part 2
+	fork fibberspart2
+	wait 88*8
+	
+		## reese breakdown
+	fork reese
+	wait 88*16
+	
+		## acid broken beats part
+	fork brokenbeatspart
+	wait 88*16
+
+		## rotoboxes everyway!
+	fork rotoboxes
+	wait 88*16
+	
+		## last part
+	fork endspikesprog
+	wait (88*8)-22
+	
+	fork finalfire
+	wait 22
+	
+		## credits
+	fork creditsprog
+
+##################################################################	
+### LAST PART
+##################################################################	
+
+proc finalfire
+	face ~32
+	jump 176 135 ## centre
+	fork brokefire2 2
+	fork bf2 5 20
+	turn ~64
+	wait 6 
+	fork brokefire2 2
+	fork bf2 4 20
+	turn ~64
+	wait 5
+	fork brokefire2 2
+	fork bf2 5 20
+	turn ~64
+	wait 6
+	fork brokefire2 2
+	fork bf2 4 20
+	
+proc brokefire2 tn
+	move 20
+	tint tn
+	fork brorrowmove 14
+	wait 5
+	tint 0
+	fork brorrowmove 14
+
+proc bf2 rep s
+	when rep
+		tint 0
+		size 21
+		plot
+		tint 1
+		size s
+		plot
+		wait 1
+		fork bf2 rep-1 s*0.80
+	else
+		tint 0
+		size 21
+		plot
+	done
+	
+	
+##################################################################	
+### LAST PART
+##################################################################	
+
+
+proc endspikesprog
+	face 13
+	jump 176 130
+	fork beamers
+	wait 22
+	
+	#jump 80 80
+	#fork endspikes 1.454545 9
+
+	wait 88*2
+	
+	jump 80 80
+	turn ~50
+	fork endspikes ~1.454545 4 ~0.5
+	wait 22*3
+	jump 280 190
+	fork endspikes 1.454545 5  0.5
+
+	
+	wait (88)
+	
+	#jump 80 190
+	#fork endspikes 1.454545 9
+
+	jump 176 130
+	fork beamers
+	wait (88*2)+22
+	
+	jump 280 80
+	turn 20
+	fork endspikes ~1.454545 4 ~0.5
+	wait 22*3
+	jump 80 190
+	turn 25
+	fork endspikes 1.454545 4  0.5
+	
+proc endspikes rot rep lt
+	fork endtrispikerot rep 17 16 1 2 3 rot lt
+	wait 10
+	tint 0
+	fork endtrispikerot rep 17 16 0 0 0 rot lt
+
+	
+proc endtrispikerot rep w1 w2 t1 t2 t3 rot lt
+	when rep
+		fork endspiketri t1 t2 t3 lt
+		wait w1
+		turn w1*rot
+		fork endtrispikerot rep-1 w2 w1 t1 t2 t3 rot lt
+	done
+
+	
+proc endspiketri t1 t2 t3 lt
+	tint t1
+	fork endspike 1 17*6 lt
+	turn 256/3
+	tint t2
+	fork endspike 1 17*6 lt
+	turn 256/3
+	tint t3
+	fork endspike 1 17*6 lt
+
+	
+proc endspike s rep lt
+	when rep
+		size s*6.3
+		move 6
+		draw
+		wait 0.5
+		turn lt
+		fork endspike s+0.1 rep-1 lt
+	done
+
+	
+	 
+##################################################################	
+### intro sparks
+##################################################################	
+proc sparksintro
+	fork sparksloop 8
+	wait 22*14
+	jump 190 225
+	fork sparkchika 1
+	wait 6
+	jump 190 55
+	fork sparkchika 1
+
+	
+proc sparkchika count
+	when count < 5
+		tint 2 
+		size count*4
+		draw
+		tint 0
+		size count*3
+		draw
+		
+
+		size count*4
+		wait 5
+		tint 0 draw
+		wait 6
+
+		move 32
+		
+		fork sparkchika count+1
+	done
+		
+	
+proc sparksloop count
+	when count 
+		fork sparks 35
+		wait 22*4
+		fork sparksloop count-1
+	done
+
+proc sparks xjump
+	face 96
+	fork spark 6 x y wait 11 	jump x+xjump y
+	face 0
+	fork spark 6 x y wait 11	jump x+xjump y
+	fork spark 6 x y wait 11	jump x+xjump y
+	face 96
+	fork spark 6 x y wait 11	jump x+xjump y
+	face 0
+	fork spark 6 x y wait 11	jump x+xjump y
+	fork spark 6 x y wait 11	jump x+xjump y
+	face 64
+	fork spark 6 x y wait 11	jump x+xjump y
+	face 0
+	fork spark 6 x y #wait 11	jump x+xjump y
+
+
+proc spark count xpos ypos 
+	when count > ~1
+		jump xpos ypos
+		tint 1
+		size count+1 
+		draw
+		move (count+1)*2
+		fork sparkdraw count
+		turn 128
+		move (count+1)*4
+		fork sparkdraw count
+		wait 1
+		jump xpos ypos
+		tint 0
+		size 56 plot
+		fork spark count-1 xpos ypos
+	done
+
+proc sparkdraw count
+	when count > ~1
+		tint 1
+		size count 
+		draw
+		move count*2.0
+		fork sparkdraw count-1
+	done
+
+	
+	
+##################################################################	
+### DRUMS!!! 
+##################################################################
+proc funkydrummer
+ 	jump 176 135 ## centre
+	fork beat1 18 65
+	wait 88*2
+	fork beat1 18 65
+	wait 88*2
+	fork beat1 18 65
+	wait 88*2
+	fork beat2 18 65	
+	wait 0
+	
+	
+
+proc beat1 movesize drumsize
+	fork kick  drumsize  20
+	wait 11*2
+	
+	fork snare   drumsize 20
+	wait 11
+	fork chikas 4
+	wait 11*2
+	size 8 fork chikasclear 4
+	
+	fork kick  drumsize 10
+	wait 11
+	size 10 fork chikasclear 4
+	fork snare   drumsize 20
+	wait 11
+	fork chikas 2
+	wait 11
+	
+	size 8 fork chikasclear 2
+	fork kick  drumsize 10
+	wait 11
+	size 10 fork chikasclear 2
+	fork kick  drumsize 10
+	wait 11
+	
+	fork snare   drumsize 20
+	wait 11
+	fork chikas 4 
+	wait 11*2
+	size 10 fork chikasclear 4
+	fork kick  drumsize 10
+	wait 6
+	fork chikas 1
+	wait 5
+	size 8 fork chikasclear 1
+	fork snare   drumsize 20
+	wait 11
+	fork chikas 2
+	wait 9
+	size 10 fork chikasclear 2
+
+proc beat2 movesize drumsize
+	fork kick  drumsize  10
+	wait 11
+	fork snarerev   10 10
+	wait 11
+	
+	fork snare   drumsize 20
+	wait 11
+	fork chikas 4
+	wait 11*2
+	size 8 fork chikasclear 4
+
+	fork snare   drumsize 20
+	wait 11
+	fork chikas 4
+	wait 11*2
+	size 10 fork chikasclear 4
+
+	
+	fork kick  drumsize 6
+	wait 6
+	fork chikas 1
+	wait 5
+	size 10 fork chikasclear 2
+	fork kick  drumsize 6
+	wait 6
+	fork chikas 1
+	wait 5
+	size 10 fork chikasclear 2
+	 
+	fork snare   drumsize 20
+	wait 11
+	fork chikas 4    
+	wait 11*2
+	size 10 fork chikasclear 4
+	fork kick  drumsize 6
+	wait 6
+	fork chikas 1
+	wait 5
+	size 8 fork chikasclear 1
+	fork snare   drumsize 10
+	size 10 fork chikasclear 1
+	wait 11
+	fork snare   drumsize 10
+
+ 
+proc kick ksize kcount
+	when kcount 
+		when ksize > 6
+			tint 1 size ksize draw
+			tint 2 size ksize*0.75 draw
+			tint 3 size ksize*0.50 draw
+			tint 0 size ksize*0.25 draw
+			wait 1
+			tint 0 size ksize plot
+			fork kick ksize-3 kcount-1
+		done
+	#else
+	#	tint 0 size ksize+20 plot
+	done
+	
+	
+proc snare ksize count
+	when count
+		when ksize > 6
+			tint 1 size ksize plot
+			tint 2 size ksize*0.75 plot
+			tint 3 size ksize*0.50 plot
+			tint 0 size ksize*0.25 plot
+			wait 1
+			tint 0 size ksize plot
+			fork snare ksize-3 count-1 
+		done
+	#else
+	#	tint 0 size ksize+3 plot
+	done
+
+proc snarerev ksize count
+	when count
+		when ksize > 6
+			tint 1 size ksize plot
+			tint 2 size ksize*0.75 plot
+			tint 3 size ksize*0.50 plot
+			tint 0 size ksize*0.25 plot
+			wait 1
+			#tint 0 size ksize plot
+			fork snarerev ksize+3 count-1 
+		done
+	done
+	
+proc chikas total
+	tint 3	size 10
+	face 64	jump x-125 y-55
+	fork chikasdraw 6 5 total
+	turn 128 jump x+252 y+120
+	fork chikasdraw 6 5 total
+	wait 1
+
+	
+proc chikasclear total 
+	tint 0	
+	face 64	jump x-125 y-55
+	fork chikasdraw 0 0 total
+	turn 128 jump x+252 y+120
+	fork chikasdraw 0 0 total
+	wait 1
+	
+proc chikasdraw w1 w2 total
+	when total > 0
+		plot wait w1 move 40
+	done
+	when total > 1
+		draw wait w2 move 40
+	done
+	when total > 2
+		plot wait w1 move 40
+	done
+	when total > 3
+		draw 
+	done
+
+
+##################################################################	
+### box grids
+##################################################################	
+
+proc boxgrids
+	fork boxgridedge
+	fork boxgridfills
+
+
+proc boxgridfills
+	tint 1
+	fork boxgridfills1
+	wait 22*4
+
+	tint 2
+	fork boxgridfills2
+	wait 22*4
+
+	tint 3
+	fork boxgridfills3
+	wait 22*4
+
+	tint 1
+	fork boxgridfills6
+	wait 22*4
+
+	tint 2
+	fork boxgridfills5
+	wait 22*4
+
+	tint 1 
+	fork boxgridfills4
+	wait 22*4
+	
+	tint 3
+	fork boxgridfills7
+	wait 22*4
+	
+	tint 1
+	fork boxgridfills8
+	wait 22*4
+
+	
+proc boxgridfills8
+	wait 11*3
+	jump 80 39+(66*3)
+	face 0
+	fork box8a
+	jump 80+(66*3) 39
+	face ~128
+	fork box8a
+	
+proc box8a
+	size 30
+	fork boxstab
+	wait 6
+	move 66
+
+	size 27
+	fork boxstab
+	wait 5
+	move 66
+
+	size 24
+	fork boxstab
+	wait 6
+	move 66
+
+	size 21
+	fork boxstab
+	wait 5
+	turn ~64
+	move 66
+
+	size 18
+	fork boxstab
+	wait 5
+	move 66
+
+	size 15
+	fork boxstab
+	wait 5
+	move 66
+	
+	fork boxpulseupfinal 23 30-22
+
+	
+proc boxpulseupfinal bcount bsize
+	when bcount
+		size bsize
+		draw
+		wait 1
+		fork boxpulseupfinal bcount-1 bsize+1
+	done
+	
+
+	
+proc boxgridfills7
+	wait 11*5
+	size 30-16
+	jump 80+66 39	
+	face 64
+	fork box1a
+	move 66*3
+	turn ~64
+	fork box1a
+	move 66
+	turn ~64
+	fork box1a
+	move 66*3
+	turn ~64
+	fork box1a
+	
+proc boxgridfills6
+	size 30
+	wait 11*3
+	jump 80 39
+	face 64
+	fork box6a
+	jump 80+(66*3) 39+(66*3)
+	face ~64
+	fork box6a
+
+	
+proc box6a
+	fork boxstab
+	wait 6
+	move 66
+	fork boxstab
+	wait 5
+	move 66
+	fork boxstab
+	wait 6
+	move 66
+	fork boxstab
+	wait 5
+	turn ~64
+	move 66
+	fork boxstab
+	wait 5
+	move 66
+	fork boxstab
+	wait 5
+	move 66
+	
+	fork boxpulsedown 9 30
+	size 30-16 
+	wait 11
+	
+	turn ~64
+	move 66
+	fork boxstab
+	wait 6
+	move 66
+	fork boxstab
+	
+proc boxgridfills5
+	wait 11*5
+	size 30-16
+	jump 80-66 39	
+	face 0
+	fork box5a
+
+	jump 80+(66*4) 39+(66*3)	
+	face 128
+	fork box5a
+
+proc box5a
+	fork boxstab
+	wait 6
+	move 66
+	
+	fork boxstab
+	wait 5
+	move 66 turn 64	move 66	turn ~64
+
+	fork boxpulseup 9 30-16
+	wait 11
+	move 66 
+	size 30
+	fork boxstab
+	move 66 
+	wait 6
+	fork boxstab
+	
+proc boxgridfills4
+	size 30
+	wait 11*3
+	jump 80+(66*3) 39+(66)
+	face 192
+	fork box2a ~64
+	turn 128
+	move 66
+	fork box2a 64
+	
+	
+	
+
+proc boxgridfills3
+	wait 11*5
+	size 30-16
+	jump 80-66 39	
+	face 0
+	fork box3a
+
+	move 66*5
+	turn 64
+	move 66*3
+	turn 64
+	fork box3a
+
+proc box3a
+	fork box3b
+	turn 64
+	move 66*2
+	turn ~64
+	fork box3b
+
+	
+proc box3b
+	fork boxstab
+	wait 6
+	move 66 
+	fork boxstab
+	wait 5
+	move 66
+	fork boxpulseup 9 30-16
+	wait 11
+	move 66
+	size 30
+	fork boxstab
+	move 66
+	wait 6
+	fork boxstab
+
+proc boxgridfills1
+	wait 11*5
+	size 30-16
+	jump 80 39	
+	face 64
+	fork box1a
+	move 66*3
+	turn ~64
+	fork box1a
+	move 66*3
+	turn ~64
+	fork box1a
+	move 66*3
+	turn ~64
+	fork box1a
+
+proc boxgridfills2
+	size 30
+	wait 11*3
+	jump 80+66 39
+	face 128
+	fork box2a ~64
+	turn 128
+	move 66
+	fork box2a 64
+	
+proc box2a bturn
+	fork boxstab
+	wait 6
+	move 66
+	turn bturn
+	fork boxstab
+	wait 5
+	move 66
+	fork boxstab
+	wait 6
+	move 66
+	fork boxstab
+	wait 5
+	move 66
+	fork boxstab
+	wait 6
+	turn bturn
+	move 66
+	fork boxstab
+	wait 5
+	turn bturn
+	move 66
+	fork boxpulsedown 9 30
+	size 30-16 
+	move 66
+	wait 11
+	fork boxstab
+	wait 6
+	move 66
+	fork boxstab
+	
+	
+proc box1a
+	fork boxstab
+	wait 6
+	move 66 
+	fork boxstab
+	wait 5
+	turn ~64
+	move 66
+	fork boxpulseup 9 30-16
+	wait 11
+	move 66 
+	size 30
+	fork boxstab
+	move 66
+	wait 6
+	turn 64
+	fork boxstab
+
+proc boxstab
+	plot
+	wait 3
+	tint 0
+	plot
+
+	
+
+proc boxpulsedown bcount bsize
+	when bcount
+		size bsize
+		plot
+		wait 1
+		fork boxpulsedownclear
+		fork boxpulsedown bcount-1 bsize-2
+	else
+		tint 0
+		plot
+	done
+	
+proc boxpulsedownclear 
+	size 30
+	tint 0
+	plot
+	
+proc boxpulseup bcount bsize
+	when bcount
+		size bsize
+		plot
+		wait 1
+		fork boxpulseup bcount-1 bsize+2
+	else
+		tint 0
+		plot
+	done
+
+
+	
+
+	
+	
+proc boxgridedge
+	fork boxgrid1
+	wait 22*8
+	fork boxgrid2
+	wait 22*8
+	fork boxgrid3
+	wait 22*8
+	fork boxgridend
+	wait 22*8
+
+
+proc boxgrid1
+	fork boxgridfull 1
+	wait 44
+	fork boxgridfull 3
+	wait 22
+	fork boxgridfull 2 
+	wait 22
+	fork boxgridfull 1
+	wait 44
+	fork boxgridfull 3
+
+proc boxgrid2
+	fork boxgridfull 2
+	wait 44
+	fork boxgridfull 1
+	wait 22
+	fork boxgridfull 0
+	wait 22
+	fork boxgridfull 2
+	wait 44
+	fork boxgridfull 3
+
+	
+proc boxgrid3
+	fork boxgridfull 0
+	wait 44
+	fork boxgridfull 3
+	wait 22
+	fork boxgridfull 0
+	wait 22
+	fork boxgridfull 1
+	wait 44
+	fork boxgridfull 2
+
+proc boxgridend
+	fork boxgridfull 0
+	wait 22
+	fork boxgridfull 3
+	wait 44
+	fork boxgridfull 1
+	wait 22
+	fork boxgridfull 0
+
+	
+proc boxgridfull boxtint
+ 	jump ~16 ~60
+	face 0
+	size 1
+	fork boxgridcopy 3 boxtint
+ 	jump x+66 y+66 
+	fork boxgridcopy 3 boxtint
+ 	jump x-66 y+66 
+	fork boxgridcopy 3 boxtint
+ 	jump x+66 y+66 
+	fork boxgridcopy 3 boxtint
+ 	jump x-66 y+66
+	fork boxgridcopy 3 boxtint
+ 	jump x+66 y+66
+	fork boxgridcopy 3 boxtint
+
+	
+proc boxgridcopy count boxtint
+	when count
+		fork boxgriddraw 87 21 21 4 boxtint
+		move 66*2
+		fork boxgridcopy count-1 boxtint
+	done
+
+proc boxgriddraw drawcount side sidecount turns boxtint
+	tint boxtint
+	when drawcount
+		when x>0
+			plot
+		done
+		wait 1
+		when sidecount
+			move 3
+			fork boxgriddraw drawcount-1 side sidecount-1 turns boxtint
+		else
+			turn 64
+			move 3
+			fork boxgriddraw drawcount-1 side side turns-1 boxtint
+		done
+	done
+
+	
+	
+##################################################################	
+### arrows
+##################################################################	
+
+	
+proc arrows 
+	fork fibbers
+	fork arrowcopyright
+	fork arrowmatecopyright
+	wait 44*8
+	fork arrowcopyleft
+	fork arrowmatecopyleft
+
+	
+proc arrowcopyright
+	jump 80 39+(66*3)
+	tint 2
+	face ~128
+	fork arrowprogright 8
+	jump 80+(66*3) 39
+	turn 128
+	fork arrowprogright 8
+	
+proc arrowcopyleft
+	jump 80 39+(66*3)
+	tint 2
+	face 64
+	fork arrowprogleft 8
+	jump 80+(66*3) 39
+	turn 128
+	fork arrowprogleft 8
+
+proc arrowprogleft count 
+	when count
+		when count > 1
+			tint 2
+			fork arrowturn 22 ~(1.45454545)*2 0
+			wait 22
+			turn ~64
+			tint 3
+			fork arrowturn 22 0 (66*3)/22
+			wait 1
+			tint 1
+			move ~23
+			size 3
+			#fork arrowtidy 22 (66*3)/22
+			move 23
+			move 66*3
+			wait 21
+		else
+			tint 2
+			fork arrowturn 21 ~(1.45454545)*2 0
+			wait 22
+			turn ~64
+			size 30
+			tint 0
+			fork arrowmatemove 22 (66*3)/22
+		done
+		fork arrowprogleft count-1
+	done
+
+	
+proc arrowprogright count 
+	when count
+ 		when count > 1
+			tint 2
+			fork arrowturn 22 (1.45454545)*2 0		## turn
+			wait 22
+			turn 64
+			tint 3
+			fork arrowturn 22 0 (66*3)/22  			## move
+			wait 1
+			tint 1
+			move ~23
+			size 3
+			#fork arrowtidy 22 (66*3)/22			## turn
+			move 23
+			move 66*3 
+			wait 21
+		
+		else
+			tint 2
+			fork arrowturn 21 (1.45454545)*2 0		## turn
+			wait 22
+			turn 64
+			size 30
+			tint 0
+			fork arrowmatemove 22 (66*3)/22
+		done
+		
+		
+		fork arrowprogright count-1  		## move
+	done
+
+		
+
+
+
+
+proc arrowmatecopyright 
+	jump 80 39
+	tint 2
+	face 0
+	fork arrowmateprogright 8
+	jump 80+(66*3) 39+(66*3)
+	turn 128
+	fork arrowmateprogright 8 
+
+	
+proc arrowmatecopyleft
+	jump 80 39
+	tint 2
+	face 64
+	fork arrowmateprogleft 8
+	jump 80+(66*3) 39+(66*3)
+	turn 128
+	fork arrowmateprogleft 8 
+	
+proc arrowmateprogleft count
+	when count
+		size 30
+		wait 22
+		when count==1
+			tint 0
+			fork arrowmatemove 22 (66*3)/22
+		else
+			fork arrowmatemove 23 (66*3)/22
+		done
+		move 66*3
+		wait 22
+		turn ~64
+		fork arrowmateprogleft count-1
+	done
+	
+proc arrowmateprogright count
+	when count
+		size 30
+		wait 22
+		when count==1
+			tint 0
+			fork arrowmatemove 22 (66*3)/22
+		else
+			fork arrowmatemove 23 (66*3)/22
+		done
+		move 66*3
+		wait 22
+		turn 64
+		fork arrowmateprogright count-1
+	done
+	
+proc arrowmatemove count smove
+	when count
+		draw
+		move smove 
+		wait 1
+		fork arrowmatemove count-1 smove
+	done
+	
+
+	
+proc arrowtidy count amove
+	when count
+ 		plot
+		move amove
+		wait 1
+		fork arrowtidy count-1 amove
+	done
+		
+	
+proc arrowturn count aturn amove
+	when count
+ 		fork arrow
+		turn aturn
+		move amove
+		wait 1
+		fork arrowclear 
+		fork arrowturn count-1 aturn amove
+	done
+	
+proc arrowclear
+	tint 1
+	size 30
+	draw
+
+	
+proc arrow
+	size 3
+
+	move 9*2
+	turn 128
+	fork arrowplot 5  # back
+
+	fork arrowplot2 2
+	turn 64*3
+	fork arrowplot2 2
+	
+	
+proc arrowplot count
+	when count
+		plot
+		move 9
+		fork arrowplot count-1
+	done
+
+proc arrowplot2 count
+	when count
+		turn 64
+		move 9
+		turn ~64
+		move 9
+		plot
+		fork arrowplot2 count-1
+	done
+
+
+proc fibbers
+	jump 180  139
+	size 0
+
+
+	## right fib
+	tint 2
+	fork fibrotr (88*4)-44
+	turn 128
+	tint 1
+	fork fibrotr (88*4)-44
+	turn 64
+	tint 0
+	fork fibrotr (88*4)
+	turn 128
+	fork fibrotr (88*4)
+
+	wait 88*4
+	
+	## left fib
+	tint 2
+	fork fibrotl (88*4)-44
+	turn 128
+	tint 1
+	fork fibrotl (88*4)-44
+	turn 64
+	tint 0
+	fork fibrotl (88*4)
+	turn 128
+	fork fibrotl (88*4)
+
+	
+proc fibrotr count 
+	when count
+		fork fib 8 5 3
+		wait 1
+		turn (1.454545)
+		fork fibrotr count-1
+	done
+
+proc fibrotl count
+	when count
+		fork fib 8 5 3
+		wait 1
+		turn ~(1.454545)
+		fork fibrotl count-1
+	done
+
+	
+proc fib a b count
+	when count
+		#move 2
+		temp next = a+b
+		size (next/3.1)
+		turn next
+		move next*0.90 
+		draw
+		fork fib next a count-1
+	done
+
+
+##################################################################	
+### fibbers part2
+##################################################################	
+
+
+proc fibberspart2 
+ 	fork fibberslarge (88*2)-22 1.454545 88*2
+
+	wait 88*2
+	face 96
+	fork fibberslarge (88*2)-22 ~1.454545 88*2
+	wait 88*2
+
+	face 0
+	fork fibberslarge2 (88*2)-22 1.454545 88*2
+	wait 88*2
+	
+	face 96
+	fork fibberslarge2 88 ~1.454545 88
+	wait 88
+	
+	face 0
+	fork fiblargeend
+	wait 22*3
+	jump 16 16+(36*3)
+	face ~64
+	
+	fork fiblargeend2
+	turn 128
+	move 36
+	fork fiblargeend2
+	
+proc fiblargeend2
+	fork fibend2line 0
+	wait 6
+	move 36
+	fork fibend2line 1
+	wait 5
+	move 36
+	fork fibend2line 0 
+	wait 6
+	move 36
+	fork fibend2line 1
+	
+
+proc fibend2line clrtype
+	face 0
+	fork fibend2copy 10 clrtype
+		
+proc fibend2copy count clrtype
+	when count
+		when clrtype==0
+			fork fibend2 18 15 5 clrtype
+		else
+			fork fibend2clr2 18 2 5 clrtype
+		done
+		
+		move 36
+		fork fibend2copy count-1 clrtype
+	done
+ 
+
+proc fibend2 csize nsize count clrtype
+	when count 
+		size csize
+		tint 0
+		plot
+		size nsize
+		tint 3
+		plot
+		wait 1
+		fork fibend2 csize nsize*0.50 count-1 clrtype
+	else
+		tint 0
+		plot
+	done
+
+	
+proc fibend2clr2 csize nsize count clrtype
+	when count 
+		size nsize
+		tint 0
+		plot
+		wait 1
+		fork fibend2clr2 csize nsize*1.9 count-1 clrtype
+	else
+		size csize
+		tint 0
+		plot
+	done
+	
+	
+proc fiblargeend
+	size 70
+	jump ~40 70
+	tint 3
+	fork fiblargewipe 10
+
+	wait 16
+	turn 64
+	jump 281 ~110
+	tint 3
+	fork fiblargewipe 10
+
+	wait 15
+	turn 64
+	jump 390 210
+	tint 3
+	fork fiblargewipe 10
+	
+	wait 15
+	turn 64
+	jump 70 310
+	tint 3
+	fork fiblargewipe 10
+
+proc fiblargewipe count
+	when count
+		plot
+		wait 1
+		move 20
+		fork fiblargewipe count-1
+	done
+	
+proc fibberslarge dur rot durc
+	jump 175 140
+	tint 2
+
+	## first fib
+	fork fibrot2 dur rot
+	turn 128
+	fork fibrot2 dur rot
+	turn 64
+	
+	tint 1
+	fork fibrot2 dur rot
+	turn 128
+	fork fibrot2 dur rot
+
+	tint 0		# cleaers
+	turn 32
+	fork fibrot2clr durc rot
+	turn 128
+	fork fibrot2clr durc rot
+	turn 64
+	fork fibrot2clr durc rot
+	turn 128
+	fork fibrot2clr durc rot
+
+proc fibberslarge2 dur rot durc
+	jump 175 140
+	tint 2
+
+	## first fib
+	fork fibrot2clr dur rot
+	turn 128
+	fork fibrot2clr dur rot
+	turn 64
+	
+	tint 1
+	fork fibrot2clr dur rot
+	turn 128
+	fork fibrot2clr dur rot
+
+	tint 0		# cleaers
+	turn 32
+	fork fibrot2clr durc rot
+	turn 128
+	fork fibrot2clr durc rot
+	turn 64
+	fork fibrot2clr durc rot
+	turn 128
+	fork fibrot2clr durc rot
+
+		
+proc fibrot2 count rot 
+	when count
+		fork fib2 5 3 3
+		wait 1
+		turn rot
+		fork fibrot2 count-1 rot 
+	done
+
+
+proc fib2 a b count 
+	when count
+		tint count
+	
+		move 5
+		temp next = a+b
+		size (next)
+		turn next
+		move next*3
+		draw
+		fork fib2 next a count-1
+	done
+
+		
+proc fibrot2clr count rot
+	when count
+		fork fib2clr 5 3 3
+		wait 1
+		turn rot
+		fork fibrot2clr count-1 rot
+	done
+
+
+proc fib2clr a b count
+	when count
+		move 5
+		temp next = a+b
+		size (next)
+		turn next
+		move next*3
+		draw
+		fork fib2clr next a count-1
+	done
+
+	
+	
+	
+	
+	
+	
+
+##################################################################	
+### reese breakdown
+##################################################################	
+proc reese 
+	fork outboxes
+
+	wait 88*8
+	fork reesewave
+	wait 88*4
+	fork reesewave2
+
+
+proc outboxes
+	jump 164 140
+
+	tint 1
+	fork outboxspiral 1 14	22
+
+	wait 88
+	tint 2
+	fork outboxspiral 1 14 22
+
+	wait 88
+	tint 3
+ 	fork outboxspiral 1 14 22
+
+	wait 88
+	tint 1
+	fork outboxspiral 1 14 22
+
+	wait 88
+	tint 2
+	fork outboxspiral 1 14 22
+
+	wait 88
+	tint 3
+	fork outboxspiral 1 14 22
+
+
+	wait 88
+	tint 0
+	fork outboxspiral 1 14 22
+
+proc outboxspiral a b msize
+	when a < b
+		fork outplot a msize a
+		move msize*a
+		turn 64
+		wait a
+		fork outboxspiral a+1 b msize
+	else
+		fork outplot a-1 msize a
+		move msize*a
+		turn 64
+	done
+
+proc outplot count msize a
+	when count
+		#plot
+		fork outblip 0
+		wait 1
+		move msize
+		fork outplot count-1 msize a
+	done
+
+proc outblip count
+	when count < 30
+		size count
+		plot
+		wait 2
+		fork outblip count+1
+	done
+
+	
+	
+proc reesewave2
+	tint 3
+	face 0
+	jump 66 50
+	fork reeseweve2
+	wait 88
+	jump x+(5*44) y+(4*44)
+	turn 128
+	tint 2
+	fork reeseweve2
+
+	wait 88
+	tint 1 
+	face 0
+	jump 66 50
+	fork reeseweve2
+	wait 44
+	tint 3
+	fork reeseweve2
+	
+
+	
+proc reeseweve2
+	fork reesecopy 6 1
+	turn 64
+	move 44*2
+	turn ~64
+	fork reesecopy 6 1
+	turn 64
+	move 44*2
+	turn ~64
+	fork reesecopy 6 1
+	wait 11
+	move  44*5
+	turn ~64
+	move 44
+	turn ~64
+	fork reesecopy 6 1
+	turn 64
+	move 44*2
+	turn ~64
+	fork reesecopy 6 1
+	
+proc reesewave
+	jump 66 50
+	face 0
+	tint 1
+	fork reesecopy 6 5
+	wait 88
+	tint 2
+	fork reesecopy 6 5
+	wait 88 
+	tint 3
+	face 0
+	move 44*5 
+	face 64
+	move 44*4
+	face 128
+	tint 1
+	fork reesecopy 6 5
+	wait 44
+	tint 2
+	fork reesecopy 6 5
+	wait 44 
+
+
+proc reesecopy count count2
+	when count
+		fork reeseturncopy count2
+		move 44
+		wait 8
+		fork reesecopy count-1 count2
+	done
+
+proc reeseturncopy count
+	turn 64
+	fork reeseboxudx count
+
+proc reeseboxudx count
+	when count
+		fork reeseboxudxdo
+		wait 1
+		move 44
+		fork reeseboxudx count-1
+	done
+
+proc reeseboxudxdo 
+	fork reeseboxup 0
+	wait 22
+	tint 0
+	fork reeseboxup 0
+
+proc reeseboxup count
+	when count <= 9*3
+		size count
+		when (count/15&1)==0
+			plot
+		else 
+			draw 
+		done
+		wait 2
+		fork reeseboxup count+1
+	done
+
+	
+	
+
+	
+	
+	
+
+##################################################################	
+### broken beats
+##################################################################	
+
+	
+proc brokenbeatspart
+
+	jump 176 140
+
+
+	fork tunnels 50 4 0
+
+	fork brokenbeats 0
+	
+	face 64+32 
+	#fork brokcircprog ~1.454545
+	wait 22*8
+	turn 64 
+	#fork brokcircprog 1.454545
+	wait 22*8
+	#fork brokcircprog ~1.454545
+	wait 22*8
+	turn 64 
+	#fork brokcircprog2 1.454545
+
+	wait 22*8
+	
+	fork borkedgesprog 
+	fork tunnels 48 3 0
+	fork brokenbeats 1
+	face 64+32 
+	fork brokcircprog ~1.454545
+	wait 22*8
+	turn 64 
+	fork brokcircprog 1.454545
+
+	wait 22*8
+	fork brokcircprog ~1.454545
+
+	
+	
+	wait 22*8
+	fork tunnels 48 1 1
+	turn 64 
+	wait 22*4
+	fork tunnelending 48
+
+proc borkedgesprog 
+ 	jump 176 140
+	tint 2
+
+	face 32
+	fork brokedges 6 ~64 ~96
+	wait 22*8
+
+	turn 64
+	fork brokedges 6 64 96
+	wait 22*8
+
+	turn 64+32
+	fork brokedges 6 ~32 ~96
+
+	wait 22*8
+	
+	fork brokedges 4 ~64 96
+
+	
+proc brokedges rep tr tr2
+	when rep
+		fork brokedge tr2
+		wait 22
+		turn tr
+		fork brokedges rep-1 tr tr2
+	done
+	
+proc brokedge tr2
+	move 170
+	turn tr2
+	fork broklinerplotmove 10 10
+		
+
+proc broklinerplotmove rep s
+	when rep
+		fork broklinerplot s
+		#turn 1
+		move 24
+		wait 2
+		fork broklinerplotmove rep-1 s
+
+	done
+	
+proc broklinerplot s 
+	when s>=0
+
+		size s
+		plot
+		wait 1.5
+		fork broklinerclr s
+		fork broklinerplot s-1
+	done
+
+proc broklinerclr s
+	size s+1
+	tint 0
+	plot
+	
+proc brokcircprog rot
+	size 4
+	tint 3
+	wait 22*6
+	fork brokcirkfork rot
+	turn 128
+	fork brokcirkfork rot
+	wait 22 
+	turn 64
+	fork brokline 
+	turn 128
+	fork brokline 
+
+proc brokcircprog2 rot
+	size 4
+	tint 3
+	wait 22*6
+	fork brokcirkfork rot
+	turn 128
+	fork brokcirkfork rot
+	wait 22 
+	turn 64
+	fork brokline2
+	turn 128
+	fork brokline2 
+
+proc brokline2
+	move 100
+	turn ~32
+	fork broklineplot 11
+	wait 11
+	tint 0
+	size 5
+	fork broklineclr 11
+	
+proc brokline
+	move 100
+	turn 128
+	fork broklineplot 11
+	wait 11
+	tint 0
+	size 5
+	fork broklineclr 11
+	
+proc broklineplot rep
+	when rep
+		draw
+		move 100/33
+		draw
+		move 100/33
+		wait 1
+		fork broklineplot rep-1
+	done
+	
+
+proc broklineclr rep
+	when rep
+		draw
+		move 100/22
+		draw
+		move 100/22 
+		wait 1
+		fork broklineclr rep-1
+	done
+
+proc brokcirkfork rot
+	fork brokcirc 22 rot
+	wait 11
+	tint 0
+	fork brokcirc 22 rot
+	
+proc brokcirc rep rot 
+	when rep
+		fork brokplot
+		turn rot
+		fork brokplot
+		turn rot
+		wait 1
+		fork brokcirc rep-1 rot
+	done
+	
+
+proc brokplot
+	move 100
+	draw
+	
+proc tunnelending s
+	fork tund0 s
+	size s
+	tint 0
+	wait 6
+	wait 5
+	wait 6
+	plot	
+	fork tund1 45
+	wait 5
+	plot	
+	fork tund3 40
+	wait 6
+	plot	
+	fork tund1 30
+	wait 5
+	plot	
+	fork tund7 25
+	wait 6
+	plot	
+	fork tund1 20
+	wait 5
+	fork tunny2up 21 15 6
+	wait 22
+	fork tunny2 20 50 0
+	wait 21
+	tint 0
+	plot
+	
+proc tunnels s rep end
+	when rep
+		fork tunny2 16 s 0
+		wait 17
+		fork tunny2 15 s 1
+		wait 16
+		fork tunny2 10 s 2
+		wait 11
+		fork tunny2 (11*3)-1 s 8
+		wait 11*3
+		fork tunny2 10 s 4
+		when end==0
+			wait 11
+			fork tunny2 16 s 5
+			wait 17
+			fork tunny2 15 s 6
+			wait 16
+			fork tunny2 10 s 7
+			#wait 11
+			#fork tunny2 (11*4)-1 s
+			wait 11*5
+		done 
+		
+		fork tunnels s rep-1 end
+	done
+	
+proc tunny2 rep s a
+	when rep>=0
+	
+		fork tunnyselect a s
+
+		wait 1 
+		
+		when rep>0
+			size s+1
+			tint 0 plot
+		done
+		
+		fork tunny2 rep-1 s*0.966 a
+	done
+
+proc tunny2up rep s a
+	when rep>=0
+	
+		fork tunnyselect a s
+
+		wait 1 
+
+		fork tunny2up rep-1 s*1.054 a
+	done
+
+proc tunnyselect a s
+		when a==0
+			fork tund0 s
+		done
+		when a==1
+			fork tund1 s
+		done
+		when a==2
+			fork tund2 s
+		done
+		when a==3
+			fork tund3 s
+		done
+		when a==4
+			fork tund4 s
+		done
+		when a==5
+			fork tund5 s
+		done
+		when a==6
+			fork tund6 s
+		done
+		when a==7
+			fork tund7 s
+		done
+		when a==8
+			fork tund8 s
+		done
+		
+proc tund0 s
+	tint 3
+	fork tundrawa s
+	tint 2
+	fork tundrawa s*0.75
+	tint 1
+	fork tundrawa s*0.50
+			
+proc tund1 s
+	tint 3
+	fork tundrawb s
+	tint 2
+	fork tundrawb s*0.75
+	tint 1
+	fork tundrawb s*0.50
+
+proc tund2 s
+	tint 3
+	fork tundrawc s
+	tint 2
+	fork tundrawc s*0.75
+	tint 1
+	fork tundrawc s*0.50
+
+proc tund3 s
+	tint 3
+	fork tundrawd s
+	tint 2
+	fork tundrawd s*0.75
+	tint 1
+	fork tundrawd s*0.50
+			
+proc tund4 s
+	tint 3
+	fork tundrawa s
+	tint 2
+	fork tundrawb s*0.75
+	tint 1
+	fork tundrawc s*0.50
+	
+proc tund5 s
+	tint 3
+	fork tundrawd s
+	tint 2
+	fork tundrawc s*0.75
+	tint 1
+	fork tundrawb s*0.50
+	
+proc tund6 s
+	tint 3
+	fork tundrawa s
+	tint 2
+	fork tundrawa s*0.75
+	tint 1
+	fork tundrawd s*0.50
+proc tund7 s
+	tint 3
+	fork tundrawc s
+	tint 2
+	fork tundrawc s*0.75
+	tint 1
+	fork tundrawb s*0.50
+
+proc tund8 s
+	tint 3
+	fork tundrawa s
+	tint 2
+	fork tundrawc s*0.75
+	tint 1
+	fork tundrawb s*0.50
+	
+proc tundrawa s
+	#tint 2
+	size s
+	draw
+	size s*0.88
+	tint 0
+	plot
+
+proc tundrawb s
+	#tint 2
+	size s
+	draw
+	size s-3
+	tint 0
+	plot
+
+proc tundrawc s
+	#tint 2
+	size s
+	draw
+	size s-3
+	tint 0
+	draw
+
+proc tundrawd s
+	#tint 2
+	size s
+	draw
+	size s*0.88
+	tint 0
+	draw
+
+
+
+proc brokenbeats end
+	#jump 176 135 
+	tint 2
+	face 128
+	wait 22*6
+	fork brokerot ~2*1.454545 
+ 	wait 22
+	fork brokefire 3
+
+	wait 22*7
+	turn ~128
+	fork brokerot 2*1.454545 
+	wait 22
+	fork brokefire 3
+
+	wait 22*7
+	turn ~64
+	fork brokerot ~2*1.454545 
+	wait 22
+	fork brokefire 3
+
+	wait 22*7
+
+	when end==0
+	
+		face 32 
+		fork squarerot 22 2*1.454545 
+		wait 22
+
+		face 192
+		fork brokefire 3
+		turn 128
+		fork brokefire 3
+	
+
+		face 32
+		fork squareshrink 10 5.5 0.90
+		wait 11
+		face 0
+		fork brokefire 3
+		turn 128
+		fork brokefire 3
+		face 32
+		fork squareshrink 10 5.5 0.90
+		wait 11
+	done
+	
+proc brokefire tn
+	move 53
+	tint tn
+	fork brorrowmove 14
+	wait 5
+	tint 0
+	fork brorrowmove 14
+
+
+	
+proc brorrowmove count
+	when count
+		fork brorrow
+		move 8*2
+		wait 1
+		fork brorrowmove count-1
+	done
+	
+
+	
+proc brorrow
+	size 3
+	move 18
+	plot
+	turn 128
+	fork brorrowplot 2
+	turn 64
+	fork brorrowplot 2
+
+proc brorrowplot rep
+	when rep
+		turn ~64 move 8 turn 64 move 8 	plot
+		fork brorrowplot rep-1
+	done
+	
+	
+	
+proc brokerot r
+	tint 2
+ 	size 37
+	turn 32 
+	fork squarerot 22 r
+	wait 22
+	fork squareshrink 19 5.5 0.94
+
+proc squareshrink count s exp 
+	when count
+
+		fork square s
+		wait 1
+		fork squareclr s
+		fork squareshrink count-1 s*exp exp 
+	done
+
+
+	
+proc squarerot count rot
+	when count
+		fork squareclr 5.5
+		fork square 5.5
+		turn rot
+		wait 1
+		fork squarerot count-1 rot
+	done
+
+proc squareclr s
+	temp newsize = s*s*2
+	when newsize < 53
+		size s*s*2
+	else
+		size 53
+	done
+	
+	tint 0 draw
+
+proc square s
+	size s*s draw
+	turn 32
+	fork square2 s
+	turn 64
+	fork square2 s
+	turn 64
+	fork square2 s
+	turn 64
+	fork square2 s
+
+proc square2 s
+	temp ns = s-1
+	when ns > 0
+		move (s+ns)*1.4140625
+		size ns*ns draw
+		fork square2 ns
+	done
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+##################################################################	
+### rotoboxes
+##################################################################	
+	
+proc rotoboxes
+	jump 176 130
+	fork beamers
+	wait (88*2)
+	tint 1
+	
+	jump 176-(22*3) 145+(22*3)
+	face ~64
+	fork trifullprog 4  22*3 176 145
+	wait 88*4
+	fork every
+	wait 88*2
+	jump 176-(22*3) 145-(22*3) 
+	face 0
+	fork trifullprog 6  22*3 176 145
+	wait 88*6
+	fork every2
+	wait 88*2
+	
+
+
+proc every
+	tint 1
+
+	temp s = 3
+	temp m = 8
+	size s
+
+	face 0
+	jump 8 80
+	fork everyrot 22 m 0 0.15
+	wait 22
+	fork everyfireprog s m 5 
+	
+	
+	wait 11
+	jump 344 180
+	face 128
+	fork everyrot 22 m 0 0.15
+	wait 22
+	fork everyfireprog s m 5 
+
+	wait 11
+	face 0
+	jump 8 140
+	fork everyrot 22 m 0 0.15
+	wait 22
+	fork everyfireprog2 s m 5
+	wait 22*3
+	tint 0 
+	fork everyfire 43 m
+
+
+proc every2
+	tint 1
+
+	temp s = 3
+	temp m = 8
+	size s
+
+	face 64+16
+	jump 120 10
+	fork everyrot 22 m 0 0.15
+	wait 22
+	fork everyfireprog s m 5 
+	
+	
+	wait 11
+	jump 320 240 
+	face 192-16
+	fork everyrot 22 m 0 0.15
+	wait 22
+	fork everyfireprog s m 5 
+
+	wait 11
+	face 0
+	jump 8 140
+	fork everyrot 22 m 0 0.15
+	wait 22
+	fork everyfireprog3 s m 5 
+	wait 22*3
+	tint 0 
+	fork everyfire 43 m
+	
+proc everyfireprog s m w 
+	tint 1
+	fork everyfire 43 m
+	wait 2
+	tint 0
+	fork everyway s m 0.5
+	wait w-2
+
+	tint 2
+	fork everyfire 43 m
+	wait 2
+	tint 0
+	fork everyway s m 0.5
+	wait w-2
+
+	tint 3
+	fork everyfire 43 m
+	wait w
+
+	tint 0
+	fork everyfire 43 m
+
+
+proc everyfireprog2 s m w
+	tint 1
+	fork everyfire 43 m
+	wait 2
+	tint 0
+	fork everyway s m 0.5
+	wait w-2
+
+	tint 2
+	fork everyfire 43 m
+	wait 2
+	tint 0
+	fork everyway s m 0.5
+	wait w-2
+
+	tint 3
+	fork everyfire 43 m
+	wait 2
+	tint 0
+	#fork everyway s m 0.5
+	wait w-2
+
+	tint 0
+	fork everyfire 43 m
+	wait 2
+	tint 1
+	fork everyway s m 0.5
+	wait w 
+
+	tint 1
+	fork everyway s m 0.5
+	wait w*4
+	tint 2
+	fork everyway s m 0.5
+	wait w*2
+	tint 3
+	fork everyway s m 0.5
+
+proc everyfireprog3 s m w
+	tint 1
+	fork everyfire 43 m
+	wait 2
+	tint 0
+	fork everyway s m 0.5
+	wait w-2
+
+	tint 2
+	fork everyfire 43 m
+	wait 2
+	tint 0
+	fork everyway s m 0.5
+	wait w-2
+
+	tint 3
+	fork everyfire 43 m
+	wait 2
+	tint 0
+	fork everyway s m 0.5
+	wait w-2
+
+	tint 0
+	fork everyfire 43 m
+	wait 2
+	tint 1
+	fork everyway s m 0.5
+	wait w 
+
+	tint 1
+	fork everyway s m 0.5
+	wait w*4
+	tint 2
+	fork everyway s m 0.5
+	wait w*2
+	tint 3
+	fork everyway s m 0.5
+
+
+proc everyrot rep m s inc
+	when rep
+		size s
+		fork everyqplot 7 m	## E
+		wait 1
+		turn ~1.454545*2
+		fork everyclr
+		fork everyrot rep-1 m s+inc inc
+	done
+
+proc everyfire rep m
+	when rep
+		turn ~64
+		fork everyqplot 7 m	## E
+		turn 64
+		move m
+		wait 0.5
+		fork everyfire rep-1 m
+	done
+	
+proc everyqplot rep m
+	when rep
+		plot
+		move m
+		fork everyqplot rep-1 m
+	done
+	
+	
+	
+proc everyclr
+	tint 0
+	move 24
+	size 30
+	plot
+	
+proc everyway s m w
+	temp cx = x
+	temp cy = y
+	temp cf = dir
+	
+	turn ~64
+	move m
+	turn 64
+	
+	fork letter_E m w
+	move m*5 wait w*5
+
+	fork letter_V m w
+	move m*6 wait w*6
+
+	fork letter_E m w
+	move m*5 wait w*5
+
+	fork letter_R m w
+	move m*5 wait w*5
+
+	fork letter_Y m w
+	move m*6 wait w*6
+
+	fork letter_W m w
+	move m*6 wait w*6
+	
+	fork letter_A m w
+	move m*5 wait w*5
+	
+	fork letter_Y m w
+	move m*6 wait w*6
+
+	
+	
+proc everyplot rep val m
+	turn ~64
+	fork everyplotrep rep val m
+	
+proc everyplotrep rep val m
+	when rep 
+		when val&1==1
+			plot
+			#fork everyplotup 0 3
+		done
+		move m
+		fork everyplotrep rep-1 val/2 m
+	done
+
+proc everyplotrep2 rep val m
+	when rep 
+		when val&1==1
+			plot
+		done
+		move m
+		fork everyplotrep2 rep-1 val/2 m
+	done
+
+
+proc everyplotup s m
+	when s<=m
+		size s
+		plot
+		wait 1
+		fork everyplotup s+1 m
+		
+	done
+
+	
+####  main bit	
+	
+proc trifullprog rep dist xp yp
+	when rep
+		#jump xp-dist yp+dist
+		#face ~64
+		fork trishrink 22 2.0  ~0.175
+		fork trifireprog rep
+		wait 22
+		fork trirot 44 1.454545
+		wait 22*2
+		turn 32*2
+		fork trishrink 22 5.6 0.175
+		wait 22
+		move dist*2
+		turn ~64
+		move dist*2
+		turn 128
+
+		fork trifullprog rep-1 dist xp yp
+	done
+	
+proc trifireprog last
+	tint 1
+	size 4
+	fork trifire 22*2 0.50 3
+	wait 11
+ 
+	tint 0
+	fork trifire 22*2 0.50 3
+	tint 1
+	wait 11
+	fork triouterprog
+	tint 0
+	wait 11
+	fork triouterprog
+	wait 22
+	
+	wait 11
+	tint 1
+	fork trifirein 22*2 0.50 3
+	when last>1
+		fork trifirenext 22*2
+	done
+	wait 11
+
+	tint 0
+	
+	fork trifirein (22*2) 0.50 3
+
+	when last>1
+		fork trifirenext (22*2)
+	done
+
+proc triouterprog
+	fork trifireouter 44
+	turn 64
+	fork trifireouter 44
+	turn 64
+	fork trifireouter 44
+	turn 64
+	fork trifireouter 44
+	turn 64
+	
+proc trifireouter rep
+	when rep
+		fork trifireouterplot (22*6)
+		turn (1.454545)/2
+		fork trifireouterplot (22*6)
+		turn (1.454545)/2
+		
+		wait 1
+		fork trifireouter rep-1
+	done
+	
+proc trifireouterplot m
+	move m
+	draw
+	
+proc trifirenext len
+	move 22*6
+	turn 64
+
+	fork trifireplot len 0.25 3
+
+proc trifire len w m
+	face 0
+	fork trifireplot len w m
+	turn 64
+	fork trifireplot len w m
+	turn 64
+	fork trifireplot len w m
+	turn 64
+	fork trifireplot len w m
+	turn 64
+
+proc trifirein len w m
+	face 0
+	fork trifireplotin len w m
+	turn 64
+	fork trifireplotin len w m
+	turn 64
+	fork trifireplotin len w m
+	turn 64
+	fork trifireplotin len w m
+	turn 64	
+
+proc trifireplotin rep w m
+	move 22*6
+	turn 128
+	when rep
+		draw
+		move m 
+		wait w
+		fork trifireplot rep-1 w m
+	done
+	
+proc trifireplot rep w m
+	when rep
+		draw
+		move m 
+		wait w
+		fork trifireplot rep-1 w m
+	done
+
+proc trishrink rep s inc
+	when rep
+		fork triangle s
+		wait 1
+		fork trishrinkclr
+		fork trishrink rep-1 s-inc inc
+	done
+
+	
+proc trishrinkclr
+	face 32
+	tint 0
+	size 23
+	fork trishrinkclr2
+	turn 64
+	fork trishrinkclr2
+	turn 64
+	fork trishrinkclr2
+	turn 64
+	fork trishrinkclr2
+	
+proc trishrinkclr2
+	move 40
+	plot
+	
+proc trirot rep rot
+	when rep
+		fork triangle 5.5
+		turn rot
+		# move 1.454545
+		wait 1 
+
+		fork triclr 5.5
+		fork trirot rep-1 rot
+
+	done 
+
+proc trisplat rep s rot
+	when rep
+		fork triangle s
+		turn rot
+		wait 1
+		fork trisplat rep-1 s rot
+	done
+	
+proc triclr s
+	tint 0
+	size 70
+	plot
+	
+proc triangle s
+	size s*s #draw
+	turn 32
+	tint 3
+	fork triangle2s s
+	turn 64
+	tint 2
+	fork triangle2s s
+	turn 64
+	tint 3
+	fork triangle2s s
+	turn 64
+	tint 2
+	fork triangle2s s
+
+proc triangle2 s
+	temp ns = s-1
+	when ns > 0
+		move (s+ns)*2.2
+		temp nsize = ns*ns*0.6
+		when nsize > 1
+			size nsize plot
+		done
+		fork triangle2 ns
+	done
+
+proc triangle2s s
+	move 4
+	temp ns = s-1
+	when ns > 0
+		move (s+ns)*2.2
+		temp nsize = ns*ns*0.6
+		when nsize > 1
+			size nsize plot
+		done
+		fork triangle2 ns
+	done
+
+
+proc tribox
+	size 20
+	temp m=50
+	face 0
+	fork triboxcop m
+	wait 22
+	fork triboxrot m 22
+	wait 22
+	turn 32
+	fork triboxcop m
+	wait 22
+	fork triboxrot m 22
+	wait 22
+	turn 32
+	fork triboxcop m
+	wait 22
+	fork triboxrot m 22
+	wait 22
+	turn 32
+	fork triboxcop m
+	wait 22
+	fork triboxrot m 22
+	wait 22
+	turn 32
+	
+proc triboxrot m rep
+	when rep
+		fork triboxcop m
+		wait 1
+		fork triboxclr m
+		turn 1.454545
+		#move 8
+
+		fork triboxrot m rep-1
+	done
+
+	
+proc triboxclr m
+	size 25
+	tint 0
+	fork triboxcop m
+	
+proc triboxcop m
+	fork trilin m
+	turn 64
+	move m
+	turn ~64
+	fork trilin m
+	turn 64
+	move m
+	turn ~64
+	fork trilin m
+	
+proc trilin m
+#	move m/2
+	fork triboxplot 2 m
+	 
+proc triboxplot rep m
+	when rep
+		move m
+		draw
+		fork triboxplot rep-1 m
+	done
+	
+
+	
+proc beamers
+	tint 2
+	wait 22
+	face 0 
+	tint 1
+	fork beamer ~30 30
+	wait 17
+	tint 2
+	fork beamer ~20 20
+	wait 16
+	tint 1
+	fork beamer ~10 10
+	wait 17
+	tint 2
+	fork beamer 10 ~10
+	wait 16
+	tint 1
+	fork beamer 30 ~30
+	wait 17
+	tint 2
+	fork beamer 20 ~20
+	wait 16
+	tint 1
+	fork beamer 10 ~10
+	wait 17
+	tint 2
+	fork beamer ~20 20
+	wait 16
+	tint 1
+	fork beamer ~40 40
+	
+
+proc beamer a b 
+	fork beammirror a b
+	wait 8
+	tint 0 
+	fork beammirror a b
+	
+
+proc beammirror a b
+	turn a
+	fork beam 0.2 1 35 0.46
+	turn b
+	turn 128
+	turn b
+	fork beam 0.2 1 35 0.46
+
+	
+	
+proc beampulses rep w1 w2
+	when rep
+		fork beam 0.20 0 30 0.16
+		when rep&1==0
+			wait w1
+		else 
+			wait w2
+		done
+		#turn 15
+		fork beampulses rep-1 w1 w2
+	done
+	
+	
+proc beam w s ms ds
+	when s < ms
+		size s draw
+		move 3
+		wait w
+		fork beam w s+ds ms ds
+	done
+
+
+	
+	
+
+	
+##################################################################	
+### CREDITS
+##################################################################	
+
+proc creditsprog
+	tint 3
+	fork credits
+	wait 6
+	tint 2
+	fork credits
+	wait 6
+	tint 1	
+	fork credits
+
+	wait 88*2.9
+	tint 2
+	fork credits
+	wait 6
+	tint 3
+	fork credits
+	wait 6
+	tint 0
+	fork credits
+
+proc credits 
+	temp cx = 20
+	temp cy = 40
+	
+	temp s = 2
+	temp m = 6.1 
+	size s
+	face 7
+	jump cx cy
+
+	fork visuals m 0.5
+	wait 22
+	
+	jump cx cy+(m*7)
+	fork music m 0.5
+	wait 22
+	
+	jump cx+(15*m) cy+(m*7*2.3)
+	fork hoffman m 0.5
+	wait 22
+	
+	jump cx cy+(m*7*3.3)
+	fork engine m 0.5
+	wait 22
+
+	jump cx+(8*m) cy+(m*7*4.4)
+	fork blueberry m 0.5
+
+proc hoffman m w
+	temp cx = x
+	temp cy = y
+	temp cf = dir
+	
+	turn ~64
+	move m
+	turn 64
+	
+	fork letter_H m w
+	move m*6 wait w*6
+
+	fork letter_O m w
+	move m*6 wait w*6
+	
+	fork letter_F m w
+	move m*5 wait w*5
+
+	fork letter_F m w
+	move m*5 wait w*5
+
+	fork letter_M m w
+	move m*6 wait w*6
+	
+	fork letter_A m w
+	move m*5 wait w*5
+
+	fork letter_N m w
+
+	
+proc blueberry m w
+	temp cx = x
+	temp cy = y
+	temp cf = dir
+	
+	turn ~64
+	move m
+	turn 64
+	
+	fork letter_B m w
+	move m*5 wait w*5
+
+	fork letter_L m w
+	move m*5 wait w*5
+
+	fork letter_U m w
+	move m*6 wait w*6
+
+	fork letter_E m w
+	move m*5 wait w*5
+
+	fork letter_B m w
+	move m*5 wait w*5
+
+	fork letter_E m w
+	move m*5 wait w*5
+	
+	fork letter_R m w
+	move m*5 wait w*5
+
+	fork letter_R m w
+	move m*5 wait w*5
+	
+	fork letter_Y m w
+
+proc visuals m w
+	temp cx = x
+	temp cy = y
+	temp cf = dir
+	
+	turn ~64
+	move m
+	turn 64
+	
+	fork letter_V m w
+	move m*6 wait w*6
+	
+	fork letter_I m w
+	move m*4 wait w*4
+
+	fork letter_S m w
+	move m*6 wait w*6
+
+	fork letter_U m w
+	move m*6 wait w*6
+	
+	fork letter_A m w
+	move m*6 wait w*6
+	
+	fork letter_L m w
+	move m*5 wait w*5
+	
+	fork letter_S m w
+
+	
+proc music m w
+	temp cx = x
+	temp cy = y
+	temp cf = dir
+	
+	turn ~64
+	move m
+	turn 64
+
+	fork letter_M m w
+	move m*6 wait w*6
+
+	fork letter_U m w
+	move m*6 wait w*6
+
+	fork letter_S m w
+	move m*6 wait w*6
+
+	fork letter_I m w
+	move m*4 wait w*4
+
+	fork letter_C m w
+
+
+proc engine m w
+	temp cx = x
+	temp cy = y
+	temp cf = dir
+	
+	turn ~64
+	move m
+	turn 64
+	
+	fork letter_E m w
+	move m*5 wait w*5
+
+	fork letter_N m w
+	move m*6 wait w*6
+
+	fork letter_G m w
+	move m*6 wait w*6
+
+	fork letter_I m w
+	move m*4 wait w*4
+
+	fork letter_N m w
+	move m*6 wait w*6
+
+	fork letter_E m w
+	
+######### the fucking letters!!!
+
+
+proc letter_E m w
+	fork everyplot 5 31 m	## E
+	move m wait w
+	fork everyplot 5 21 m
+	move m wait w
+	fork everyplot 5 21 m
+	move m wait w
+	fork everyplot 5 17 m
+
+proc letter_V m w
+		fork everyplot 5 24 m		## V
+	move m wait w
+	fork everyplot 5 24/4 m
+	move m wait w
+	fork everyplot 5 1 m
+	move m wait w
+	fork everyplot 5 24/4 m
+	move m wait w
+	fork everyplot 5 24 m	
+
+proc letter_R m w
+	fork everyplot 5 31 m	## R
+	move m wait w
+	fork everyplot 5 18 m
+	move m wait w
+	fork everyplot 5 18 m
+	move m wait w
+	fork everyplot 5 13 m
+
+proc letter_Y m w
+	fork everyplot 5 16 m	## Y
+	move m wait w
+	fork everyplot 5 8 m
+	move m wait w
+	fork everyplot 5 7 m
+	move m wait w
+	fork everyplot 5 8 m
+	move m wait w
+	fork everyplot 5 16 m
+	
+proc letter_W m w
+	fork everyplot 5 30 m	## W
+	move m wait w
+	fork everyplot 5 1 m
+	move m wait w
+	fork everyplot 5 2 m
+	move m wait w
+	fork everyplot 5 1 m
+	move m wait w
+	fork everyplot 5 30 m
+
+proc letter_A m w
+	fork everyplot 5 15 m	## A
+	move m wait w
+	fork everyplot 5 18 m
+	move m wait w
+	fork everyplot 5 18 m
+	move m wait w
+	fork everyplot 5 15 m
+
+proc letter_H m w			## H
+	fork everyplot 5 31 m
+	move m wait w
+	fork everyplot 5 4 m
+	move m wait w
+	fork everyplot 5 4 m
+	move m wait w
+	fork everyplot 5 4 m
+	move m wait w
+	fork everyplot 5 31 m
+
+	
+proc letter_O m w			## O
+	fork everyplot 5 14 m		
+	move m wait w
+	fork everyplot 5 17 m
+	move m wait w
+	fork everyplot 5 17 m
+	move m wait w
+	fork everyplot 5 17 m
+	move m wait w
+	fork everyplot 5 14 m		
+
+proc letter_F m w
+	fork everyplot 5 31 m	## F
+	move m wait w
+	fork everyplot 5 20 m
+	move m wait w
+	fork everyplot 5 20 m
+	move m wait w
+	fork everyplot 5 16 m
+
+proc letter_M m w
+	fork everyplot 5 31 m	## M
+	move m wait w
+	fork everyplot 5 16 m
+	move m wait w
+	fork everyplot 5 8 m
+	move m wait w
+	fork everyplot 5 16 m
+	move m wait w
+	fork everyplot 5 31 m	
+
+
+proc letter_N m w
+	fork everyplot 5 31 m	## N
+	move m wait w
+	fork everyplot 5 8 m
+	move m wait w
+	fork everyplot 5 4 m
+	move m wait w
+	fork everyplot 5 2 m
+	move m wait w
+	fork everyplot 5 31 m
+	
+proc letter_B m w
+	fork everyplot 5  31 m	## B
+	move m wait w
+	fork everyplot 5 21 m
+	move m wait w
+	fork everyplot 5 21 m
+	move m wait w
+	fork everyplot 5 10 m
+
+proc letter_L m w
+	fork everyplot 5 31 m	## L
+	move m wait w
+	fork everyplot 5 1 m
+	move m wait w
+	fork everyplot 5 1 m
+	move m wait w
+	fork everyplot 5 1 m
+
+proc letter_U m w
+	fork everyplot 5 30 m	## u
+	move m wait w
+	fork everyplot 5 1 m
+	move m wait w
+	fork everyplot 5 1 m
+	move m wait w
+	fork everyplot 5 1 m
+	move m wait w
+	fork everyplot 5 30 m
+
+proc letter_I m w
+	fork everyplot 5 17 m		## I
+	move m wait w
+	fork everyplot 5 31 m
+	move m wait w
+	fork everyplot 5 17 m
+	
+proc letter_S m w
+	fork everyplot 5 8 m	## S
+	move m wait w
+	fork everyplot 5 21 m
+	move m wait w
+	fork everyplot 5 21 m
+	move m wait w
+	fork everyplot 5 21 m
+	move m wait w
+	fork everyplot 5 2 m
+	
+proc letter_C m w
+	fork everyplot 5 14 m	 	## C
+	move m wait w
+	fork everyplot 5 17 m
+	move m wait w
+	fork everyplot 5 17 m
+	move m wait w
+	fork everyplot 5 10 m
+	
+proc letter_G m w
+	fork everyplot 5 14 m	## G
+	move m wait w
+	fork everyplot 5 17 m
+	move m wait w
+	fork everyplot 5 17 m
+	move m wait w
+	fork everyplot 5 21 m
+	move m wait w
+	fork everyplot 5 6 m

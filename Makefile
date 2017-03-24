@@ -1,10 +1,12 @@
 
+EXTERNAL := ../Andres
+
 CC := i686-w64-mingw32-g++
-CFLAGS := -Iparser/rose -I../glfw-3.0.4.bin.WIN32/include -I../glew-1.10.0/include -I../portaudio/include -Wno-write-strings -std=c++11
-LFLAGS := ../glew-1.10.0/lib/Release/Win32/glew32s.lib -L../glfw-3.0.4.bin.WIN32/lib-mingw ../portaudio/mingw32/usr/local/lib/libportaudio-2.dll -lglfw3 -lopengl32 -luser32 -lgdi32 -static-libgcc -static-libstdc++
+CFLAGS := -Iparser/rose -I$(EXTERNAL)/glfw-3.0.4.bin.WIN32/include -I$(EXTERNAL)/glew-1.10.0/include -I$(EXTERNAL)/portaudio/include -Wno-write-strings -std=c++11
+LFLAGS := $(EXTERNAL)/glew-1.10.0/lib/Release/Win32/glew32s.lib -L$(EXTERNAL)/glfw-3.0.4.bin.WIN32/lib-mingw $(EXTERNAL)/portaudio/mingw32/usr/local/lib/libportaudio-2.dll -lglfw3 -lopengl32 -luser32 -lgdi32 -static-libgcc -static-libstdc++
 #CC := x86_64-w64-mingw32-g++
-#CFLAGS := -O3 -Iparser/rose -I../glfw-3.0.4.bin.WIN64/include -I../glew-1.10.0/include -I../portaudio/include -Wno-write-strings -std=c++11
-#LFLAGS := ../glew-1.10.0/lib/Release/x64/glew32s.lib -L../glfw-3.0.4.bin.WIN64/lib-mingw -lglfw3 -luser32 -lopengl32 -lgdi32 -static-libgcc -static-libstdc++ -s
+#CFLAGS := -O3 -Iparser/rose -I$(EXTERNAL)/glfw-3.0.4.bin.WIN64/include -I$(EXTERNAL)/glew-1.10.0/include -I$(EXTERNAL)/portaudio/include -Wno-write-strings -std=c++11
+#LFLAGS := $(EXTERNAL)/glew-1.10.0/lib/Release/x64/glew32s.lib -L$(EXTERNAL)/glfw-3.0.4.bin.WIN64/lib-mingw -lglfw3 -luser32 -lopengl32 -lgdi32 -static-libgcc -static-libstdc++ -s
 
 ifeq ($(DEBUG),yes)
 CFLAGS += -g

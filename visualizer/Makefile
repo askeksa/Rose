@@ -1,5 +1,6 @@
 
-EXTERNAL := ../Andres
+EXTERNAL := ../../Andres
+BUILD = build
 
 CC := i686-w64-mingw32-g++
 CFLAGS := -Iparser/rose -I$(EXTERNAL)/glfw-3.0.4.bin.WIN32/include -I$(EXTERNAL)/glew-1.10.0/include -I$(EXTERNAL)/portaudio/include -Wno-write-strings -std=c++11
@@ -15,24 +16,26 @@ CFLAGS += -O3
 LFLAGS += -s
 endif
 
-rose: main.o translate.o renderer.o $(patsubst parser/%.cpp,%.o,$(wildcard parser/*.cpp))
-	$(CC) $^ $(LFLAGS) -o rose
+$(BUILD)/rose: $(patsubst %,$(BUILD)/%.o,main translate renderer) $(patsubst parser/%.cpp,$(BUILD)/%.o,$(wildcard parser/*.cpp))
+	$(CC) $^ $(LFLAGS) -o $(BUILD)/rose
+	cp lib/* $(BUILD)/
 
-%.o: %.cpp Makefile
-	$(CC) $(CFLAGS) $< -c
+$(BUILD)/%.o: %.cpp Makefile
+	$(CC) $(CFLAGS) $< -c -o $@
 
-%.o: parser/%.cpp parser Makefile
-	$(CC) $(CFLAGS) $< -c
+$(BUILD)/%.o: parser/%.cpp parser Makefile
+	$(CC) $(CFLAGS) $< -c -o $@
 
-main.o: main.cpp translate.h rose_result.h
+$(BUILD)/main.o: main.cpp translate.h rose_result.h
 
-translate.o: translate.cpp translate.h rose_result.h ast.h symbol_linking.h interpret.h code_generator.h bytecode.h parser
+$(BUILD)/translate.o: translate.cpp translate.h rose_result.h ast.h symbol_linking.h interpret.h code_generator.h bytecode.h parser
 
-renderer.o: renderer.cpp shaders.h rose_result.h
+$(BUILD)/renderer.o: renderer.cpp shaders.h rose_result.h
 
 parser: rose.sablecc
-	java -jar sablecc.jar -t cxx -d parser rose.sablecc
+	mkdir -p parser
+	java -jar tools/sablecc.jar -t cxx -d parser rose.sablecc
 	touch parser
 
 clean:
-	rm -f *.o rose
+	rm -f $(BUILD)/*

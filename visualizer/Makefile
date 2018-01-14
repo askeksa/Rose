@@ -1,6 +1,7 @@
 
 EXTERNAL := ../../Andres
 BUILD = build
+DIST_DIR = ../dist/Rose
 
 CC := i686-w64-mingw32-g++
 CFLAGS := -Iparser/rose -I$(EXTERNAL)/glfw-3.0.4.bin.WIN32/include -I$(EXTERNAL)/glew-1.10.0/include -I$(EXTERNAL)/portaudio/include -Wno-write-strings -std=c++11
@@ -39,3 +40,11 @@ parser: rose.sablecc
 
 clean:
 	rm -f $(BUILD)/*
+
+dist: $(BUILD)/rose
+	rm -rf $(DIST_DIR)
+	mkdir -p $(DIST_DIR)
+	cp $(BUILD)/rose $(DIST_DIR)/
+	cp lib/* $(DIST_DIR)/
+	cp -R ../examples $(DIST_DIR)/
+	cp -R ../music $(DIST_DIR)/

@@ -7,13 +7,10 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include <sys/stat.h>
-#include <unistd.h>
-#include <time.h>
-
 #include "translate.h"
 #include "renderer.h"
 #include "music.h"
+#include "filewatch.h"
 
 #define WIDTH 352
 #define HEIGHT 280
@@ -47,7 +44,6 @@ int main(int argc, char *argv[]) {
 		printf("Usage: rose <filename> [<framerate> [<music>]]\n");
 		exit(1);
 	}
-	char *filename = argv[1];
 
 	int framerate = FRAMERATE;
 	if (argc > 2) {
@@ -77,9 +73,8 @@ int main(int argc, char *argv[]) {
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 	// Load code
-	struct stat filestat;
-	stat(filename, &filestat);
-	RoseRenderer* project = make_renderer(filename, frames, WIDTH, HEIGHT, true);
+	FileWatch rose_file(argv[1]);
+	RoseRenderer* project = make_renderer(rose_file.name(), frames, WIDTH, HEIGHT, true);
 
 	// Set up key callback
 	std::queue<int> key_queue;
@@ -94,20 +89,17 @@ int main(int argc, char *argv[]) {
 		bool frame_set = false;
 
 		// Reload if changed
-		struct stat newfilestat;
-		stat(filename, &newfilestat);
-		if (newfilestat.st_mtime != filestat.st_mtime) {
+		if (rose_file.changed()) {
 			// Reload code
-			printf("\nReloading at %s\n", ctime(&newfilestat.st_mtime));
+			printf("\nReloading at %s\n", rose_file.time_text());
 			delete project;
-			project = make_renderer(filename, frames, WIDTH, HEIGHT, false);
+			project = make_renderer(rose_file.name(), frames, WIDTH, HEIGHT, false);
 			if (!project) {
 				// Try again
 				usleep(100*1000);
-				project = make_renderer(filename, frames, WIDTH, HEIGHT, true);
+				project = make_renderer(rose_file.name(), frames, WIDTH, HEIGHT, true);
 			}
 			fflush(stdout);
-			filestat = newfilestat;
 			if (playing) {
 				frame = startframe;
 				frame_set = true;

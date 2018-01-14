@@ -27,7 +27,7 @@ $(BUILD)/%.o: %.cpp Makefile
 $(BUILD)/%.o: parser/%.cpp parser Makefile
 	$(CC) $(CFLAGS) $< -c -o $@
 
-$(BUILD)/main.o: main.cpp translate.h rose_result.h music.h
+$(BUILD)/main.o: main.cpp translate.h rose_result.h music.h filewatch.h
 
 $(BUILD)/translate.o: translate.cpp translate.h rose_result.h ast.h symbol_linking.h interpret.h code_generator.h bytecode.h parser
 

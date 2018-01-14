@@ -17,7 +17,7 @@ CFLAGS += -O3
 LFLAGS += -s
 endif
 
-$(BUILD)/rose: $(patsubst %,$(BUILD)/%.o,main translate renderer) $(patsubst parser/%.cpp,$(BUILD)/%.o,$(wildcard parser/*.cpp))
+$(BUILD)/rose: $(patsubst %,$(BUILD)/%.o,main translate renderer music) $(patsubst parser/%.cpp,$(BUILD)/%.o,$(wildcard parser/*.cpp))
 	$(CC) $^ $(LFLAGS) -o $(BUILD)/rose
 	cp lib/* $(BUILD)/
 
@@ -27,11 +27,13 @@ $(BUILD)/%.o: %.cpp Makefile
 $(BUILD)/%.o: parser/%.cpp parser Makefile
 	$(CC) $(CFLAGS) $< -c -o $@
 
-$(BUILD)/main.o: main.cpp translate.h rose_result.h
+$(BUILD)/main.o: main.cpp translate.h rose_result.h music.h
 
 $(BUILD)/translate.o: translate.cpp translate.h rose_result.h ast.h symbol_linking.h interpret.h code_generator.h bytecode.h parser
 
 $(BUILD)/renderer.o: renderer.cpp shaders.h rose_result.h
+
+$(BUILD)/music.o: music.cpp music.h
 
 parser: rose.sablecc
 	mkdir -p parser

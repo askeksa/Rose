@@ -4,7 +4,7 @@
 	include	Rose:Engine.S
 
 
-	section	Data,data
+	section	Code,code
 
 reg	set	$000
 regval	macro
@@ -32,8 +32,6 @@ RegisterData:
 RegisterData_End:
 
 
-	section	Code,code
-
 RoseInit:
 	; A1 = Color Script
 	; A2 = Constants
@@ -55,6 +53,11 @@ RoseInit:
 .cloop2:	clr.l	(a0)+
 	subq.l	#1,d0
 	bgt.b	.cloop2
+
+	; Initialize code pointers
+
+	lea	PutCircle(pc),a0
+	move.l	a0,r_PutCircle(a6)
 
 	; Initialize data pointers
 
@@ -165,7 +168,7 @@ RoseMain:
 	addq.l	#4,a0
 	move.l	a0,$084(a3)
 
-	lea	RegisterData,a0
+	lea	RegisterData(pc),a0
 	moveq.l	#(RegisterData_End-RegisterData)/4-1,d7
 .copperloop:	add.w	(a0)+,a3
 	move.w	(a0)+,(a3)+

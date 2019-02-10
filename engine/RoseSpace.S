@@ -21,6 +21,9 @@ STATE_SIZE	=	st_SIZE+(MAX_STACK+2)*4
 
 	rsreset
 
+; Code pointers
+r_PutCircle	rs.l	1
+
 ; Data pointers
 r_ColorScript	rs.l	1
 r_Constants	rs.l	1

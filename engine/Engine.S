@@ -46,8 +46,8 @@ RunFrame:
 
 
 PUTSNIP	macro
-	lea	Snipoffs,a2
-	lea	Snips,a3
+	lea	Snipoffs(pc),a2
+	lea	Snips(pc),a3
 	add.w	d0,a2
 	clr.w	d3
 	move.b	(a2)+,d3
@@ -199,41 +199,6 @@ InitMainTurtle:
 	rts
 
 
-	section	Data,data
-
-SNIP	macro
-	dc.b	(Snip_\1-Snips)/2
-	endm
-
-Snipoffs:
-	SNIP	fork
-	SNIP	op
-	SNIP	writestate
-	SNIP	readstate
-	SNIP	pop
-	SNIP	local
-
-	SNIP	end
-	SNIP	rand
-	SNIP	draw
-	SNIP	tail
-	SNIP	plot
-	SNIP	proc
-	SNIP	dummy8
-	SNIP	div
-	SNIP	wait
-	SNIP	sine
-	SNIP	seed
-	SNIP	neg
-	SNIP	move
-	SNIP	mul
-
-	dc.b	(EndOfSnips-Snips)/2
-	even
-
-
-	section	Code,code
-
 Snips:
 
 Snip_fork:
@@ -307,7 +272,8 @@ Snip_draw:
 	swap.w	d1
 	swap.w	d2
 	swap.w	d3
-	jsr	PutCircle
+	move.l	r_PutCircle(a6),a1
+	jsr	(a1)
 Snip_tail:
 	move.l	st_proc(a5),a1
 	jmp	(a1)
@@ -318,7 +284,8 @@ Snip_plot:
 	swap.w	d2
 	swap.w	d3
 	not.w	d3
-	jsr	PutCircle
+	move.l	r_PutCircle(a6),a1
+	jsr	(a1)
 Snip_proc:
 	move.l	r_Procedures+0(a6),d0
 Snip_dummy8:
@@ -405,3 +372,34 @@ Snip_mul:
 	;move.l	d0,-(a3)
 
 EndOfSnips:
+
+
+SNIP	macro
+	dc.b	(Snip_\1-Snips)/2
+	endm
+
+Snipoffs:
+	SNIP	fork
+	SNIP	op
+	SNIP	writestate
+	SNIP	readstate
+	SNIP	pop
+	SNIP	local
+
+	SNIP	end
+	SNIP	rand
+	SNIP	draw
+	SNIP	tail
+	SNIP	plot
+	SNIP	proc
+	SNIP	dummy8
+	SNIP	div
+	SNIP	wait
+	SNIP	sine
+	SNIP	seed
+	SNIP	neg
+	SNIP	move
+	SNIP	mul
+
+	dc.b	(EndOfSnips-Snips)/2
+	even

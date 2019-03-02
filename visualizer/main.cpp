@@ -32,7 +32,7 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 }
 
 static RoseRenderer* make_renderer(const char *filename, int frames, int width, int height, bool print_errors) {
-	RoseResult rose_data = translate(filename, frames, print_errors);
+	RoseResult rose_data = translate(filename, frames, width, height, print_errors);
 	if (rose_data.empty()) {
 		return nullptr;
 	}

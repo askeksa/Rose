@@ -3,6 +3,7 @@
 #include <vector>
 #include <utility>
 #include <cstdio>
+#include <memory>
 
 struct Plot {
 	short t,x,y,r,c;
@@ -15,6 +16,7 @@ struct TintColor {
 struct RoseResult {
 	std::vector<Plot> plots;
 	std::vector<TintColor> colors;
+	std::unique_ptr<struct RoseStatistics> stats;
 
 	bool empty() {
 		return plots.empty() && colors.empty();
@@ -25,17 +27,36 @@ struct FrameStatistics {
 	int circles = 0;
 	int turtles_survived = 0;
 	int turtles_died = 0;
+
+	int copper_cycles = 0;
+	int blitter_cycles = 0;
 };
 
 struct RoseStatistics {
 	int frames;
-	int max_overwait;
-	int max_stack_height;
+	int width, height;
+	int max_overwait = 0;
+	int max_stack_height = 0;
 	std::vector<FrameStatistics> frame;
 
-	RoseStatistics(int frames) : frames(frames), frame(frames) {
-		max_overwait = 0;
-		max_stack_height = 0;
+	RoseStatistics(int frames, int width, int height)
+	: frames(frames), width(width), height(height), frame(frames) {}
+
+	void draw(int f, int x, int y, int size) {
+		if (x + size < 0 || x - size >= width) return;
+		int vsize = size * 2 + 1;
+		if (y - size < 0) {
+			vsize = y + size + 1;
+			if (vsize < 0) return;
+		}
+		if (y + size >= height) {
+			vsize = height - y + size;
+			if (vsize < 0) return;
+		}
+		int hwords = (size >> 3) + 2;
+		frame[f].circles += 1;
+		frame[f].copper_cycles += 17 * 8;
+		frame[f].blitter_cycles += hwords * vsize * 12;
 	}
 
 	void print(FILE *out) {

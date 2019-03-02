@@ -420,20 +420,23 @@ private:
 		state.y = y.number;
 	}
 
-	void draw(number_t tint) {
-		if (NUMBER_TO_INT(state.time) < stats.frames) {
-			output.push_back({NUMBER_TO_INT(state.time), NUMBER_TO_INT(state.x), NUMBER_TO_INT(state.y),
-				NUMBER_TO_INT(state.size), NUMBER_TO_INT(tint)});
-			stats.frame[NUMBER_TO_INT(state.time)].circles++;
+	void draw(short tint) {
+		short f = NUMBER_TO_INT(state.time);
+		if (f < stats.frames) {
+			short x = NUMBER_TO_INT(state.x);
+			short y = NUMBER_TO_INT(state.y);
+			short size = NUMBER_TO_INT(state.size);
+			output.push_back({f, x, y, size, tint});
+			stats.draw(f, x, y, size);
 		}
 	}
 
 	void caseADrawStatement(ADrawStatement s) override {
-		draw(state.tint);
+		draw(NUMBER_TO_INT(state.tint));
 	}
 
 	void caseAPlotStatement(APlotStatement s) override {
-		draw(~state.tint);
+		draw(~NUMBER_TO_INT(state.tint));
 	}
 
 };

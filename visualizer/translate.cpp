@@ -26,10 +26,11 @@ void writefile(std::vector<T> data, const char *filename) {
 	fclose(out);
 }
 
-RoseResult translate(const char *filename, int max_time, bool print) {
+RoseResult translate(const char *filename, int max_time, int width, int height, bool print) {
 	RoseResult result;
 	try {
-		RoseStatistics stats(max_time);
+		result.stats.reset(new RoseStatistics(max_time, width, height));
+		RoseStatistics& stats = *result.stats;
 
 		Lexer lexer(filename);
 		Start ast = rose::Parser(&lexer).parse();

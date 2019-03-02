@@ -87,14 +87,17 @@ public:
 		while (!pending.empty()) {
 			state = std::move(pending.front());
 			pending.pop();
-			if (NUMBER_TO_INT(state.time) < stats.frames) {
+			short f = NUMBER_TO_INT(state.time);
+			if (f < stats.frames) {
+				cpu(140);
 				forked_in_frame = false;
 				state.proc.getBody().apply(*this);
 				if (!forked_in_frame) {
-					stats.frame[NUMBER_TO_INT(state.time)].turtles_died++;
+					stats.frame[f].turtles_died++;
+					cpu(48);
 				}
 			} else {
-				int overwait = NUMBER_TO_INT(state.time) - stats.frames;
+				int overwait = f - stats.frames;
 				if (overwait > stats.max_overwait) stats.max_overwait = overwait;
 			}
 		}
@@ -135,6 +138,12 @@ public:
 	}
 
 private:
+	// Count CPU cycles
+	void cpu(int cycles) {
+		short f = NUMBER_TO_INT(state.time);
+		stats.frame[f].cpu_compute_cycles += cycles;
+	}
+
 	// Util
 	int sin(int a) {
 		int na = a & 8191;
@@ -161,6 +170,7 @@ private:
 		std::function<number_t(number_t,number_t)> eval;
 		Token token;
 		PBinop op = exp.getOp();
+		cpu(20);
 		if (op.is<APlusBinop>()) {
 			eval = [&](number_t a, number_t b) { return a + b; };
 			token = op.cast<APlusBinop>().getPlus();
@@ -178,6 +188,7 @@ private:
 				}
 				return (a << 8 >> 16) * (b << 8 >> 16);
 			};
+			cpu(126 - 20);
 		} else if (op.is<ADivideBinop>()) {
 			token = op.cast<ADivideBinop>().getDiv();
 			eval = [&](number_t a, number_t b) {
@@ -194,6 +205,7 @@ private:
 				}
 				return div_result << 8;
 			};
+			cpu(218 - 20);
 		} else if (op.is<AEqBinop>()) {
 			eval = [&](number_t a, number_t b) { return a == b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };
 			token = op.cast<AEqBinop>().getEq();
@@ -236,6 +248,7 @@ private:
 			throw CompileException(exp.getToken(), "Operand of negation is not a number");
 		}
 		result = Value(-inner.number);
+		cpu(4);
 	}
 
 	void caseASineExpression(ASineExpression exp) override {
@@ -244,11 +257,13 @@ private:
 			throw CompileException(exp.getToken(), "Operand of sine is not a number");
 		}
 		result = Value(sin((inner.number & 0xffff) >> 2) << 2);
+		cpu(42);
 	}
 
 	void caseARandExpression(ARandExpression exp) override {
 		state.seed = random_iteration(state.seed);
 		result = Value((state.seed >> 16) & 0xFFFF);
+		cpu(12 + 144);
 	}
 
 	void caseAVarExpression(AVarExpression exp) override {
@@ -277,10 +292,12 @@ private:
 			result = Value(sym.procs[ref.index], true);
 			break;
 		}
+		cpu(12 + 16);
 	}
 
 	void caseANumberExpression(ANumberExpression exp) override {
 		result = Value(sym.literal_number[exp]);
+		cpu(12 + 16);
 	}
 
 	void caseACondExpression(ACondExpression exp) override {
@@ -290,8 +307,10 @@ private:
 		}
 		if (cond.number != 0) {
 			result = apply(exp.getWhen());
+			cpu(12 + 10);
 		} else {
 			result = apply(exp.getElse());
+			cpu(10);
 		}
 	}
 
@@ -305,9 +324,13 @@ private:
 		if (cond.number != 0) {
 			s.getWhen().apply(*this);
 			state.stack.resize(state.stack.size() - sym.when_pop[s]);
+			cpu(12 + 10);
+			if (sym.when_pop[s] != 0) cpu(8);
 		} else {
 			s.getElse().apply(*this);
 			state.stack.resize(state.stack.size() - sym.else_pop[s]);
+			cpu(10);
+			if (sym.else_pop[s] != 0) cpu(8);
 		}
 	}
 
@@ -328,6 +351,12 @@ private:
 		}
 		pending.emplace(proc.proc, state, std::move(args));
 		forked_in_frame = true;
+		if (proc.proc == state.proc) {
+			// Assume tail fork. Negate dispatch overhead.
+			cpu(24 + n_args * 28 - 140);
+		} else {
+			cpu(324 + n_args * 34);
+		}
 	}
 
 	void caseATempStatement(ATempStatement s) override {
@@ -346,6 +375,7 @@ private:
 			forked_in_frame = false;
 		}
 		state.time += wait.number;
+		cpu(150);
 	}
 
 	void caseATurnStatement(ATurnStatement s) override {
@@ -354,6 +384,7 @@ private:
 			throw CompileException(s.getToken(), "Turn value is not a number");
 		}
 		state.direction += turn.number;
+		cpu(12 + 16 + 20 + 16);
 	}
 
 	void caseAFaceStatement(AFaceStatement s) override {
@@ -362,6 +393,7 @@ private:
 			throw CompileException(s.getToken(), "Face value is not a number");
 		}
 		state.direction = face.number;
+		cpu(16);
 	}
 
 	void caseASizeStatement(ASizeStatement s) override {
@@ -370,6 +402,7 @@ private:
 			throw CompileException(s.getToken(), "Size is not a number");
 		}
 		state.size = size.number;
+		cpu(16);
 	}
 
 	void caseATintStatement(ATintStatement s) override {
@@ -378,6 +411,7 @@ private:
 			throw CompileException(s.getToken(), "Tint is not a number");
 		}
 		state.tint = tint.number;
+		cpu(16);
 	}
 
 	void caseASeedStatement(ASeedStatement s) override {
@@ -386,6 +420,7 @@ private:
 			throw CompileException(s.getToken(), "Seed is not a number");
 		}
 		state.seed = random_iteration(random_iteration(seed.number));
+		cpu(204);
 	}
 
 	void caseAMoveStatement(AMoveStatement s) override {
@@ -400,10 +435,12 @@ private:
 			// High precision move
 			state.x += ((m << 10 >> 16) * ca) >> 8;
 			state.y += ((m << 10 >> 16) * sa) >> 8;
+			cpu(402);
 		} else {
 			// High distance move
 			state.x += (m << 2 >> 16) * ca;
 			state.y += (m << 2 >> 16) * sa;
+			cpu(346);
 		}
 	}
 
@@ -418,6 +455,7 @@ private:
 		}
 		state.x = x.number;
 		state.y = y.number;
+		cpu(32);
 	}
 
 	void draw(short tint) {

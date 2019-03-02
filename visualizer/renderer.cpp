@@ -244,6 +244,10 @@ void RoseRenderer::draw(int frame) {
 	glUniform1f(copper_cycles_loc, stats.copper_cycles);
 	GLuint blitter_cycles_loc = glGetUniformLocation(quad_program, "blitter_cycles");
 	glUniform1f(blitter_cycles_loc, stats.blitter_cycles);
+	GLuint cpu_compute_cycles_loc = glGetUniformLocation(quad_program, "cpu_compute_cycles");
+	glUniform1f(cpu_compute_cycles_loc, stats.cpu_compute_cycles);
+	GLuint cpu_draw_cycles_loc = glGetUniformLocation(quad_program, "cpu_draw_cycles");
+	glUniform1f(cpu_draw_cycles_loc, stats.cpu_draw_cycles);
 
 	// Draw
 	glDrawArrays(GL_TRIANGLES, 0, 6);

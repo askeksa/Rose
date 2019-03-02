@@ -28,6 +28,9 @@ struct FrameStatistics {
 	int turtles_survived = 0;
 	int turtles_died = 0;
 
+	int cpu_compute_cycles = 0;
+	int cpu_draw_cycles = 0;
+
 	int copper_cycles = 0;
 	int blitter_cycles = 0;
 };
@@ -43,16 +46,33 @@ struct RoseStatistics {
 	: frames(frames), width(width), height(height), frame(frames) {}
 
 	void draw(int f, int x, int y, int size) {
-		if (x + size < 0 || x - size >= width) return;
+		if (x + size < 0) {
+			frame[f].cpu_draw_cycles += 122;
+			return;
+		}
 		int vsize = size * 2 + 1;
 		if (y - size < 0) {
 			vsize = y + size + 1;
-			if (vsize < 0) return;
+			if (vsize < 0) {
+				frame[f].cpu_draw_cycles += 134;
+				return;
+			}
+			frame[f].cpu_draw_cycles += 84;
+		}
+		if (x - size >= width) {
+			frame[f].cpu_draw_cycles += 158;
+			return;
 		}
 		if (y + size >= height) {
 			vsize = height - y + size;
-			if (vsize < 0) return;
+			if (vsize < 0) {
+				frame[f].cpu_draw_cycles += 294;
+				return;
+			}
+			frame[f].cpu_draw_cycles += 10;
 		}
+		frame[f].cpu_draw_cycles += 412 + 606;
+
 		int hwords = (size >> 3) + 2;
 		frame[f].circles += 1;
 		frame[f].copper_cycles += 17 * 8;

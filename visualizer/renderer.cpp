@@ -159,7 +159,7 @@ void RoseRenderer::draw(int frame) {
 
 	// Update colors
 	int script_index = 0;
-	while (script_index < rose_data.colors.size() && rose_data.colors[script_index].t <= frame) {
+	while (script_index < rose_data.colors.size() && rose_data.colors[script_index].t <= frame + 1) {
 		short rgb = rose_data.colors[script_index].rgb;
 		short index = rose_data.colors[script_index].i & 255;
 		float *color = &colors[index * 4];
@@ -197,7 +197,7 @@ void RoseRenderer::draw(int frame) {
 	glAlphaFunc(GL_NOTEQUAL, 0.0);
 
 	// Draw
-	int draw_frame = std::min(frame, (int) (schedule.size() - 1));
+	int draw_frame = std::min(frame + 1, (int) (schedule.size() - 1));
 	if (prev_frame == -1 || draw_frame < prev_frame) {
 		glClearColor(0,0,0,0);
 		glClear(GL_COLOR_BUFFER_BIT);

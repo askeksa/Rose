@@ -21,28 +21,29 @@ struct RoseResult {
 	}
 };
 
+struct FrameStatistics {
+	int circles = 0;
+	int turtles_survived = 0;
+	int turtles_died = 0;
+};
+
 struct RoseStatistics {
 	int frames;
 	int max_overwait;
 	int max_stack_height;
-	std::vector<int> circles_in_frame;
-	std::vector<int> turtles_survived_frame;
-	std::vector<int> turtles_died_in_frame;
+	std::vector<FrameStatistics> frame;
 
-	RoseStatistics(int frames) : frames(frames) {
+	RoseStatistics(int frames) : frames(frames), frame(frames) {
 		max_overwait = 0;
 		max_stack_height = 0;
-		circles_in_frame.resize(frames, 0);
-		turtles_survived_frame.resize(frames, 0);
-		turtles_died_in_frame.resize(frames, 0);
 	}
 
 	void print(FILE *out) {
 		int max_circles = 0;
 		int max_turtles = 0;
 		for (int i = 0 ; i < frames ; i++) {
-			if (circles_in_frame[i] > max_circles) max_circles = circles_in_frame[i];
-			int turtles_alive = turtles_survived_frame[i] + turtles_died_in_frame[i] + 1;
+			if (frame[i].circles > max_circles) max_circles = frame[i].circles;
+			int turtles_alive = frame[i].turtles_survived + frame[i].turtles_died + 1;
 			if (turtles_alive > max_turtles) max_turtles = turtles_alive;
 		}
 		fprintf(out, "\n");

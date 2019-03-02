@@ -91,7 +91,7 @@ public:
 				forked_in_frame = false;
 				state.proc.getBody().apply(*this);
 				if (!forked_in_frame) {
-					stats.turtles_died_in_frame[NUMBER_TO_INT(state.time)]++;
+					stats.frame[NUMBER_TO_INT(state.time)].turtles_died++;
 				}
 			} else {
 				int overwait = NUMBER_TO_INT(state.time) - stats.frames;
@@ -342,7 +342,7 @@ private:
 		int frame = NUMBER_TO_INT(state.time);
 		int new_frame = NUMBER_TO_INT(state.time + wait.number);
 		while (frame < stats.frames && frame < new_frame) {
-			stats.turtles_survived_frame[frame++]++;
+			stats.frame[frame++].turtles_survived++;
 			forked_in_frame = false;
 		}
 		state.time += wait.number;
@@ -424,7 +424,7 @@ private:
 		if (NUMBER_TO_INT(state.time) < stats.frames) {
 			output.push_back({NUMBER_TO_INT(state.time), NUMBER_TO_INT(state.x), NUMBER_TO_INT(state.y),
 				NUMBER_TO_INT(state.size), NUMBER_TO_INT(tint)});
-			stats.circles_in_frame[NUMBER_TO_INT(state.time)]++;
+			stats.frame[NUMBER_TO_INT(state.time)].circles++;
 		}
 	}
 

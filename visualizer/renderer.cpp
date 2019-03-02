@@ -140,6 +140,12 @@ RoseRenderer::RoseRenderer(RoseResult rose_result, int width, int height)
 
 	// Mark contents invalid
 	prev_frame = -1;
+
+	overlay_enabled = false;
+}
+
+void RoseRenderer::toggle_overlay() {
+	overlay_enabled = !overlay_enabled;
 }
 
 void RoseRenderer::draw(int frame) {
@@ -229,6 +235,15 @@ void RoseRenderer::draw(int frame) {
 	glUniform1i(image_loc, 0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, render_tex);
+
+	// Overlay
+	FrameStatistics& stats = rose_data.stats->frame[frame];
+	GLuint enable_overlay_loc = glGetUniformLocation(quad_program, "enable_overlay");
+	glUniform1i(enable_overlay_loc, overlay_enabled);
+	GLuint copper_cycles_loc = glGetUniformLocation(quad_program, "copper_cycles");
+	glUniform1f(copper_cycles_loc, stats.copper_cycles);
+	GLuint blitter_cycles_loc = glGetUniformLocation(quad_program, "blitter_cycles");
+	glUniform1f(blitter_cycles_loc, stats.blitter_cycles);
 
 	// Draw
 	glDrawArrays(GL_TRIANGLES, 0, 6);

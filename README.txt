@@ -138,6 +138,7 @@ Keyboard shortcuts:
 - PGDOWN/PGUP: Step 50 frames forward/backward.
 - BACKSPACE: Go back to frame animation was last started.
 - HOME: Go to first frame.
+- TAB: Toggle statistics overlay.
 - ESCAPE: Quit the visualizer.
 
 Clicking or holding the left mouse button sets the time proportionally to

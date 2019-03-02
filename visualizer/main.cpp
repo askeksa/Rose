@@ -154,6 +154,9 @@ int main(int argc, char *argv[]) {
 				frame = 0;
 				frame_set = true;
 				break;
+			case GLFW_KEY_TAB:
+				project->toggle_overlay();
+				break;
 			}
 		}
 

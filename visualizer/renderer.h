@@ -19,10 +19,14 @@ class RoseRenderer {
 
 	int prev_frame;
 
+	bool overlay_enabled;
+
 public:
 	RoseRenderer(RoseResult rose_result, int width, int height);
 
 	void draw(int frame);
+
+	void toggle_overlay();
 
 	~RoseRenderer();
 };

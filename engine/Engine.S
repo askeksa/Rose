@@ -46,21 +46,30 @@ RunFrame:
 .done:	rts
 
 
-PUTSNIP	macro
-	lea	Snipoffs(pc),a2
-	lea	Snips(pc),a3
-	add.w	d0,a2
-	clr.w	d3
-	move.b	(a2)+,d3
-	move.b	(a2)+,d2
-	sub.b	d3,d2
-	add.w	d3,a3
-	add.w	d3,a3
-.copy\@:	move.w	(a3)+,(a1)+
-	subq.b	#1,d2
-	bne.b	.copy\@
-	endm
+InitStates:
+	move.l	a6,a0
+	add.l	#r_StateSpace,a0
+	move.w	#MAX_TURTLES-1,d7
+.state:	lea.l	STATE_SIZE(a0),a1
+	move.l	a0,(a1)
+	move.l	a1,a0
+	dbf	d7,.state
+	move.l	a0,r_FreeState(a6)
 
+InitMainTurtle:
+	move.l	a6,a1
+	add.l	#r_Instructions,a1
+	move.l	r_FreeState(a6),a2
+	move.l	(a2),r_FreeState(a6)
+	move.l	a1,(a2)
+	lea.l	-st_proc(a2),a2
+	move.l	#$BABEFEED,st_rand(a2)
+	move.l	a2,d2
+	move.l	d2,-(a2)
+	lea	r_StateLists(a6),a1
+	move.l	(a1),-(a2)
+	move.l	a2,(a1)
+	rts
 
 InitEngine:
 	; A6 = Rose Space
@@ -76,6 +85,8 @@ TranslateBytecode:
 
 	clr.w	d1
 .procloop:
+	cmp.b	#END_OF_SCRIPT,(a0)
+	beq.b	InitStates
 	move.l	a1,(a4)+	; Write proc address
 .instloop:
 	cmp.b	#MIN_INPUT,(a0)
@@ -94,7 +105,7 @@ TranslateBytecode:
 .nopop:
 	clr.w	d0
 	move.b	(a0)+,d0
-	bmi.w	.const
+	bmi.b	.const
 
 	moveq.l	#$F,d1
 	and.b	d0,d1
@@ -119,15 +130,15 @@ TranslateBytecode:
 .single:
 	move.b	d1,d0
 	addq.b	#SINGLE_SNIP,d0
-	PUTSNIP
+	bsr.b	PutSnip
 	tst.b	d1
-	beq.b	.nextproc
+	beq.b	.procloop
 	cmp.b	#BC_PROC-2,d1
-	bne.b	.next
+	bne.b	.instloop
 	move.b	(a0)+,d0
 	lsl.w	#2,d0
 	add.w	d0,-2(a1)
-	bra.b	.next
+	bra.b	.instloop
 .notsingle:
 	subq.b	#2,d0
 	bhs.b	.notwhen
@@ -138,9 +149,9 @@ TranslateBytecode:
 	move.w	d1,(a1)+
 	move.l	a1,-(a7)
 	clr.w	(a1)+
-	bra.b	.next
+	bra.b	.instloop
 .notwhen:
-	PUTSNIP
+	bsr.b	PutSnip
 
 	subq.b	#2,d0
 	blo.b	.fork_or_op
@@ -167,36 +178,21 @@ TranslateBytecode:
 	move.w	d1,(a1)+
 .outifodd:
 	move.b	d0,d1
-.next:
 	bra.w	.instloop
-.nextproc:
-	cmp.b	#END_OF_SCRIPT,(a0)
-	bne.w	.procloop
 
-InitStates:
-	move.l	a6,a0
-	add.l	#r_StateSpace,a0
-	move.w	#MAX_TURTLES-1,d7
-.state:	lea.l	STATE_SIZE(a0),a1
-	move.l	a0,(a1)
-	move.l	a1,a0
-	dbf	d7,.state
-	move.l	a0,r_FreeState(a6)
-
-InitMainTurtle:
-	move.l	a6,a1
-	add.l	#r_Instructions,a1
-	move.l	r_FreeState(a6),a2
-	move.l	(a2),r_FreeState(a6)
-	move.l	a1,(a2)
-	lea.l	-st_proc(a2),a2
-	move.l	#$BABEFEED,st_rand(a2)
-	move.l	a2,d2
-	move.l	d2,-(a2)
-	lea	r_StateLists(a6),a1
-	move.l	(a1),-(a2)
-	move.l	a2,(a1)
-
+PutSnip:
+	lea	Snipoffs(pc),a2
+	lea	Snips(pc),a3
+	add.w	d0,a2
+	clr.w	d3
+	move.b	(a2)+,d3
+	move.b	(a2)+,d2
+	sub.b	d3,d2
+	add.w	d3,a3
+	add.w	d3,a3
+.copy:	move.w	(a3)+,(a1)+
+	subq.b	#1,d2
+	bne.b	.copy
 	rts
 
 

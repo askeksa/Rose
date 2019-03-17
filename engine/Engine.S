@@ -19,6 +19,7 @@ BC_PROC	=	$07
 MIN_INPUT	=	$09
 MAX_INPUT	=	$4F
 SINGLE_SNIP	=	6
+END_OF_SCRIPT	=	$FF
 
 
 	section	Code,code
@@ -114,7 +115,7 @@ TranslateBytecode:
 	move.w	a1,d2
 	sub.w	a2,d2
 	move.w	d2,(a2)
-	bra.w	.next
+	bra.b	.instloop
 .single:
 	move.b	d1,d0
 	addq.b	#SINGLE_SNIP,d0
@@ -169,8 +170,8 @@ TranslateBytecode:
 .next:
 	bra.w	.instloop
 .nextproc:
-	cmp.l	r_BytecodeEnd(a6),a0
-	blo.w	.procloop
+	cmp.b	#END_OF_SCRIPT,(a0)
+	bne.w	.procloop
 
 InitStates:
 	move.l	a6,a0

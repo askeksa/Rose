@@ -28,7 +28,6 @@ r_PutCircle	rs.l	1
 r_ColorScript	rs.l	1
 r_Constants	rs.l	1
 r_Bytecode	rs.l	1
-r_BytecodeEnd	rs.l	1
 
 ; Chip memory pointers
 r_Circles	rs.l	1

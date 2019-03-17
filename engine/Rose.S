@@ -36,7 +36,6 @@ RoseInit:
 	; A1 = Color Script
 	; A2 = Constants
 	; A3 = Bytecode
-	; A4 = Bytecode End
 	; A5 = Rose Chip Space
 	; A6 = Rose Space
 
@@ -64,7 +63,6 @@ RoseInit:
 	move.l	a1,r_ColorScript(a6)
 	move.l	a2,r_Constants(a6)
 	move.l	a3,r_Bytecode(a6)
-	move.l	a4,r_BytecodeEnd(a6)
 
 	; Initialize chip mem pointers
 

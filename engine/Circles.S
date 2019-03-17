@@ -117,7 +117,7 @@ PutCircle:
 	sub.w	d4,d5
 	bpl.b	.nobottomclip
 	add.w	d5,d4
-	ble.w	.outside
+	ble.b	.outside
 .nobottomclip:
 	; Put circle
 	lea	r_FreeCircle(a6),a2

@@ -64,6 +64,7 @@ RoseResult translate(const char *filename, int max_time, int width, int height, 
 			}
 			colorscript.push_back(c.rgb | (c.i << 12));
 		}
+		colorscript.push_back(0x8000);
 		writefile(bytecodes, "bytecodes.bin");
 		writefile(constants, "constants.bin");
 		writefile(colorscript, "colorscript.bin");

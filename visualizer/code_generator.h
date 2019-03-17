@@ -28,6 +28,7 @@ public:
 
 	std::pair<std::vector<bytecode_t>,std::vector<number_t>> generate(AProgram program) {
 		program.getProcedure().apply(*this);
+		out.push_back(END_OF_SCRIPT);
 
 		return make_pair(std::move(out), sym.constants);
 	}

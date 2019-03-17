@@ -38,7 +38,9 @@ static inline int verify(int base, int v, int max, const char *what) {
 #define BC_RSTATE(i)   (verify(0x50, i,     15, "RSTATE")) //  o
 #define BC_POP(n)      (verify(0x60, n,     15, "POP"))    //
 #define BC_LOCAL(i)    (verify(0x70, i,     15, "LOCAL"))  //  o
-#define BC_CONST(i)    (verify(0x80, i,    127, "CONST"))  //  o
+#define BC_CONST(i)    (verify(0x80, i,    126, "CONST"))  //  o
+
+#define END_OF_SCRIPT 0xFF
 
 // Negated condition branch nibble (for WHEN)
 #define CMP_EQ   6

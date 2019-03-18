@@ -45,20 +45,27 @@ int main(int argc, char *argv[]) {
 		exit(1);
 	}
 
+	int arg = 1;
+	FileWatch rose_file(argv[arg++]);
+
+	int window_scale = WINDOW_SCALE;
+	if (argc > arg && argv[arg][0] == 'x') {
+		window_scale = atoi(&argv[arg++][1]);
+	}
+
 	int framerate = FRAMERATE;
-	if (argc > 2) {
-		framerate = atoi(argv[2]);
+	if (argc > arg) {
+		framerate = atoi(argv[arg++]);
 	}
 
 	MusicPlayer player;
 	int frames = FRAMES;
-	if (argc > 3) {
-		player.load(argv[3]);
+	if (argc > arg) {
+		player.load(argv[arg++]);
 		frames = (int) (player.length() * framerate);
 	}
 
 	// Load code
-	FileWatch rose_file(argv[1]);
 	RoseResult rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, true);
 	int width = rose_result.width;
 	int height = rose_result.height;
@@ -71,7 +78,7 @@ int main(int argc, char *argv[]) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	GLFWwindow *window = glfwCreateWindow(width * WINDOW_SCALE, height * WINDOW_SCALE, "Rose", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(width * window_scale, height * window_scale, "Rose", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 	glewExperimental = GL_TRUE;
 	glewInit();
@@ -113,8 +120,8 @@ int main(int argc, char *argv[]) {
 				if (project->width != width || project->height != height) {
 					width = project->width;
 					height = project->height;
-					glfwSetWindowSize(window, width * WINDOW_SCALE, height * WINDOW_SCALE);
-					glViewport(0, 0, width * WINDOW_SCALE, height * WINDOW_SCALE);
+					glfwSetWindowSize(window, width * window_scale, height * window_scale);
+					glViewport(0, 0, width * window_scale, height * window_scale);
 				}
 			}
 		}
@@ -122,7 +129,7 @@ int main(int argc, char *argv[]) {
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS) {
 			double xpos,ypos;
 			glfwGetCursorPos(window, &xpos, &ypos);
-			frame = (int)(xpos / (width * WINDOW_SCALE) * frames);
+			frame = (int)(xpos / (width * window_scale) * frames);
 			frame_set = true;
 			startframe = frame;
 		}

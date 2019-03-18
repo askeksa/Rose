@@ -28,8 +28,14 @@ Comments start with # and extend to the end of the line.
 Just for the fun of it, and because I enjoy using a thesaurus, all keywords
 in Rose have four letters.
 
-A Rose program consists of two parts - a color script and a set of procedures.
-The color script has the syntax:
+A Rose program starts with an optional size directive, specifying the width
+and height (respectively) in pixels:
+
+- size <expression> <expression>
+
+If the size is not specified, the resolution will be 352x280 (full overscan).
+
+Then comes the color script, which has the syntax:
 
 - plan <event>*
 
@@ -40,7 +46,8 @@ where <event> is one of:
 - <tint>:<color>
   Set the given tint (integer) to the given color (three-digit hex value).
 
-A procedure has the syntax:
+The rest of the program is a sequence of procedures. A procedure has the
+syntax:
 
 - proc <name> <param>* <statement>*
 

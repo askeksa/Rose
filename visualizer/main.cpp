@@ -14,6 +14,7 @@
 
 #define WIDTH 352
 #define HEIGHT 280
+#define WINDOW_SCALE 2
 #define FRAMES 10000
 #define FRAMERATE 50
 
@@ -31,12 +32,11 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 	}
 }
 
-static RoseRenderer* make_renderer(const char *filename, int frames, int width, int height, bool print_errors) {
-	RoseResult rose_data = translate(filename, frames, width, height, print_errors);
+static RoseRenderer* make_renderer(RoseResult rose_data) {
 	if (rose_data.empty()) {
 		return nullptr;
 	}
-	return new RoseRenderer(std::move(rose_data), width, height);
+	return new RoseRenderer(std::move(rose_data), rose_data.width, rose_data.height);
 }
 
 int main(int argc, char *argv[]) {
@@ -57,6 +57,12 @@ int main(int argc, char *argv[]) {
 		frames = (int) (player.length() * framerate);
 	}
 
+	// Load code
+	FileWatch rose_file(argv[1]);
+	RoseResult rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, true);
+	int width = rose_result.width;
+	int height = rose_result.height;
+
 	// Initialize GLFW
 	glfwSetErrorCallback(error_callback);
 	glfwInit();
@@ -65,16 +71,14 @@ int main(int argc, char *argv[]) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	GLFWwindow *window = glfwCreateWindow(WIDTH*2, HEIGHT*2, "Rose", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(width * WINDOW_SCALE, height * WINDOW_SCALE, "Rose", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 	glewExperimental = GL_TRUE;
 	glewInit();
 	glfwSwapInterval(1);
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-	// Load code
-	FileWatch rose_file(argv[1]);
-	RoseRenderer* project = make_renderer(rose_file.name(), frames, WIDTH, HEIGHT, true);
+	RoseRenderer* project = make_renderer(std::move(rose_result));
 
 	// Set up key callback
 	std::queue<int> key_queue;
@@ -92,26 +96,33 @@ int main(int argc, char *argv[]) {
 		if (rose_file.changed()) {
 			// Reload code
 			printf("\nReloading at %s\n", rose_file.time_text());
-			delete project;
-			project = make_renderer(rose_file.name(), frames, WIDTH, HEIGHT, false);
-			if (!project) {
+			if (project) delete project;
+			rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, false);
+			if (rose_result.empty()) {
 				// Try again
 				usleep(100*1000);
-				project = make_renderer(rose_file.name(), frames, WIDTH, HEIGHT, true);
+				rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, true);
 			}
 			fflush(stdout);
 			if (playing) {
 				frame = startframe;
 				frame_set = true;
 			}
+			project = make_renderer(std::move(rose_result));
+			if (project) {
+				if (project->width != width || project->height != height) {
+					width = project->width;
+					height = project->height;
+					glfwSetWindowSize(window, width * WINDOW_SCALE, height * WINDOW_SCALE);
+					glViewport(0, 0, width * WINDOW_SCALE, height * WINDOW_SCALE);
+				}
+			}
 		}
 
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS) {
 			double xpos,ypos;
 			glfwGetCursorPos(window, &xpos, &ypos);
-			int width,height;
-			glfwGetWindowSize(window, &width, &height);
-			frame = (int)(xpos / width * frames);
+			frame = (int)(xpos / (width * WINDOW_SCALE) * frames);
 			frame_set = true;
 			startframe = frame;
 		}
@@ -155,7 +166,7 @@ int main(int argc, char *argv[]) {
 				frame_set = true;
 				break;
 			case GLFW_KEY_TAB:
-				project->toggle_overlay();
+				if (project) project->toggle_overlay();
 				break;
 			}
 		}

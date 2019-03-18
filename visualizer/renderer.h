@@ -15,13 +15,14 @@ class RoseRenderer {
 	GLuint framebuf, render_tex;
 	RoseResult rose_data;
 	std::vector<int> schedule;
-	int width, height;
 
 	int prev_frame;
 
 	bool overlay_enabled;
 
 public:
+	int width, height;
+
 	RoseRenderer(RoseResult rose_result, int width, int height);
 
 	void draw(int frame);

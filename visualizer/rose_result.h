@@ -14,6 +14,7 @@ struct TintColor {
 };
 
 struct RoseResult {
+	int width, height;
 	std::vector<Plot> plots;
 	std::vector<TintColor> colors;
 	std::unique_ptr<struct RoseStatistics> stats;

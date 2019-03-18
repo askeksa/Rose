@@ -147,7 +147,7 @@ public:
 
 	void inAVarExpression(AVarExpression var) override {
 		if (!procedure_phase) {
-			throw CompileException(var.getName(), "Variable in color plan");
+			throw CompileException(var.getName(), "Variable outside procedure");
 		}
 		VarRef ref = current_scope->lookup(var.getName());
 		var_ref[var] = ref;

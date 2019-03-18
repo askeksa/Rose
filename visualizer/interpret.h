@@ -65,14 +65,16 @@ class Interpreter : private ReturningAdapter<Value> {
 	State state;
 	std::queue<State> pending;
 	std::vector<Plot> output;
-	RoseStatistics& stats;
+	RoseStatistics *stats;
 	bool forked_in_frame;
 
 public:
-	Interpreter(SymbolLinking& sym, const char *filename, RoseStatistics& stats)
-		: sym(sym), filename(filename), stats(stats) {}
+	Interpreter(SymbolLinking& sym, const char *filename)
+		: sym(sym), filename(filename), stats(nullptr) {}
 
-	std::vector<Plot> interpret(AProcedure main) {
+	std::vector<Plot> interpret(AProcedure main, RoseStatistics *stats) {
+		this->stats = stats;
+
 		State initial;
 		initial.proc = main;
 		initial.time = MAKE_NUMBER(0);
@@ -88,20 +90,21 @@ public:
 			state = std::move(pending.front());
 			pending.pop();
 			short f = NUMBER_TO_INT(state.time);
-			if (f < stats.frames) {
+			if (f < stats->frames) {
 				cpu(140);
 				forked_in_frame = false;
 				state.proc.getBody().apply(*this);
 				if (!forked_in_frame) {
-					stats.frame[f].turtles_died++;
+					stats->frame[f].turtles_died++;
 					cpu(48);
 				}
 			} else {
-				int overwait = f - stats.frames;
-				if (overwait > stats.max_overwait) stats.max_overwait = overwait;
+				int overwait = f - stats->frames;
+				if (overwait > stats->max_overwait) stats->max_overwait = overwait;
 			}
 		}
 
+		this->stats = nullptr;
 		return output;
 	}
 
@@ -137,11 +140,28 @@ public:
 		return colors;
 	}
 
+	bool get_resolution(AProgram program, int *width_out, int *height_out) {
+		PResolution res = program.getResolution();
+		if (res) {
+			PExpression width_exp = res.cast<AResolution>().getWidth();
+			Value width_value = apply(width_exp);
+			PExpression height_exp = res.cast<AResolution>().getHeight();
+			Value height_value = apply(height_exp);
+			*width_out = NUMBER_TO_INT(width_value.number);
+			*height_out = NUMBER_TO_INT(height_value.number);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 private:
 	// Count CPU cycles
 	void cpu(int cycles) {
-		short f = NUMBER_TO_INT(state.time);
-		stats.frame[f].cpu_compute_cycles += cycles;
+		if (stats != nullptr) {
+			short f = NUMBER_TO_INT(state.time);
+			stats->frame[f].cpu_compute_cycles += cycles;
+		}
 	}
 
 	// Util
@@ -370,8 +390,8 @@ private:
 		}
 		int frame = NUMBER_TO_INT(state.time);
 		int new_frame = NUMBER_TO_INT(state.time + wait.number);
-		while (frame < stats.frames && frame < new_frame) {
-			stats.frame[frame++].turtles_survived++;
+		while (frame < stats->frames && frame < new_frame) {
+			stats->frame[frame++].turtles_survived++;
 			forked_in_frame = false;
 		}
 		state.time += wait.number;
@@ -460,12 +480,12 @@ private:
 
 	void draw(short tint) {
 		short f = NUMBER_TO_INT(state.time);
-		if (f < stats.frames) {
+		if (f < stats->frames) {
 			short x = NUMBER_TO_INT(state.x);
 			short y = NUMBER_TO_INT(state.y);
 			short size = NUMBER_TO_INT(state.size);
 			output.push_back({f, x, y, size, tint});
-			stats.draw(f, x, y, size);
+			stats->draw(f, x, y, size);
 		}
 	}
 

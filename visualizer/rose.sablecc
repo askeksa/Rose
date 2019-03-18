@@ -71,8 +71,13 @@ Ignored Tokens
 
 Productions
 
-	program		=			script? decl*
-							{-> New program ([script.event], New proc_marker(), [decl.procedure])}
+	program		=			res? script? decl*
+							{-> New program (res.resolution, [script.event], New proc_marker(), [decl.procedure])}
+				;
+
+	res			{-> resolution} =
+							size [width]:exp [height]:exp
+							{-> New resolution (width.expression, height.expression)}
 				;
 
 	script		{-> event*} =
@@ -203,7 +208,9 @@ Productions
 
 Abstract Syntax Tree
 
-	program		=			event* proc_marker procedure*;
+	program		=			resolution? event* proc_marker procedure*;
+
+	resolution	=			[width]:expression [height]:expression;
 
 	proc_marker	=			;
 

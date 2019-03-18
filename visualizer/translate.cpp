@@ -28,15 +28,14 @@ void writefile(std::vector<T> data, const char *filename) {
 
 RoseResult translate(const char *filename, int max_time, int width, int height, bool print) {
 	RoseResult result;
+	result.width = width;
+	result.height = height;
 	try {
-		result.stats.reset(new RoseStatistics(max_time, width, height));
-		RoseStatistics& stats = *result.stats;
-
 		Lexer lexer(filename);
 		Start ast = rose::Parser(&lexer).parse();
 		SymbolLinking sl(filename);
 		ast.apply(sl);
-		Interpreter in(sl, filename, stats);
+		Interpreter in(sl, filename);
 		AProgram program = ast.getPProgram().cast<AProgram>();
 		int n_proc = program.getProcedure().size();
 		if (n_proc == 0) {
@@ -46,7 +45,15 @@ RoseResult translate(const char *filename, int max_time, int width, int height, 
 		if (mainproc.getParams().size() != 0) {
 			throw CompileException(mainproc.getName(), "Entry procedure must not have any parameters");
 		}
-		result.plots = in.interpret(mainproc);
+
+		in.get_resolution(program, &width, &height);
+		result.width = width;
+		result.height = height;
+
+		result.stats.reset(new RoseStatistics(max_time, width, height));
+		RoseStatistics& stats = *result.stats;
+
+		result.plots = in.interpret(mainproc, &stats);
 		result.colors = in.get_colors(program);
 
 		// Output

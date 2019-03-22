@@ -140,15 +140,9 @@ RoseRenderer::RoseRenderer(RoseResult rose_result, int width, int height)
 
 	// Mark contents invalid
 	prev_frame = -1;
-
-	overlay_enabled = false;
 }
 
-void RoseRenderer::toggle_overlay() {
-	overlay_enabled = !overlay_enabled;
-}
-
-void RoseRenderer::draw(int frame) {
+void RoseRenderer::draw(int frame, bool overlay_enabled) {
 	// Initialize colors
 	std::vector<float> colors;
 	for (int i = 0 ; i < 256 ; i++) {

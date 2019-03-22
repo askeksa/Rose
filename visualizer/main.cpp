@@ -96,6 +96,7 @@ int main(int argc, char *argv[]) {
 	int startframe = 0;
 	int frame = 0;
 	bool playing = true;
+	bool overlay_enabled = false;
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && !glfwWindowShouldClose(window)) {
 		bool frame_set = false;
 
@@ -173,7 +174,7 @@ int main(int argc, char *argv[]) {
 				frame_set = true;
 				break;
 			case GLFW_KEY_TAB:
-				if (project) project->toggle_overlay();
+				overlay_enabled = !overlay_enabled;
 				break;
 			}
 		}
@@ -192,7 +193,7 @@ int main(int argc, char *argv[]) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Render
-		if (project) project->draw(frame);
+		if (project) project->draw(frame, overlay_enabled);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

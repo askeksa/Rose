@@ -90,7 +90,7 @@ public:
 			state = std::move(pending.front());
 			pending.pop();
 			short f = NUMBER_TO_INT(state.time);
-			if (f < stats->frames) {
+			if (f >= 0 && f < stats->frames) {
 				cpu(140);
 				forked_in_frame = false;
 				state.proc.getBody().apply(*this);
@@ -160,7 +160,9 @@ private:
 	void cpu(int cycles) {
 		if (stats != nullptr) {
 			short f = NUMBER_TO_INT(state.time);
-			stats->frame[f].cpu_compute_cycles += cycles;
+			if (f >= 0 && f < stats->frames) {
+				stats->frame[f].cpu_compute_cycles += cycles;
+			}
 		}
 	}
 
@@ -388,6 +390,10 @@ private:
 		if (wait.kind != ValueKind::NUMBER) {
 			throw CompileException(s.getToken(), "Wait value is not a number");
 		}
+		if (wait.number < 0) {
+			sym.warning(s.getToken(), "Negative wait");
+			return;
+		}
 		int frame = NUMBER_TO_INT(state.time);
 		int new_frame = NUMBER_TO_INT(state.time + wait.number);
 		while (frame < stats->frames && frame < new_frame) {
@@ -480,7 +486,7 @@ private:
 
 	void draw(short tint) {
 		short f = NUMBER_TO_INT(state.time);
-		if (f < stats->frames) {
+		if (f >= 0 && f < stats->frames) {
 			short x = NUMBER_TO_INT(state.x);
 			short y = NUMBER_TO_INT(state.y);
 			short size = NUMBER_TO_INT(state.size);

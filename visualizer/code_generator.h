@@ -79,7 +79,8 @@ private:
 	}
 
 	void caseAProcedure(AProcedure proc) override {
-		mark_tail(proc.getBody().back());
+		List<PStatement>& body = proc.getBody();
+		if (!body.empty()) mark_tail(body.back());
 		stack_height = proc.getParams().size();
 		proc.getBody().apply(*this);
 		emit(BC_END);		

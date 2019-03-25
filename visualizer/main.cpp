@@ -12,12 +12,15 @@
 #include "music.h"
 #include "filewatch.h"
 
+
+// Defaults
 #define WIDTH 352
 #define HEIGHT 280
+#define LAYERS 1
+#define DEPTH 4
 #define WINDOW_SCALE 2
 #define FRAMES 10000
 #define FRAMERATE 50
-
 
 
 void error_callback(int error, const char* description) {
@@ -66,7 +69,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Load code
-	RoseResult rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, true);
+	RoseResult rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, LAYERS, DEPTH, true);
 	int width = rose_result.width;
 	int height = rose_result.height;
 
@@ -105,11 +108,11 @@ int main(int argc, char *argv[]) {
 			// Reload code
 			printf("\nReloading at %s\n", rose_file.time_text());
 			if (project) delete project;
-			rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, false);
+			rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, LAYERS, DEPTH, false);
 			if (rose_result.empty()) {
 				// Try again
 				usleep(100*1000);
-				rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, true);
+				rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, LAYERS, DEPTH, true);
 			}
 			fflush(stdout);
 			if (playing) {

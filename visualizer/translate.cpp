@@ -26,10 +26,15 @@ void writefile(std::vector<T> data, const char *filename) {
 	fclose(out);
 }
 
-RoseResult translate(const char *filename, int max_time, int width, int height, bool print) {
+RoseResult translate(const char *filename, int max_time,
+                     int width, int height,
+                     int layer_count, int layer_depth,
+                     bool print) {
 	RoseResult result;
 	result.width = width;
 	result.height = height;
+	result.layer_count = layer_count;
+	result.layer_depth = layer_depth;
 	try {
 		Lexer lexer(filename);
 		Start ast = rose::Parser(&lexer).parse();
@@ -50,7 +55,11 @@ RoseResult translate(const char *filename, int max_time, int width, int height, 
 		result.width = width;
 		result.height = height;
 
-		result.stats.reset(new RoseStatistics(max_time, width, height));
+		in.get_layers(program, &layer_count, &layer_depth);
+		result.layer_count = layer_count;
+		result.layer_depth = layer_depth;
+
+		result.stats.reset(new RoseStatistics(max_time, width, height, layer_count, layer_depth));
 		RoseStatistics& stats = *result.stats;
 
 		result.plots = in.interpret(mainproc, &stats);

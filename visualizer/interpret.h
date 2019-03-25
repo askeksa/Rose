@@ -155,6 +155,27 @@ public:
 		}
 	}
 
+	bool get_layers(AProgram program, int *count_out, int *depth_out) {
+		PLayers lay = program.getLayers();
+		if (lay) {
+			PExpression count_exp = lay.cast<ALayers>().getCount();
+			Value count_value = apply(count_exp);
+			PExpression depth_exp = lay.cast<ALayers>().getDepth();
+			Value depth_value = apply(depth_exp);
+			*count_out = NUMBER_TO_INT(count_value.number);
+			*depth_out = NUMBER_TO_INT(depth_value.number);
+			if (*count_out < 1) {
+				throw new CompileException(lay.cast<ALayers>().getToken(), "Layer count must be at least 1");
+			}
+			if (*depth_out < 1) {
+				throw new CompileException(lay.cast<ALayers>().getToken(), "Layer depth must be at least 1");
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 private:
 	// Count CPU cycles
 	void cpu(int cycles) {
@@ -438,6 +459,12 @@ private:
 		}
 		state.tint = tint.number;
 		cpu(16);
+		short tint_int = NUMBER_TO_INT(tint.number);
+		if (tint_int < 0) {
+			sym.warning(s.getToken(), "Negative tint");
+		} else if (tint_int >= stats->layer_count * stats->layer_depth) {
+			sym.warning(s.getToken(), "Tint value outside range");
+		}
 	}
 
 	void caseASeedStatement(ASeedStatement s) override {

@@ -15,6 +15,7 @@ struct TintColor {
 
 struct RoseResult {
 	int width, height;
+	int layer_count, layer_depth;
 	std::vector<Plot> plots;
 	std::vector<TintColor> colors;
 	std::unique_ptr<struct RoseStatistics> stats;
@@ -39,12 +40,14 @@ struct FrameStatistics {
 struct RoseStatistics {
 	int frames;
 	int width, height;
+	int layer_count, layer_depth;
 	int max_overwait = 0;
 	int max_stack_height = 0;
 	std::vector<FrameStatistics> frame;
 
-	RoseStatistics(int frames, int width, int height)
-	: frames(frames), width(width), height(height), frame(frames) {}
+	RoseStatistics(int frames, int width, int height, int layer_count, int layer_depth)
+	: frames(frames), width(width), height(height),
+	  layer_count(layer_count), layer_depth(layer_depth), frame(frames) {}
 
 	void draw(int f, int x, int y, int size) {
 		if (x + size < 0) {

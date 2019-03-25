@@ -8,11 +8,14 @@ class RoseRenderer {
 	static GLuint tint_loc;
 	GLuint plot_vertex_buffer;
 
-	static GLuint quad_program;
-	static GLuint xy_loc;
+	static GLuint combine_program;
+	static GLuint combine_xy_loc;
 	GLuint quad_vertex_buffer;
 
-	GLuint framebuf, render_tex;
+	static GLuint overlay_program;
+	static GLuint overlay_xy_loc;
+
+	std::vector<GLuint> render_tex, framebuf;
 	RoseResult rose_data;
 	std::vector<int> schedule;
 

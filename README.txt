@@ -35,7 +35,18 @@ and height (respectively) in pixels:
 
 If the size is not specified, the resolution will be 352x280 (full overscan).
 
-Then comes the color script, which has the syntax:
+Next is an optional layer configuration, specifying the number of layers and
+the number of colors in each layer (respectively):
+
+- form <expression> <expression>
+
+The tints are distributed over the layers, so if, for instance, there are 4
+colors per layer, tints 0-3 are in the first (backmost) layer, tints 4-7 are
+in the next layer and so on.
+
+If no layer configuration is specified, there is 1 layer with 4 colors.
+
+After this comes the color script, which has the syntax:
 
 - plan <event>*
 
@@ -45,6 +56,9 @@ where <event> is one of:
   Wait a number of frames. The expression cannot contain variables.
 - <tint>:<color>
   Set the given tint (integer) to the given color (three-digit hex value).
+
+The first tint in each layer except the first is transparent, showing the
+layers behind it. Thus, the colors for these tints are ignored.
 
 The rest of the program is a sequence of procedures. A procedure has the
 syntax:

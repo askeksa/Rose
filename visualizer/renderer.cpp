@@ -53,8 +53,10 @@ GLuint makeProgram(const char *vsource, const char *psource) {
 GLuint RoseRenderer::plot_program = 0;
 GLuint RoseRenderer::xyuv_loc = 0;
 GLuint RoseRenderer::tint_loc = 0;
-GLuint RoseRenderer::quad_program = 0;
-GLuint RoseRenderer::xy_loc = 0;
+GLuint RoseRenderer::combine_program = 0;
+GLuint RoseRenderer::combine_xy_loc = 0;
+GLuint RoseRenderer::overlay_program = 0;
+GLuint RoseRenderer::overlay_xy_loc = 0;
 
 RoseRenderer::RoseRenderer(RoseResult rose_result, int width, int height)
 	: rose_data(std::move(rose_result)), width(width), height(height)
@@ -101,22 +103,27 @@ RoseRenderer::RoseRenderer(RoseResult rose_result, int width, int height)
 	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(QuadVertex), &corners[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	// Make render texture
-	glGenTextures(1, &render_tex);
-	glBindTexture(GL_TEXTURE_2D, render_tex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	int layers = rose_data.layer_count;
+	render_tex.resize(layers);
+	glGenTextures(layers, &render_tex[0]);
+	framebuf.resize(layers);
+	glGenFramebuffers(layers, &framebuf[0]);
+	for (int l = 0; l < layers; l++) {
+		// Make render texture
+		glBindTexture(GL_TEXTURE_2D, render_tex[l]);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glBindTexture(GL_TEXTURE_2D, 0);
 
-	// Make frame buffer
-	glGenFramebuffers(1, &framebuf);
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuf);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, render_tex, 0);
-	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if (status != GL_FRAMEBUFFER_COMPLETE) {
-		printf("Framebuffer not complete (%d)\n", status);
-		fflush(stdout);
+		// Make frame buffer
+		glBindFramebuffer(GL_FRAMEBUFFER, framebuf[l]);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, render_tex[l], 0);
+		GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+		if (status != GL_FRAMEBUFFER_COMPLETE) {
+			printf("Framebuffer not complete (%d)\n", status);
+			fflush(stdout);
+		}
 	}
 
 	// Construct schedule
@@ -133,9 +140,13 @@ RoseRenderer::RoseRenderer(RoseResult rose_result, int width, int height)
 		xyuv_loc = glGetAttribLocation(plot_program, "xyuv");
 		tint_loc = glGetAttribLocation(plot_program, "tint");
 	}
-	if (!quad_program) {
-		quad_program = makeProgram(quad_vshader, quad_pshader);
-		xy_loc = glGetAttribLocation(quad_program, "xy");
+	if (!combine_program) {
+		combine_program = makeProgram(quad_vshader, combine_pshader);
+		combine_xy_loc = glGetAttribLocation(combine_program, "xy");
+	}
+	if (!overlay_program) {
+		overlay_program = makeProgram(quad_vshader, overlay_pshader);
+		overlay_xy_loc = glGetAttribLocation(overlay_program, "xy");
 	}
 
 	// Mark contents invalid
@@ -146,9 +157,10 @@ void RoseRenderer::draw(int frame, bool overlay_enabled) {
 	// Initialize colors
 	std::vector<float> colors;
 	for (int i = 0 ; i < 256 ; i++) {
-		colors.push_back(1.0);
-		colors.push_back(0.0);
-		colors.push_back(1.0);
+		colors.push_back(1.0f);
+		colors.push_back(0.0f);
+		colors.push_back(1.0f);
+		colors.push_back(i % rose_data.layer_depth == 0 ? 0.0f : 1.0f);
 	}
 
 	// Update colors
@@ -160,7 +172,7 @@ void RoseRenderer::draw(int frame, bool overlay_enabled) {
 		color[0] = ((rgb >> 8) & 15) / 15.0f;
 		color[1] = ((rgb >> 4) & 15) / 15.0f;
 		color[2] = ((rgb >> 0) & 15) / 15.0f;
-		color[3] = 0.0f;
+		color[3] = index % rose_data.layer_depth == 0 ? 0.0f : 1.0f;
 		script_index++;
 	}
 
@@ -170,11 +182,13 @@ void RoseRenderer::draw(int frame, bool overlay_enabled) {
 	GLint vp[4];
 	glGetIntegerv(GL_VIEWPORT, vp);
 
-	// Plot pass
+	// Set global render states
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_NOTEQUAL, 0.0);
 
-	// Render to FBO
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuf);
-	glViewport(0,0,width,height);
+	// Plot pass
 
 	// Set up vertex streams
 	glBindBuffer(GL_ARRAY_BUFFER, plot_vertex_buffer);
@@ -186,18 +200,27 @@ void RoseRenderer::draw(int frame, bool overlay_enabled) {
 	// Set program
 	glUseProgram(plot_program);
 
-	// Set render states
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_NOTEQUAL, 0.0);
-
-	// Draw
 	int draw_frame = std::min(frame + 1, (int) (schedule.size() - 1));
-	if (prev_frame == -1 || draw_frame < prev_frame) {
-		glClearColor(0,0,0,0);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glDrawArrays(GL_TRIANGLES, 0, schedule[draw_frame] * 6);
-	} else {
-		glDrawArrays(GL_TRIANGLES, schedule[prev_frame] * 6, (schedule[draw_frame] - schedule[prev_frame]) * 6);
+	int layers = rose_data.layer_count;
+	for (int l = 0; l < layers; l++) {
+		// Render to FBO
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuf[l]);
+		glViewport(0, 0, width, height);
+
+		// Set layer uniforms
+		GLuint min_tint_loc = glGetUniformLocation(plot_program, "min_tint");
+		glUniform1f(min_tint_loc, l * rose_data.layer_depth);
+		GLuint max_tint_loc = glGetUniformLocation(plot_program, "max_tint");
+		glUniform1f(max_tint_loc, (l + 1) * rose_data.layer_depth - 1);
+
+		// Draw
+		if (prev_frame == -1 || draw_frame < prev_frame) {
+			glClearColor(0, 0, 0, 0);
+			glClear(GL_COLOR_BUFFER_BIT);
+			glDrawArrays(GL_TRIANGLES, 0, schedule[draw_frame] * 6);
+		} else {
+			glDrawArrays(GL_TRIANGLES, schedule[prev_frame] * 6, (schedule[draw_frame] - schedule[prev_frame]) * 6);
+		}
 	}
 	prev_frame = draw_frame;
 
@@ -208,54 +231,81 @@ void RoseRenderer::draw(int frame, bool overlay_enabled) {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 
-	// Copy pass
+	// Combine pass
 
 	// Render to original render target
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, target);
-	glViewport(vp[0],vp[1],vp[2],vp[3]);
+	glViewport(vp[0], vp[1], vp[2], vp[3]);
 
 	// Set up vertex streams
 	glBindBuffer(GL_ARRAY_BUFFER, quad_vertex_buffer);
-	glVertexAttribPointer(xy_loc, 2, GL_FLOAT, GL_FALSE, sizeof(QuadVertex), &((QuadVertex *)0)->x);
-	glEnableVertexAttribArray(xy_loc);
+	glVertexAttribPointer(combine_xy_loc, 2, GL_FLOAT, GL_FALSE, sizeof(QuadVertex), &((QuadVertex *)0)->x);
+	glEnableVertexAttribArray(combine_xy_loc);
 
 	// Set program
-	glUseProgram(quad_program);
+	glUseProgram(combine_program);
 
-	// Set uniforms
-	GLuint colors_loc = glGetUniformLocation(quad_program, "colors");
+	// Set color uniforms
+	GLuint colors_loc = glGetUniformLocation(combine_program, "colors");
 	glUniform4fv(colors_loc, 256, &colors[0]);
-	GLuint image_loc = glGetUniformLocation(quad_program, "image");
-	glUniform1i(image_loc, 0);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, render_tex);
 
-	// Overlay
-	FrameStatistics& stats = rose_data.stats->frame[frame];
-	GLuint enable_overlay_loc = glGetUniformLocation(quad_program, "enable_overlay");
-	glUniform1i(enable_overlay_loc, overlay_enabled);
-	GLuint copper_cycles_loc = glGetUniformLocation(quad_program, "copper_cycles");
-	glUniform1f(copper_cycles_loc, stats.copper_cycles);
-	GLuint blitter_cycles_loc = glGetUniformLocation(quad_program, "blitter_cycles");
-	glUniform1f(blitter_cycles_loc, stats.blitter_cycles);
-	GLuint cpu_compute_cycles_loc = glGetUniformLocation(quad_program, "cpu_compute_cycles");
-	glUniform1f(cpu_compute_cycles_loc, stats.cpu_compute_cycles);
-	GLuint cpu_draw_cycles_loc = glGetUniformLocation(quad_program, "cpu_draw_cycles");
-	glUniform1f(cpu_draw_cycles_loc, stats.cpu_draw_cycles);
+	// Clear
+	glClearColor(colors[0], colors[1], colors[2], colors[3]);
+	glClear(GL_COLOR_BUFFER_BIT);
 
-	// Draw
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	for (int l = 0; l < layers; l++) {
+		// Set layer uniforms
+		GLuint image_loc = glGetUniformLocation(combine_program, "image");
+		glUniform1i(image_loc, 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, render_tex[l]);
+
+		// Draw
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+	}
 
 	// Cleanup
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glDisableVertexAttribArray(xy_loc);
+	glDisableVertexAttribArray(combine_xy_loc);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+	// Overlay pass
+
+	if (overlay_enabled) {
+		// Set up vertex streams
+		glBindBuffer(GL_ARRAY_BUFFER, quad_vertex_buffer);
+		glVertexAttribPointer(overlay_xy_loc, 2, GL_FLOAT, GL_FALSE, sizeof(QuadVertex), &((QuadVertex *)0)->x);
+		glEnableVertexAttribArray(overlay_xy_loc);
+
+		// Set program
+		glUseProgram(overlay_program);
+
+		// Set uniforms
+		FrameStatistics& stats = rose_data.stats->frame[frame];
+		GLuint copper_cycles_loc = glGetUniformLocation(overlay_program, "copper_cycles");
+		glUniform1f(copper_cycles_loc, stats.copper_cycles);
+		GLuint blitter_cycles_loc = glGetUniformLocation(overlay_program, "blitter_cycles");
+		glUniform1f(blitter_cycles_loc, stats.blitter_cycles);
+		GLuint cpu_compute_cycles_loc = glGetUniformLocation(overlay_program, "cpu_compute_cycles");
+		glUniform1f(cpu_compute_cycles_loc, stats.cpu_compute_cycles);
+		GLuint cpu_draw_cycles_loc = glGetUniformLocation(overlay_program, "cpu_draw_cycles");
+		glUniform1f(cpu_draw_cycles_loc, stats.cpu_draw_cycles);
+
+		// Draw
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		// Cleanup
+		glDisableVertexAttribArray(overlay_xy_loc);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
 }
 
 RoseRenderer::~RoseRenderer() {
 	glFinish();
-	glDeleteFramebuffers(1, &framebuf);
-	glDeleteTextures(1, &render_tex);
+	int layers = rose_data.layer_count;
+	glDeleteTextures(layers, &render_tex[0]);
+	glDeleteFramebuffers(layers, &framebuf[0]);
 	glDeleteBuffers(1, &quad_vertex_buffer);
 	glDeleteBuffers(1, &plot_vertex_buffer);
 }

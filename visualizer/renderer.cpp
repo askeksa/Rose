@@ -153,26 +153,38 @@ RoseRenderer::RoseRenderer(RoseResult rose_result, int width, int height)
 	prev_frame = -1;
 }
 
-void RoseRenderer::draw(int frame, bool overlay_enabled) {
-	// Initialize colors
-	std::vector<float> colors;
+void RoseRenderer::init_colors() {
+	colors.clear();
 	for (int i = 0 ; i < 256 ; i++) {
 		colors.push_back(1.0f);
 		colors.push_back(0.0f);
 		colors.push_back(1.0f);
 		colors.push_back(i % rose_data.layer_depth == 0 ? 0.0f : 1.0f);
 	}
+	script_index = 0;
+}
+
+bool RoseRenderer::draw(int frame, bool overlay_enabled) {
+	int draw_frame = std::min(frame + 1, (int) (schedule.size() - 1));
+	bool reset = prev_frame == -1 || draw_frame < prev_frame;
+	if (!reset &&
+	    schedule[draw_frame] == schedule[prev_frame] &&
+	    !(script_index < rose_data.colors.size() && rose_data.colors[script_index].t <= draw_frame))
+	{
+		return false;
+	}
 
 	// Update colors
-	int script_index = 0;
-	while (script_index < rose_data.colors.size() && rose_data.colors[script_index].t <= frame + 1) {
+	if (reset) {
+		init_colors();
+	}
+	while (script_index < rose_data.colors.size() && rose_data.colors[script_index].t <= draw_frame) {
 		short rgb = rose_data.colors[script_index].rgb;
 		short index = rose_data.colors[script_index].i & 255;
 		float *color = &colors[index * 4];
 		color[0] = ((rgb >> 8) & 15) / 15.0f;
 		color[1] = ((rgb >> 4) & 15) / 15.0f;
 		color[2] = ((rgb >> 0) & 15) / 15.0f;
-		color[3] = index % rose_data.layer_depth == 0 ? 0.0f : 1.0f;
 		script_index++;
 	}
 
@@ -200,7 +212,6 @@ void RoseRenderer::draw(int frame, bool overlay_enabled) {
 	// Set program
 	glUseProgram(plot_program);
 
-	int draw_frame = std::min(frame + 1, (int) (schedule.size() - 1));
 	int layers = rose_data.layer_count;
 	for (int l = 0; l < layers; l++) {
 		// Render to FBO
@@ -214,7 +225,7 @@ void RoseRenderer::draw(int frame, bool overlay_enabled) {
 		glUniform1f(max_tint_loc, (l + 1) * rose_data.layer_depth - 1);
 
 		// Draw
-		if (prev_frame == -1 || draw_frame < prev_frame) {
+		if (reset) {
 			glClearColor(0, 0, 0, 0);
 			glClear(GL_COLOR_BUFFER_BIT);
 			glDrawArrays(GL_TRIANGLES, 0, schedule[draw_frame] * 6);
@@ -299,6 +310,8 @@ void RoseRenderer::draw(int frame, bool overlay_enabled) {
 		glDisableVertexAttribArray(overlay_xy_loc);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
+
+	return true;
 }
 
 RoseRenderer::~RoseRenderer() {

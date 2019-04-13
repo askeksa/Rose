@@ -18,15 +18,19 @@ class RoseRenderer {
 	std::vector<GLuint> render_tex, framebuf;
 	RoseResult rose_data;
 	std::vector<int> schedule;
+	std::vector<float> colors;
 
 	int prev_frame;
+	int script_index;
+
+	void init_colors();
 
 public:
 	int width, height;
 
 	RoseRenderer(RoseResult rose_result, int width, int height);
 
-	void draw(int frame, bool overlay_enabled);
+	bool draw(int frame, bool overlay_enabled);
 
 	~RoseRenderer();
 };

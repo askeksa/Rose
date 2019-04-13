@@ -190,18 +190,22 @@ int main(int argc, char *argv[]) {
 			player.set_time(frame / (double) framerate);
 		}
 
-		// Clear
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-		glClearColor(1,0,0,0);
-		glClear(GL_COLOR_BUFFER_BIT);
-
 		// Render
-		if (project) project->draw(frame, overlay_enabled);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+		if (project) {
+			if (project->draw(frame, overlay_enabled)) {
+				glfwSwapBuffers(window);
+			}
+		} else {
+			// Error color
+			glClearColor(1,0,0,0);
+			glClear(GL_COLOR_BUFFER_BIT);
+			glfwSwapBuffers(window);
+		}
 
-		glfwSwapBuffers(window);
 		glfwPollEvents();
 
-		if (playing) {
+		if (playing && project) {
 			int prev_frame = frame;
 			do {
 				usleep(1000);

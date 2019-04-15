@@ -151,6 +151,7 @@ RoseRenderer::RoseRenderer(RoseResult rose_result, int width, int height)
 
 	// Mark contents invalid
 	prev_frame = -1;
+	prev_overlay_enabled = false;
 }
 
 void RoseRenderer::init_colors() {
@@ -169,7 +170,8 @@ bool RoseRenderer::draw(int frame, bool overlay_enabled) {
 	bool reset = prev_frame == -1 || draw_frame < prev_frame;
 	if (!reset &&
 	    schedule[draw_frame] == schedule[prev_frame] &&
-	    !(script_index < rose_data.colors.size() && rose_data.colors[script_index].t <= draw_frame))
+	    !(script_index < rose_data.colors.size() && rose_data.colors[script_index].t <= draw_frame) &&
+	    overlay_enabled == prev_overlay_enabled)
 	{
 		return false;
 	}
@@ -310,6 +312,7 @@ bool RoseRenderer::draw(int frame, bool overlay_enabled) {
 		glDisableVertexAttribArray(overlay_xy_loc);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
+	prev_overlay_enabled = overlay_enabled;
 
 	return true;
 }

@@ -22,6 +22,7 @@ class RoseRenderer {
 
 	int prev_frame;
 	int script_index;
+	bool prev_overlay_enabled;
 
 	void init_colors();
 

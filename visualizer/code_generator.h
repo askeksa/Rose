@@ -285,10 +285,21 @@ private:
 	}
 
 	void caseAJumpStatement(AJumpStatement s) override {
-		s.getY().apply(*this);
-		s.getX().apply(*this);
-		emit(BC_WSTATE(ST_X));
-		emit(BC_WSTATE(ST_Y));
+		bool same_x = false, same_y = false;
+		if (s.getX().is<AVarExpression>()) {
+			VarRef var = sym.var_ref[s.getX()];
+			same_x = var.kind == VarKind::GLOBAL
+			      && static_cast<GlobalKind>(var.index) == GlobalKind::X;
+		}
+		if (s.getY().is<AVarExpression>()) {
+			VarRef var = sym.var_ref[s.getY()];
+			same_y = var.kind == VarKind::GLOBAL
+			      && static_cast<GlobalKind>(var.index) == GlobalKind::Y;
+		}
+		if (!same_y) s.getY().apply(*this);
+		if (!same_x) s.getX().apply(*this);
+		if (!same_x) emit(BC_WSTATE(ST_X));
+		if (!same_y) emit(BC_WSTATE(ST_Y));
 	}
 
 	void caseADrawStatement(ADrawStatement s) override {

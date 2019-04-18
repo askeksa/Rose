@@ -13,6 +13,7 @@ MAX_WAIT	=	1000	; Max wait beyond end of program
 CODEBUFFER	=	150000	; Space set aside for translated code
 COPPERBUFFER	=	32000	; Space set aside for coppers
 
+CLEARMEM	=	0
 
 SCREENWIDTH	=	512
 SCREENHEIGHT	=	180

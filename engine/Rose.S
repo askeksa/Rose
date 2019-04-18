@@ -60,7 +60,7 @@ RoseInit:
 	; A6 = Rose Space
 
 	; Clear memory
-
+	if	CLEARMEM
 	move.l	a5,a0
 	move.l	#ROSE_CHIPSIZE/4,d0
 .cloop1:	clr.l	(a0)+
@@ -72,6 +72,7 @@ RoseInit:
 .cloop2:	clr.l	(a0)+
 	subq.l	#1,d0
 	bgt.b	.cloop2
+	endc
 
 	; Initialize code pointers
 

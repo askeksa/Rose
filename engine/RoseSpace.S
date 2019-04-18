@@ -1,7 +1,6 @@
 ;              T         T               T
 
 	include	Rose:RoseConfig.S
-	include	Rose:Sinus.S
 
 	rsreset
 	; x,y,size,tint must be first
@@ -28,18 +27,19 @@ r_PutCircle	rs.l	1
 r_ColorScript	rs.l	1
 r_Constants	rs.l	1
 r_Bytecode	rs.l	1
+r_Sinus	rs.l	1
 
 ; Chip memory pointers
 r_Circles	rs.l	1
 r_Screen	rs.l	1
 r_Coppers	rs.l	1
+r_CopperLimit	rs.l	1
+r_CopperWrite	rs.l	1
 r_CoppersEnd	rs.l	1
 
 ; Display state
 r_VBlank	rs.l	1
 r_FrameCounter	rs.l	1
-r_CopperWrite	rs.l	1
-r_CopperLimit	rs.l	1
 
 ; Circle state
 r_FreeCircle	rs.l	1
@@ -54,7 +54,6 @@ r_FreeState	rs.l	1	; Last longword of first free state
 r_Procedures	rs.l	256
 r_StateLists	rs.l	MAX_FRAMES+MAX_WAIT
 r_StateSpace	rs.b	4+MAX_TURTLES*STATE_SIZE
-r_Sinus	rs.w	DEGREES
 r_Instructions	rs.b	CODEBUFFER
 
 ; More display state

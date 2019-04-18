@@ -27,8 +27,7 @@ END_OF_SCRIPT	=	$FF
 RunFrame:
 	; A6 = Rose Space
 	; D7 = Frame
-	move.l	a6,a0
-	add.l	#r_Sinus,a0
+	move.l	r_Sinus(a6),a0
 	move.l	r_Constants(a6),a4
 .frame:
 	move.l	d7,d0
@@ -73,9 +72,6 @@ InitMainTurtle:
 
 InitEngine:
 	; A6 = Rose Space
-	move.l	a6,a0
-	add.l	#r_Sinus,a0
-	bsr.w	MakeSinus
 
 TranslateBytecode:
 	move.l	r_Bytecode(a6),a0

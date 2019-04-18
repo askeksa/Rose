@@ -56,6 +56,7 @@ RoseInit:
 	; A1 = Color Script
 	; A2 = Constants
 	; A3 = Bytecode
+	; A4 = Sinus
 	; A5 = Rose Chip Space
 	; A6 = Rose Space
 
@@ -74,29 +75,31 @@ RoseInit:
 	bgt.b	.cloop2
 	endc
 
-	; Initialize code pointers
+	; Initialize code and data pointers
 
 	lea	PutCircle(pc),a0
-	move.l	a0,r_PutCircle(a6)
-
-	; Initialize data pointers
-
-	move.l	a1,r_ColorScript(a6)
-	move.l	a2,r_Constants(a6)
-	move.l	a3,r_Bytecode(a6)
+	;move.l	a0,r_PutCircle(a6)
+	;move.l	a1,r_ColorScript(a6)
+	;move.l	a2,r_Constants(a6)
+	;move.l	a3,r_Bytecode(a6)
+	;move.l	a4,r_Sinus(a6)
+	movem.l	a0-a4,(a6)
 
 	; Initialize chip mem pointers
 
+	lea.l	r_Circles(a6),a1
 	move.l	a5,d0
 
 	move.l	d0,d1
 	add.l	#$10000-1,d1
 	and.l	#-$10000,d1
-	move.l	d1,r_Circles(a6)
+	;move.l	d1,r_Circles(a6)
+	move.l	d1,(a1)+
 
 	move.l	d1,d2
 	add.l	#$10000,d2
-	move.l	d2,r_Screen(a6)
+	;move.l	d2,r_Screen(a6)
+	move.l	d2,(a1)+
 	add.l	#SCREENSIZE,d2
 
 	move.l	d2,a0
@@ -108,14 +111,18 @@ RoseInit:
 	endc
 	move.l	a5,a0
 .copperslast:
-	move.l	a0,r_Coppers(a6)
+	;move.l	a0,r_Coppers(a6)
+	move.l	a0,(a1)+
 	move.l	#-2,(a0)+
-	move.l	a0,r_CopperLimit(a6)
+	;move.l	a0,r_CopperLimit(a6)
+	move.l	a0,(a1)+
 	move.l	#-2,(a0)+
-	move.l	a0,r_CopperWrite(a6)
+	;move.l	a0,r_CopperWrite(a6)
+	move.l	a0,(a1)+
 
 	add.l	#COPPERBUFFER-MARGIN-4,a0
-	move.l	a0,r_CoppersEnd(a6)
+	;move.l	a0,r_CoppersEnd(a6)
+	move.l	a0,(a1)+
 
 	; Initialize engine and circles
 

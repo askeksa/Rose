@@ -188,6 +188,11 @@ CollectCircles:
 	add.w	d0,d0
 	add.w	a0,d0	; Dest ptr
 
+	btst.l	#2,d3
+	beq.b	.backlayer
+	add.w	#SCREENWIDTH*SCREENHEIGHT/8,d0
+.backlayer:
+
 	move.l	#$00010000,(a3)+; wait for blitter
 
 	move.w	#$060,(a3)+
@@ -216,7 +221,7 @@ CollectCircles:
 	move.l	#$00010000,(a3)+; wait for blitter
 	move.l	#$00010000,(a3)+; wait for blitter
 
-	add.w	#SCREENWIDTH*SCREENHEIGHT/8,d0
+	add.w	#2*(SCREENWIDTH*SCREENHEIGHT/8),d0
 
 	roxr.w	#1,d3
 	subx.w	d5,d5

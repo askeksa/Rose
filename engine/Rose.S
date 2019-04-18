@@ -3,6 +3,9 @@
 
 	include	Rose:Engine.S
 
+	ifnd	COMPATIBILITY
+COMPATIBILITY	set	1
+	endc
 
 	section	Code,code
 
@@ -21,14 +24,31 @@ RegisterData:
 	regval	$090,((TOPPOS+SCREENHEIGHT-$100)<<8)+(LEFTPOS+DISPLAYWIDTH-$100)
 	regval	$092,((LEFTPOS>>4)-1)<<3
 	regval	$094,((LEFTPOS>>4)+(DISPLAYWIDTH>>4)-2)<<3
-	regval	$100,$0200+(SCREENDEPTH<<12)
+	if	COMPATIBILITY=2
+	regval	$100,$4600
+	else
+BPLCON0:	regval	$100,$7600
+	endc
 	regval	$102,$0000
-	regval	$104,$0000
+	regval	$104,$0040
+	if	COMPATIBILITY>=1
+	regval	$106,$0800
+	else
 	regval	$106,$0000
+	endc
 	regval	$108,(SCREENWIDTH-DISPLAYWIDTH)/8
 	regval	$10a,(SCREENWIDTH-DISPLAYWIDTH)/8
-	regval	$10c,$0000
+	if	COMPATIBILITY>=1
+	regval	$10c,$0800
+	endc
+	if	COMPATIBILITY<=1
+	regval	$118,$ffff
+	regval	$11a,$0000
+	endc
+	regval	$180,$0000
+	if	COMPATIBILITY>=1
 	regval	$1fc,$0000
+	endc
 RegisterData_End:
 
 
@@ -103,12 +123,16 @@ RoseInit:
 
 	; Flush cache if possible
 
+	if	COMPATIBILITY>=1
 	move.l	a6,-(a7)
 	move.l	$4.w,a6
+	if	COMPATIBILITY=1
 	cmp.w	#37,20(a6)
 	blo.b	.noflush
+	endc
 	jsr	-636(a6)
 .noflush:	move.l	(a7)+,a6
+	endc
 
 CopperDanger:
 	move.w	#$0000,$dff02e
@@ -165,8 +189,14 @@ RoseMain:
 	move.l	a0,$080(a3)
 	addq.l	#4,a0
 	move.l	a0,$084(a3)
+	move.w	a0,$088(a3)
 
 	lea	RegisterData(pc),a0
+	if	COMPATIBILITY=1
+	btst.b	#1,$004(a3)
+	beq.b	.noaga
+	move.w	#$4600,BPLCON0+2-RegisterData(a0)
+.noaga:	endc
 	moveq.l	#(RegisterData_End-RegisterData)/4-1,d7
 .copperloop:	add.w	(a0)+,a3
 	move.w	(a0)+,(a3)+
@@ -205,23 +235,37 @@ RoseInterrupt:
 	; Set bitplane pointers
 	move.l	r_Screen(a6),a1
 	add.w	#GUARDBAND/8,a1
-	move.l	a1,$0e0(a3)
+	lea.l	$0e0(a3),a0
+	move.l	a1,(a0)+
 	add.w	#SCREENWIDTH*SCREENHEIGHT/8,a1
-	move.l	a1,$0e4(a3)
+	move.l	a1,(a0)+
+	add.w	#SCREENWIDTH*SCREENHEIGHT/8,a1
+	move.l	a1,(a0)+
+	add.w	#SCREENWIDTH*SCREENHEIGHT/8,a1
+	move.l	a1,(a0)+
 
 	; Next frame
 	addq.l	#1,r_VBlank(a6)
 	beq.b	.colorsdone
 
 	; Execute color script
-	lea.l	$180(a3),a0
+	if	COMPATIBILITY<=1
+	lea.l	$188(a3),a0
+	else
+	lea.l	$190(a3),a0
+	endc
+	if	COMPATIBILITY=1
+	btst.b	#1,$004(a3)
+	beq.b	.noaga
+	addq.l	#8,a0
+.noaga:	endc
 	move.l	r_ColorScript(a6),a1
 	addq.w	#1,(a1)+
 	bmi.b	.colorsdone
 .putcolor:	move.w	(a1)+,d2
 	move.w	d2,d1
 	rol.w	#5,d1
-	and.w	#6,d1
+	and.w	#14,d1
 	move.w	d2,(a0,d1.w)
 	tst.w	(a1)
 	bpl.b	.putcolor

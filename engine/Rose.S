@@ -45,7 +45,11 @@ BPLCON0:	regval	$100,$7600
 	regval	$118,$ffff
 	regval	$11a,$0000
 	endc
-	regval	$180,$0000
+color	set	0
+	rept	16
+	regval	$180+color*2,$0000
+color	set	color+1
+	endr
 	if	COMPATIBILITY>=1
 	regval	$1fc,$0000
 	endc
@@ -132,61 +136,19 @@ RoseInit:
 	; Flush cache if possible
 
 	if	COMPATIBILITY>=1
-	move.l	a6,-(a7)
 	move.l	$4.w,a6
 	if	COMPATIBILITY=1
 	cmp.w	#37,20(a6)
 	blo.b	.noflush
 	endc
 	jsr	-636(a6)
-.noflush:	move.l	(a7)+,a6
-	endc
+.noflush:	endc
 
 CopperDanger:
 	move.w	#$0000,$dff02e
-
-	; Pre-fill copper buffer
-PreQueue:
-	move.l	#-1,r_VBlank(a6)
-	moveq.l	#0,d7
-PreLoop:
-	bsr.w	Body
-
-	move.l	r_CoppersEnd(a6),a0
-	sub.w	#BUFFERMARGIN,a0
-	cmp.l	a0,a3
-	bhs.b	.done
-
-	addq.l	#1,d7
-	cmp.l	#MAX_PREFRAMES-2,d7
-	blt.b	PreLoop
-.done:
-	move.l	d7,r_FrameCounter(a6)
 	rts
 
 	
-Body:
-	bsr.w	InitCircleBuffer
-	bsr.w	RunFrame
-
-	move.l	r_CopperWrite(a6),a3
-	move.l	a6,a4
-	add.l	#r_CopperPtr,a4
-
-	COPBUFSTALL
-
-	move.l	a3,-(a7)
-
-	bsr.w	CollectCircles
-	move.l	#-2,(a3)+
-
-	move.l	d7,d0
-	lsl.l	#2,d0
-	move.l	(a7)+,(a4,d0.l)
-
-	move.l	a3,r_CopperWrite(a6)
-	rts
-
 RoseMain:
 	; A6 = Rose Space
 	lea.l	$dff000,a3
@@ -212,7 +174,25 @@ RoseMain:
 
 	move.l	r_FrameCounter(a6),d7
 MainLoop:
-	bsr.w	Body
+	bsr.w	InitCircleBuffer
+	bsr.w	RunFrame
+
+	move.l	r_CopperWrite(a6),a3
+	move.l	a6,a4
+	add.l	#r_CopperPtr,a4
+
+	COPBUFSTALL
+
+	move.l	a3,-(a7)
+
+	bsr.w	CollectCircles
+	move.l	#-2,(a3)+
+
+	move.l	d7,d0
+	lsl.l	#2,d0
+	move.l	(a7)+,(a4,d0.l)
+
+	move.l	a3,r_CopperWrite(a6)
 
 	addq.l	#1,d7
 	move.l	d7,r_FrameCounter(a6)

@@ -38,6 +38,7 @@ r_CopperWrite	rs.l	1
 r_CoppersEnd	rs.l	1
 
 ; Display state
+r_Ready	rs.l	1
 r_VBlank	rs.l	1
 r_FrameCounter	rs.l	1
 

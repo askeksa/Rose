@@ -140,6 +140,7 @@ COPBUFSTALL	macro
 	move.l	#$008A0000,(a3)+
 	move.l	r_Coppers(a6),a3
 	addq.l	#4,a3
+	st.b	r_Ready(a6)
 .stall\@:
 	move.l	r_CopperLimit(a6),d1
 	sub.l	a3,d1

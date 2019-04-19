@@ -3,7 +3,6 @@
 	ifnd	MAX_FRAMES
 
 MAX_FRAMES	=	10000	; Length of Rose animation
-MAX_PREFRAMES	=	100	; Max frames to precalc
 MAX_CIRCLES	=	200	; Max circles drawn in a frame
 
 MAX_TURTLES	=	300	; Max turtles alive at the same time

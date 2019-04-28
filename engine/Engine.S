@@ -62,7 +62,9 @@ InitMainTurtle:
 	move.l	(a2),r_FreeState(a6)
 	move.l	a1,(a2)
 	lea.l	-st_proc(a2),a2
+	if	USERANDOM
 	move.l	#$BABEFEED,st_rand(a2)
+	endc
 	move.l	a2,d2
 	move.l	d2,-(a2)
 	lea	r_StateLists(a6),a1
@@ -250,6 +252,7 @@ Snip_end:
 	move.l	a1,r_FreeState(a6)
 	rts
 Snip_rand:
+	if	USERANDOM
 	move.l	st_rand(a5),d0
 	move.l	d0,d1
 	swap.w	d0
@@ -259,6 +262,7 @@ Snip_rand:
 	clr.w	d0
 	swap.w	d0
 	;move.l	d0,-(a3)
+	endc
 Snip_draw:
 	movem.l	(a5),d0-d3
 	swap.w	d0
@@ -314,6 +318,7 @@ Snip_sine:
 	asl.l	#2,d0
 	;move.l	d0,-(a3)
 Snip_seed:
+	if	USERANDOM
 	;move.l	(a3)+,d0
 	move.l	d0,d1
 	swap.w	d0
@@ -324,6 +329,7 @@ Snip_seed:
 	mulu.w	#$9D3D,d1
 	add.l	d1,d0
 	move.l	d0,st_rand(a5)
+	endc
 Snip_neg:
 	;move.l	(a3)+,d0
 	neg.l	d0
@@ -342,18 +348,20 @@ Snip_move:
 	lsr.w	#2,d0
 	add.w	d0,d0
 	move.w	(a0,d0.w),d0	; Cosine
+	if	USEBIGMOVE
 	cmp.l	#32<<16,d2
-	bge.b	.big
+	blt.b	.small
+	asl.l	#2,d2
+	swap.w	d2
+	muls.w	d2,d0
+	muls.w	d2,d1
+	bra.b	.done
+.small:	endc
 	asr.l	#6,d2
 	muls.w	d2,d0
 	muls.w	d2,d1
 	asr.l	#8,d1
 	asr.l	#8,d0
-	bra.b	.done
-.big:	asl.l	#2,d2
-	swap.w	d2
-	muls.w	d2,d0
-	muls.w	d2,d1
 .done:	add.l	d0,st_x(a5)
 	add.l	d1,st_y(a5)
 Snip_mul:

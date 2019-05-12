@@ -60,6 +60,12 @@ private:
 		}
 	}
 
+	void pop(int count) {
+		for (int i = 0; i < count; i++) {
+			emit(BC_POP);
+		}
+	}
+
 	void emit_constant(int value) {
 		emit(BC_CONST(sym.constant_index[value]));
 	}
@@ -173,14 +179,14 @@ private:
 		s.getCond().apply(*this);
 		emit(BC_WHEN(cmp_code));
 		s.getWhen().apply(*this);
-		if (stack_height != STACK_AFTER_TAIL && sym.when_pop[s] > 0) {
-			emit(BC_POP(sym.when_pop[s]));
+		if (stack_height != STACK_AFTER_TAIL) {
+			pop(sym.when_pop[s]);
 		}
 		if (!s.getElse().empty()) {
 			emit(BC_ELSE);
 			s.getElse().apply(*this);
-			if (stack_height != STACK_AFTER_TAIL && sym.else_pop[s] > 0) {
-				emit(BC_POP(sym.else_pop[s]));
+			if (stack_height != STACK_AFTER_TAIL) {
+				pop(sym.else_pop[s]);
 			}
 		}
 		emit(BC_DONE);
@@ -227,7 +233,7 @@ private:
 				emit(BC_WSTATE(7 - a.first));
 			}
 			emit(BC_WSTATE(ST_PROC));
-			emit(BC_POP(stack_height - s.getArgs().size()));
+			pop(stack_height - s.getArgs().size());
 			emit(BC_TAIL);
 
 			return true;

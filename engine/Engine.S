@@ -16,7 +16,7 @@
 ; A5 = State
 
 BC_PROC	=	$07
-MIN_INPUT	=	$09
+MIN_INPUT	=	$08
 MAX_INPUT	=	$4F
 SINGLE_SNIP	=	6
 END_OF_SCRIPT	=	$FF
@@ -186,12 +186,13 @@ PutSnip:
 	move.b	(a2)+,d3
 	move.b	(a2)+,d2
 	sub.b	d3,d2
+	beq.b	.empty
 	add.w	d3,a3
 	add.w	d3,a3
 .copy:	move.w	(a3)+,(a1)+
 	subq.b	#1,d2
 	bne.b	.copy
-	rts
+.empty:	rts
 
 
 Snips:
@@ -238,9 +239,7 @@ Snip_readstate:
 	; Put index*4 in offset
 	dc.w	$202D	; move.l x(a5),d0
 	;move.l	d0,-(a3)
-Snip_pop:
-	; Put index*4 in offset
-	dc.w	$47EB	; lea.l x(a3),a3
+Snip_dummy60:
 Snip_local:
 	; Put index*4 in offset
 	dc.w	$202B	; move.l x(a3),d0
@@ -285,7 +284,8 @@ Snip_plot:
 	jsr	(a1)
 Snip_proc:
 	move.l	r_Procedures+0(a6),d0
-Snip_dummy8:
+Snip_pop:
+	;move.l	(a3)+,d0
 Snip_div:
 	;move.l	(a3)+,d0
 	move.l	(a3)+,d1
@@ -384,7 +384,7 @@ Snipoffs:
 	SNIP	op
 	SNIP	writestate
 	SNIP	readstate
-	SNIP	pop
+	SNIP	dummy60
 	SNIP	local
 
 	SNIP	end
@@ -393,7 +393,7 @@ Snipoffs:
 	SNIP	tail
 	SNIP	plot
 	SNIP	proc
-	SNIP	dummy8
+	SNIP	pop
 	SNIP	div
 	SNIP	wait
 	SNIP	sine

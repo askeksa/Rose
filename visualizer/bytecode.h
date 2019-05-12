@@ -23,7 +23,7 @@ static inline int verify(int base, int v, int max, const char *what) {
 #define BC_TAIL  0x05                                      //  o
 #define BC_PLOT  0x06                                      //
 #define BC_PROC  0x07                                      //  o
-//               0x08                                      //
+#define BC_POP   0x08                                      // i
 #define BC_DIV   0x09                                      // io
 #define BC_WAIT  0x0A                                      // i
 #define BC_SINE  0x0B                                      // io
@@ -36,7 +36,7 @@ static inline int verify(int base, int v, int max, const char *what) {
 #define BC_OP(op)      (verify(0x30, op,    15, "OP"))     // io
 #define BC_WSTATE(i)   (verify(0x40, i,     15, "WSTATE")) // i
 #define BC_RSTATE(i)   (verify(0x50, i,     15, "RSTATE")) //  o
-#define BC_POP(n)      (verify(0x60, n,     15, "POP"))    //
+
 #define BC_LOCAL(i)    (verify(0x70, i,     15, "LOCAL"))  //  o
 #define BC_CONST(i)    (verify(0x80, i,    126, "CONST"))  //  o
 
@@ -73,7 +73,7 @@ static inline int verify(int base, int v, int max, const char *what) {
 typedef unsigned char bytecode_t;
 
 static inline int stack_change(bytecode_t bc) {
-	static const int single[16] = { 0,0,0,1,0,0,0,1,(0),-1,-1,0,-1,0,-1,-1 };
+	static const int single[16] = { 0,0,0,1,0,0,0,1,-1,-1,-1,0,-1,0,-1,-1 };
 	int arg = bc & 15;
 	switch (bc >> 4) {
 	case 0: // Misc
@@ -87,8 +87,6 @@ static inline int stack_change(bytecode_t bc) {
 		return 1;
 	case 2: // FORK
 		return -(arg + 1);
-	case 6: // POP
-		return -arg;
 	default: // CONST
 		return 1;
 	}

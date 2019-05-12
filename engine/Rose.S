@@ -199,6 +199,8 @@ MainLoop:
 	cmp.l	#MAX_FRAMES-1,d7
 	blt.b	MainLoop
 
+	st.b	r_Ready(a6)
+
 .exitwait:	cmp.l	r_VBlank(a6),d7
 	bgt.b	.exitwait
 	rts

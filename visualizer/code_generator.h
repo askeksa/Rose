@@ -141,7 +141,7 @@ private:
 			}
 			break;
 		case VarKind::LOCAL:
-			emit(BC_LOCAL(stack_height - var.index - 1));
+			emit(BC_RLOCAL(var.index));
 			break;
 		case VarKind::PROCEDURE:
 			emit(BC_PROC);
@@ -217,12 +217,6 @@ private:
 				index++;
 			}
 
-			// Overflowing WSTATE range?
-			if (!args.empty() && args.back().first >= 8) {
-				sym.warning(s.getToken(), "Tail fork not optimized because of non-identity argument after 8th");
-				return false;
-			}
-
 			// Generate code
 			s.getProc().apply(*this);
 			for (auto& a : args) {
@@ -230,7 +224,7 @@ private:
 			}
 			std::reverse(args.begin(), args.end());
 			for (auto& a : args) {
-				emit(BC_WSTATE(7 - a.first));
+				emit(BC_WLOCAL(a.first));
 			}
 			emit(BC_WSTATE(ST_PROC));
 			pop(stack_height - s.getArgs().size());

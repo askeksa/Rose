@@ -17,7 +17,7 @@
 
 BC_PROC	=	$07
 MIN_INPUT	=	$08
-MAX_INPUT	=	$4F
+MAX_INPUT	=	$5F
 SINGLE_SNIP	=	6
 END_OF_SCRIPT	=	$FF
 
@@ -153,9 +153,9 @@ TranslateBytecode:
 
 	subq.b	#2,d0
 	blo.b	.fork_or_op
-	subq.b	#2,d0
-	bhs.b	.longword
-	subq.w	#8,d1	; RSTATE/WSTATE offset
+	lsr.b	#1,d0
+	bcs.b	.longword
+	not.w	d1
 	bra.b	.longword
 .fork_or_op:
 	moveq.l	#fork_nargs+1-fork_end,d2
@@ -231,18 +231,21 @@ Snip_op:
 	or.l	d1,d0
 	;move.l	d0,-(a3)
 
+Snip_writelocal:
+	; Put index*4 in offset
+	;move.l	(a3)+,d0
+	dc.w	$2B40	; move.l d0,x(a5)
 Snip_writestate:
 	; Put index*4 in offset
 	;move.l	(a3)+,d0
 	dc.w	$2B40	; move.l d0,x(a5)
-Snip_readstate:
+Snip_readlocal:
 	; Put index*4 in offset
 	dc.w	$202D	; move.l x(a5),d0
 	;move.l	d0,-(a3)
-Snip_dummy60:
-Snip_local:
+Snip_readstate:
 	; Put index*4 in offset
-	dc.w	$202B	; move.l x(a3),d0
+	dc.w	$202D	; move.l x(a5),d0
 	;move.l	d0,-(a3)
 
 Snip_end:
@@ -382,10 +385,10 @@ SNIP	macro
 Snipoffs:
 	SNIP	fork
 	SNIP	op
+	SNIP	writelocal
 	SNIP	writestate
+	SNIP	readlocal
 	SNIP	readstate
-	SNIP	dummy60
-	SNIP	local
 
 	SNIP	end
 	SNIP	rand

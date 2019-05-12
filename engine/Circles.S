@@ -8,18 +8,17 @@
 MakeCircles:
 	move.l	r_Circles(a6),a1
 	lea	r_CircleTable(a6),a2
-	lea	r_SquareTable(a6),a3
 	moveq.l	#0,d7
-.radiusloop:	move.w	a1,(a2)+
-	move.w	d7,d0
+.radiusloop:	move.w	d7,d0
 	add.w	d0,d0
 
 	move.w	d7,d5
 	asr.w	#3,d5
 	addq.w	#1,d5	; Width in words
 	muls.w	d0,d5
-	move.w	a1,(a3)
-	add.w	d5,(a3)+	; Pointer to center line
+	move.w	a1,(a2)
+	add.w	d5,(a2)+	; Pointer to center line
+	move.w	a1,(a2)+	; Pointer to first line
 
 	addq.w	#1,d0
 	muls.w	d0,d0	; Radius^2
@@ -61,7 +60,7 @@ MakeCircles:
 
 InitCircleBuffer:
 	lea	r_CircleBufPtr(a6),a2
-	move.w	#SCREENHEIGHT-1,d5
+	move.w	#MAXRADIUS*2+SCREENHEIGHT-1,d5
 .lineloop:	clr.l	(a2)+
 	dbf	d5,.lineloop
 	lea	r_CircleBufEnd(a6),a4
@@ -88,28 +87,27 @@ PutCircle:
 	bge.w	.outside
 
 	move.w	d2,d4
+	add.w	d2,d2
 	lea	r_CircleTable(a6),a2
-	move.w	(a2,d2.w),d6
-	lea	r_SquareTable(a6),a2
-	move.w	(a2,d2.w),d5
-	lsr.w	#4,d2
+	move.l	(a2,d2.w),d6
+	lsr.w	#5,d2
 	addq.w	#1,d2	; Circle Width in words
 
 	; Clip to top
 	sub.w	d4,d1
 	bpl.b	.notopclip
 	add.w	d1,d4
-	muls.w	d2,d1
-	add.w	d1,d1
-	sub.w	d1,d6
-	clr.w	d1
+	move.w	d1,d5
+	muls.w	d2,d5
+	add.w	d5,d5
+	sub.w	d5,d6
 .notopclip:
 	addq.w	#1,d4	; Blit Height
 
 	; Make square?
 	tst.w	d3
 	bpl.b	.circle
-	move.w	d5,d6
+	swap.w	d6
 .circle:
 	; Clip and cull to bottom
 	move.w	#SCREENHEIGHT,d5
@@ -125,7 +123,7 @@ PutCircle:
 	subq.l	#4,a1
 	movem.w	d0/d2/d3/d4/d6,-(a1)
 	move.l	a1,(a2)
-	lea	r_CircleBufPtr(a6),a2
+	lea	r_CircleBufPtr+MAXRADIUS*2*4(a6),a2
 	lsl.w	#2,d1
 	add.w	d1,a2
 	move.l	(a2),CIRCLEDATA(a1)
@@ -153,7 +151,7 @@ CollectCircles:
 	; A4 = Copper pointers
 
 	lea	r_CircleBufPtr(a6),a2
-	suba.l	a0,a0
+	move.w	#-(MAXRADIUS*2)*(SCREENWIDTH/8),a0
 .lineloop:
 	move.l	(a2)+,a1
 	bra.w	.circlelend
@@ -188,6 +186,9 @@ CollectCircles:
 
 	add.w	d0,d0
 	add.w	a0,d0	; Dest ptr
+	bpl.b	.notclipped
+	sub.w	a0,d0
+.notclipped:
 
 	btst.l	#2,d3
 	beq.b	.backlayer
@@ -249,7 +250,7 @@ CollectCircles:
 
 	add.w	#SCREENWIDTH/8,a0
 	cmp.w	#SCREENHEIGHT*(SCREENWIDTH/8),a0
-	blo.w	.lineloop
+	blt.w	.lineloop
 	rts
 
 

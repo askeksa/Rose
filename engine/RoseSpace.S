@@ -44,9 +44,8 @@ r_FrameCounter	rs.l	1
 
 ; Circle state
 r_FreeCircle	rs.l	1
-r_CircleTable	rs.w	MAXRADIUS+1
-r_SquareTable	rs.w	MAXRADIUS+1
-r_CircleBufPtr	rs.l	SCREENHEIGHT
+r_CircleTable	rs.l	MAXRADIUS+1
+r_CircleBufPtr	rs.l	MAXRADIUS*2+SCREENHEIGHT
 r_CircleBuffer	rs.b	MAX_CIRCLES*(CIRCLEDATA+4)
 r_CircleBufEnd	rs.b	0
 

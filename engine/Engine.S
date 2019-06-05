@@ -39,29 +39,28 @@ RunFrame:
 	move.l	(a1),a3
 	move.l	(a3)+,(a1)
 	move.l	(a3)+,a5
-	move.l	st_proc(a5),a1
+	move.l	(a5),a1 ; st_proc
 	jsr	(a1)
 	bra.b	.frame
 .done:	rts
 
 
 InitStates:
-	move.l	a6,a0
-	add.l	#r_StateSpace,a0
+	move.l	a6,a1
+	add.l	#r_StateSpace,a1
 	move.w	#MAX_TURTLES-1,d7
-.state:	lea.l	STATE_SIZE(a0),a1
-	move.l	a0,(a1)
-	move.l	a1,a0
+.state:	lea.l	STATE_SIZE(a1),a2
+	move.l	a1,(a2)
+	move.l	a2,a1
 	dbf	d7,.state
-	move.l	a0,r_FreeState(a6)
+;	move.l	a2,r_FreeState(a6)
 
 InitMainTurtle:
 	move.l	a6,a1
 	add.l	#r_Instructions,a1
-	move.l	r_FreeState(a6),a2
+;	move.l	r_FreeState(a6),a2
 	move.l	(a2),r_FreeState(a6)
 	move.l	a1,(a2)
-	lea.l	-st_proc(a2),a2
 	if	USERANDOM
 	move.l	#$BABEFEED,st_rand(a2)
 	endc
@@ -202,10 +201,13 @@ Snip_fork:
 	; Put nargs in moveq byte
 	move.l	r_FreeState(a6),a2
 	move.l	(a2),r_FreeState(a6)
-	move.l	d0,(a2)
-	movem.l	(a5),d0-d6
-	movem.l	d0-d6,-(a2)
+	lea	4(a5),a1
 	move.l	a2,d2
+	move.l	d0,(a2)+
+	rept	7+MAX_WIRES
+	move.l	(a1)+,(a2)+
+	endr
+	move.l	d2,a2
 fork_nargs:
 	moveq.l	#0,d1
 	sub.w	d1,a2
@@ -249,9 +251,8 @@ Snip_readstate:
 	;move.l	d0,-(a3)
 
 Snip_end:
-	lea.l	st_proc(a5),a1
-	move.l	r_FreeState(a6),(a1)
-	move.l	a1,r_FreeState(a6)
+	move.l	r_FreeState(a6),(a5)
+	move.l	a5,r_FreeState(a6)
 	rts
 Snip_rand:
 	if	USERANDOM
@@ -266,7 +267,7 @@ Snip_rand:
 	;move.l	d0,-(a3)
 	endc
 Snip_draw:
-	movem.l	(a5),d0-d3
+	movem.l	st_x(a5),d0-d3
 	swap.w	d0
 	swap.w	d1
 	swap.w	d2
@@ -274,10 +275,10 @@ Snip_draw:
 	move.l	r_PutCircle(a6),a1
 	jsr	(a1)
 Snip_tail:
-	move.l	st_proc(a5),a1
+	move.l	(a5),a1 ; st_proc
 	jmp	(a1)
 Snip_plot:
-	movem.l	(a5),d0-d3
+	movem.l	st_x(a5),d0-d3
 	swap.w	d0
 	swap.w	d1
 	swap.w	d2
@@ -301,7 +302,7 @@ Snip_wait:
 	;move.l	(a3)+,d0
 	add.l	d0,st_time(a5)
 	lea.l	.continue(pc),a1
-	move.l	a1,st_proc(a5)
+	move.l	a1,(a5) ; st_proc
 	move.l	a5,-(a3)
 	clr.l	d0
 	move.w	st_time(a5),d0

@@ -7,6 +7,7 @@ MAX_CIRCLES	=	200	; Max circles drawn in a frame
 
 MAX_TURTLES	=	300	; Max turtles alive at the same time
 MAX_STACK	=	20	; Max depth of execution stack
+MAX_WIRES	=	0	; Max wires active at the same time
 MAX_WAIT	=	1000	; Max wait beyond end of program
 
 CODEBUFFER	=	150000	; Space set aside for translated code

@@ -96,7 +96,7 @@ public:
 				state.proc.getBody().apply(*this);
 				if (!forked_in_frame) {
 					stats->frame[f].turtles_died++;
-					cpu(48);
+					cpu(40);
 				}
 			} else {
 				int overwait = f - stats->frames;
@@ -396,9 +396,9 @@ private:
 		forked_in_frame = true;
 		if (proc.proc == state.proc) {
 			// Assume tail fork. Negate dispatch overhead.
-			cpu(24 + n_args * 28 - 140);
+			cpu(20 + n_args * 28 - 140);
 		} else {
-			cpu(324 + n_args * 34);
+			cpu(344 + n_args * 34); // TODO: Add 20 per wire
 		}
 	}
 
@@ -422,7 +422,7 @@ private:
 			forked_in_frame = false;
 		}
 		state.time += wait.number;
-		cpu(150);
+		cpu(146);
 	}
 
 	void caseATurnStatement(ATurnStatement s) override {

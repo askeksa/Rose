@@ -3,7 +3,8 @@
 	include	Rose:RoseConfig.S
 
 	rsreset
-	; x,y,size,tint must be first
+	; x,y,size,tint must be contiguous
+st_proc	rs.l	1	; Must be first
 st_x	rs.l	1
 st_y	rs.l	1
 st_size	rs.l	1
@@ -11,11 +12,10 @@ st_tint	rs.l	1
 st_rand	rs.l	1
 st_dir	rs.l	1
 st_time	rs.l	1
-st_proc	rs.l	1	; Must be last
 st_SIZE	rs.l	0
 
 
-STATE_SIZE	=	st_SIZE+(MAX_STACK+2)*4
+STATE_SIZE	=	st_SIZE+(MAX_WIRES+MAX_STACK+2)*4
 
 
 	rsreset
@@ -53,7 +53,7 @@ r_CircleBufEnd	rs.b	0
 r_FreeState	rs.l	1	; Last longword of first free state
 r_Procedures	rs.l	256
 r_StateLists	rs.l	MAX_FRAMES+MAX_WAIT
-r_StateSpace	rs.b	4+MAX_TURTLES*STATE_SIZE
+r_StateSpace	rs.b	(MAX_TURTLES+1)*STATE_SIZE
 r_Instructions	rs.b	CODEBUFFER
 
 ; More display state

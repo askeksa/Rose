@@ -58,14 +58,14 @@ static inline int verify(int base, int v, int max, const char *what) {
 #define OP_ADD  13
 
 // RSTATE and WSTATE offsets
-#define ST_X     0
-#define ST_Y     1
-#define ST_SIZE  2
-#define ST_TINT  3
-#define ST_RAND  4
-#define ST_DIR   5
-#define ST_TIME  6
-#define ST_PROC  7
+#define ST_PROC  0
+#define ST_X     1
+#define ST_Y     2
+#define ST_SIZE  3
+#define ST_TINT  4
+#define ST_RAND  5
+#define ST_DIR   6
+#define ST_TIME  7
 
 // Special stack height to mark tail call
 #define STACK_AFTER_TAIL 0x7A17

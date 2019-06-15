@@ -91,6 +91,8 @@ where <name> and <param> are identifiers, and <statement> is one of:
   the rest of the current procedure in parallel.
 - temp <variable> = <expression>
   Assign a value to a local variable.
+- wire <variable> = <expression>
+  Assign a value to a global variable whose value is inherited through forks.
 - seed <expression>
   Seed the random number generator.
 - when <expression> <statement>* done

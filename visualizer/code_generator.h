@@ -143,6 +143,12 @@ private:
 		case VarKind::LOCAL:
 			emit(BC_RLOCAL(var.index));
 			break;
+		case VarKind::WIRE:
+			emit(BC_RSTATE(ST_WIRE0 + var.index));
+			if (var.index >= stats.max_wires) {
+				stats.max_wires = var.index + 1;
+			}
+			break;
 		case VarKind::PROCEDURE:
 			emit(BC_PROC);
 			out.push_back(var.index);
@@ -245,6 +251,15 @@ private:
 
 	void caseATempStatement(ATempStatement s) override {
 		s.getExpression().apply(*this);
+	}
+
+	void caseAWireStatement(AWireStatement s) override {
+		int index = sym.wire_index[s];
+		s.getExpression().apply(*this);
+		emit(BC_WSTATE(ST_WIRE0 + index));
+		if (index >= stats.max_wires) {
+			stats.max_wires = index + 1;
+		}
 	}
 
 	void caseAWaitStatement(AWaitStatement s) override {

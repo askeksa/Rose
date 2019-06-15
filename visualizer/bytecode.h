@@ -66,6 +66,7 @@ static inline int verify(int base, int v, int max, const char *what) {
 #define ST_RAND  5
 #define ST_DIR   6
 #define ST_TIME  7
+#define ST_WIRE0 8
 
 // Special stack height to mark tail call
 #define STACK_AFTER_TAIL 0x7A17

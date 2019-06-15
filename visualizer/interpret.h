@@ -43,9 +43,12 @@ struct State {
 	number_t tint;
 	number_t seed;
 	std::vector<Value> stack;
+	std::vector<Value> wires;
+	unsigned wire_mask;
 
 	State() {}
-	State(AProcedure proc, State& parent, std::vector<Value> stack) : proc(proc), stack(std::move(stack)) {
+	State(AProcedure proc, State& parent, std::vector<Value> stack)
+	: proc(proc), stack(std::move(stack)), wires(parent.wires) {
 		time = parent.time;
 		x = parent.x;
 		y = parent.y;
@@ -53,6 +56,7 @@ struct State {
 		direction = parent.direction;
 		tint = parent.tint;
 		seed = parent.seed;
+		wire_mask = parent.wire_mask;
 	}
 
 	State(State&& state) = default;
@@ -84,6 +88,8 @@ public:
 		initial.direction = MAKE_NUMBER(0);
 		initial.tint = MAKE_NUMBER(1);
 		initial.seed = 0xBABEFEED;
+		initial.wires.resize(sym.wire_count);
+		initial.wire_mask = 0;
 		pending.push(std::move(initial));
 
 		while (!pending.empty()) {
@@ -331,6 +337,12 @@ private:
 			}
 			result = state.stack[ref.index];
 			break;
+		case VarKind::WIRE:
+			if ((state.wire_mask & (1 << ref.index)) == 0) {
+				throw CompileException(exp.getName(), "Uninitialized wire");
+			}
+			result = state.wires[ref.index];
+			break;
 		case VarKind::PROCEDURE:
 			result = Value(sym.procs[ref.index], true);
 			break;
@@ -404,6 +416,12 @@ private:
 
 	void caseATempStatement(ATempStatement s) override {
 		state.stack.push_back(apply(s.getExpression()));
+	}
+
+	void caseAWireStatement(AWireStatement s) override {
+		int index = sym.wire_index[s];
+		state.wires[index] = apply(s.getExpression());
+		state.wire_mask |= 1 << index;
 	}
 
 	void caseAWaitStatement(AWaitStatement s) override {

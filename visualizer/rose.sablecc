@@ -39,6 +39,7 @@ Tokens
 	turn = 'turn';
 	wait = 'wait';
 	when = 'when';
+	wire = 'wire';
 
 	l_par = '(';
 	r_par = ')';
@@ -133,6 +134,8 @@ Productions
 							{-> New statement.fork(fork, New expression.var(identifier), [exp.expression])}
 				|	{temp}	temp identifier assign exp
 							{-> New statement.temp(New local(identifier), exp.expression)}
+				|	{wire}	wire identifier assign exp
+							{-> New statement.wire(New local(identifier), exp.expression)}
 				|	{seed}	seed exp
 							{-> New statement.seed(seed, exp.expression)}
 				|	{when}	when exp stmt* done
@@ -240,6 +243,7 @@ Abstract Syntax Tree
 				|	{jump}	[token]:jump [x]:expression [y]:expression
 				|	{size}	[token]:size expression
 				|	{temp}	[var]:local expression
+				|	{wire}	[var]:local expression
 				|	{tint}	[token]:tint expression
 				|	{turn}	[token]:turn expression
 				|	{face}	[token]:face expression

@@ -12,6 +12,7 @@
 enum class VarKind {
 	GLOBAL,
 	LOCAL,
+	WIRE,
 	PROCEDURE
 };
 
@@ -54,6 +55,11 @@ public:
 		return parent->lookup(var);
 	}
 
+	bool defined(TIdentifier var, VarKind kind) {
+		const std::string& name = var.getText();
+		return scope_map.count(name) && scope_map[name].kind == kind;
+	}
+
 	Scope* pop() {
 		Scope *p = parent;
 		delete this;
@@ -69,6 +75,7 @@ class SymbolLinking : public DepthFirstAdapter {
 	const char *filename;
 
 	int current_local_index;
+	Scope* global_scope;
 	Scope* current_scope;
 
 	nodemap<int> when_local_index;
@@ -83,9 +90,11 @@ public:
 	nodemap<int> literal_number;
 	nodemap<int> when_pop;
 	nodemap<int> else_pop;
+	nodemap<int> wire_index;
 	std::vector<number_t> constants;
 	std::unordered_map<number_t,int> constant_index;
 	std::unordered_map<number_t,int> constant_count;
+	int wire_count = 0;
 
 	SymbolLinking(const char *filename) : filename(filename) {}
 
@@ -99,19 +108,20 @@ public:
 	void outAProcMarker(AProcMarker proc_marker) override {
 		AProgram prog = proc_marker.parent().cast<AProgram>();
 		constants.clear();
-		current_scope = new Scope(nullptr, prog);
-		current_scope->add(TIdentifier::make("x"), VarKind::GLOBAL, GlobalKind::X);
-		current_scope->add(TIdentifier::make("y"), VarKind::GLOBAL, GlobalKind::Y);
-		current_scope->add(TIdentifier::make("dir"), VarKind::GLOBAL, GlobalKind::DIRECTION);
+		global_scope = new Scope(nullptr, prog);
+		global_scope->add(TIdentifier::make("x"), VarKind::GLOBAL, GlobalKind::X);
+		global_scope->add(TIdentifier::make("y"), VarKind::GLOBAL, GlobalKind::Y);
+		global_scope->add(TIdentifier::make("dir"), VarKind::GLOBAL, GlobalKind::DIRECTION);
 		int current_proc_index = 0;
 		for (auto p : prog.getProcedure()) {
 			AProcedure proc = p.cast<AProcedure>();
 			procs.push_back(proc);
-			current_scope->add(proc.getName(), VarKind::PROCEDURE, current_proc_index++);
+			global_scope->add(proc.getName(), VarKind::PROCEDURE, current_proc_index++);
 			if (current_proc_index > 256) {
 				throw CompileException(proc.getName(), "Too many procedures");
 			}
 		}
+		current_scope = global_scope;
 		procedure_phase = true;
 	}
 
@@ -139,6 +149,16 @@ public:
 	void outATempStatement(ATempStatement temp) override {
 		ALocal local = temp.getVar().cast<ALocal>();
 		current_scope->add(local.getName(), VarKind::LOCAL, current_local_index++);
+	}
+
+	void outAWireStatement(AWireStatement wire) override {
+		ALocal local = wire.getVar().cast<ALocal>();
+		if (global_scope->defined(local.getName(), VarKind::WIRE)) {
+			wire_index[wire] = global_scope->lookup(local.getName()).index;
+		} else {
+			wire_index[wire] = wire_count;
+			global_scope->add(local.getName(), VarKind::WIRE, wire_count++);
+		}
 	}
 
 	void outAProcedure(AProcedure proc) override {

@@ -32,17 +32,15 @@ MakeSinus:
 	move.w	d0,(a0)+
 	move.w	d0,-(a1)
 	neg.w	d0
-	move.w	d0,DEGREES/2*2-2(a0)
 	move.w	d0,DEGREES/2*2(a1)
+	move.w	d0,DEGREES/2*2-2(a0)
 
 	addq.w	#1,d7
 	cmp.w	#DEGREES/4,d7
 	blt.b	.loop
 
-	move.w	#16384,d0
-	move.w	d0,(a0)+
+	neg.w	d0
 	move.w	d0,-(a1)
 	neg.w	d0
-	move.w	d0,DEGREES/2*2-2(a0)
 	move.w	d0,DEGREES/2*2(a1)
 	rts

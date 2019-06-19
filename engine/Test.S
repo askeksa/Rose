@@ -19,6 +19,7 @@ SECTIONHACK	=	-1
 	include	Inc:DemoStartup.S
 
 	include	Rose:Rose.S
+	include	Rose:Sinus.S
 
 
 	section	Data,data
@@ -36,7 +37,7 @@ DosName:
 	section	Fast,bss
 
 ColorScript:
-	ds.w	2000
+	ds.w	10000
 Bytecode:
 	ds.b	20000
 Constants:
@@ -46,6 +47,7 @@ Constants:
 	section	Fast,bss
 
 RoseSpace:	ds.b	ROSE_FASTSIZE
+RoseSinus:	ds.w	DEGREES
 
 	section	Chip,bss_c
 
@@ -85,12 +87,14 @@ LoadFile:
 	rts
 
 _Precalc:
+	lea.l	RoseSinus,a0
+	bsr.w	MakeSinus
+
 	lea.l	Bytecode,a3
 	lea.l	BytecodeName,a2
 	move.l	a3,d4
 	move.l	#20000,d3
 	bsr	LoadFile
-	lea.l	(a3,d0.l),a4
 
 	lea.l	ConstantsName,a2
 	move.l	#Constants,d4
@@ -99,12 +103,12 @@ _Precalc:
 
 	lea.l	ColorScriptName,a2
 	move.l	#ColorScript,d4
-	move.l	#2000*2,d3
+	move.l	#10000*2,d3
 	bsr	LoadFile
 	lea.l	ColorScript,a1
-	move.w	#$8000,(a1,d0.l)
 
 	lea.l	Constants,a2
+	lea.l	RoseSinus,a4
 	lea.l	RoseChip,a5
 	lea.l	RoseSpace,a6
 	bsr.w	RoseInit
@@ -120,8 +124,11 @@ _Main:
 _Interrupt:
 	; Called by the vblank interrupt.
 	lea.l	RoseSpace,a6
+	tst.l	r_Ready(a6)
+	beq.b	.notready
+	; Skip all vblank tasks (including music) until Rose is ready.
 	bsr.w	RoseInterrupt
-	rts
+.notready:	rts
 
 _Exit:
 	rts

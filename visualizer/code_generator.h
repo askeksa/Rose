@@ -145,8 +145,8 @@ private:
 			break;
 		case VarKind::WIRE:
 			emit(BC_RSTATE(ST_WIRE0 + var.index));
-			if (var.index >= stats.max_wires) {
-				stats.max_wires = var.index + 1;
+			if (var.index >= stats.wire_capacity) {
+				stats.wire_capacity = var.index + 1;
 			}
 			break;
 		case VarKind::PROCEDURE:
@@ -257,8 +257,8 @@ private:
 		int index = sym.wire_index[s];
 		s.getExpression().apply(*this);
 		emit(BC_WSTATE(ST_WIRE0 + index));
-		if (index >= stats.max_wires) {
-			stats.max_wires = index + 1;
+		if (index >= stats.wire_capacity) {
+			stats.wire_capacity = index + 1;
 		}
 	}
 

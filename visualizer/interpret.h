@@ -410,7 +410,7 @@ private:
 			// Assume tail fork. Negate dispatch overhead.
 			cpu(20 + n_args * 28 - 140);
 		} else {
-			cpu(344 + n_args * 34); // TODO: Add 20 per wire
+			cpu(344 + n_args * 34 + sym.wire_count * 20);
 		}
 	}
 

@@ -204,7 +204,7 @@ Snip_fork:
 	lea	4(a5),a1
 	move.l	a2,d2
 	move.l	d0,(a2)+
-	rept	7+MAX_WIRES
+	rept	7+WIRE_CAPACITY
 	move.l	(a1)+,(a2)+
 	endr
 	move.l	d2,a2

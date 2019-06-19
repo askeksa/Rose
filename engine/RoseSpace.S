@@ -15,7 +15,7 @@ st_time	rs.l	1
 st_SIZE	rs.l	0
 
 
-STATE_SIZE	=	st_SIZE+(MAX_WIRES+MAX_STACK+2)*4
+STATE_SIZE	=	st_SIZE+(WIRE_CAPACITY+MAX_STACK+2)*4
 
 
 	rsreset

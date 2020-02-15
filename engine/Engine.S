@@ -156,15 +156,6 @@ TranslateBytecode:
 	bcs.b	.longword
 	not.w	d1
 	bra.b	.longword
-.fork_or_op:
-	moveq.l	#fork_nargs+1-fork_end,d2
-	lsl.b	#2,d1
-	addq.b	#2,d0
-	beq.b	.not_op
-	moveq.l	#-2,d2
-	lsl.b	#2,d1
-.not_op:	move.b	d1,(a1,d2.w)
-	bra.b	.outifodd
 .const:
 	moveq.l	#127,d1
 	and.b	d0,d1
@@ -172,10 +163,28 @@ TranslateBytecode:
 	move.w	#$202C,(a1)+	; move.l x(a4),d0
 .longword:
 	lsl.w	#2,d1
-	move.w	d1,(a1)+
+.write:	move.w	d1,(a1)+
 .outifodd:
 	move.b	d0,d1
 	bra.w	.instloop
+.fork_or_op:
+	addq.b	#2,d0
+	bne.b	.op
+	; Fork
+	lsl.b	#2,d1
+	move.b	d1,fork_nargs+1-fork_end(a1)
+	bra.b	.outifodd
+.op:
+	ror.w	#4,d1
+	or.w	#$0081,d1 ; op.l d1,d0
+	bmi.b	.write
+	; Shift or rotate
+	move.w	#$4841,(a1)+ ; swap.w d1
+	; Bit 2 -> direction, bits 1,0 -> op
+	lsr.w	#6,d1
+	lsr.b	#3,d1
+	or.w	#$e2a0,d1 ; asl.l d1,d0
+	bra.b	.write
 
 PutSnip:
 	lea	Snipoffs(pc),a2
@@ -230,7 +239,7 @@ Snip_op:
 	; 8 = or, 9 = sub, 11 = cmp, 12 = and, 13 = add
 	;move.l	(a3)+,d0
 	move.l	(a3)+,d1
-	or.l	d1,d0
+	;op.l	d1,d0
 	;move.l	d0,-(a3)
 
 Snip_writelocal:

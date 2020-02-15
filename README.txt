@@ -114,9 +114,16 @@ An <expression> is one of:
 - <name>
   Procedure or value of parameter, temporary variable or global variable.
 - <expression> op <expression>
-  Operation, where op is one of (*, /, +, -, ==, !=, <, <=, >, >=, &, |).
-  Operator semantics and precedence are as in C, except * and / which do
-  fixed-point adjustment to match fixed-point multiplication and division.
+  Binary operation, where op can be (precedence from strongest to weakest):
+    * /                multiplication, division (do fixed-point adjustment to
+                       match fixed-point multiplication and division),
+    << >> >>> ><< >><  shift left, shift right, unsigned shift right,
+                       rotate left, rotate right (shift value is 6 least
+                       significant integer part bits of second operand),
+    + -                addition, subtraction,
+    == != < <= > >=    comparisons,
+    &                  bitwise and,
+    |                  bitwise or.
 - ~ <expression>
   Negate value. Used instead of - to enable airy, delimiter-sparse syntax.
 - sine ( <expression> )

@@ -221,11 +221,11 @@ private:
 		PBinop op = exp.getOp();
 		cpu(20);
 		if (op.is<APlusBinop>()) {
-			eval = [&](number_t a, number_t b) { return a + b; };
 			token = op.cast<APlusBinop>().getPlus();
+			eval = [&](number_t a, number_t b) { return a + b; };
 		} else if (op.is<AMinusBinop>()) {
-			eval = [&](number_t a, number_t b) { return a - b; };
 			token = op.cast<AMinusBinop>().getMinus();
+			eval = [&](number_t a, number_t b) { return a - b; };
 		} else if (op.is<AMultiplyBinop>()) {
 			token = op.cast<AMultiplyBinop>().getMul();
 			eval = [&](number_t a, number_t b) {
@@ -255,30 +255,70 @@ private:
 				return div_result << 8;
 			};
 			cpu(218 - 20);
+		} else if (op.is<AAslBinop>()) {
+			token = op.cast<AAslBinop>().getAsl();
+			eval = [&](number_t a, number_t b) {
+				int shift = (b >> 16) & 63;
+				cpu(shift * 2);
+				if (shift >= 32) return 0;
+				return a << shift;
+			};
+		} else if (op.is<AAsrBinop>()) {
+			token = op.cast<AAsrBinop>().getAsr();
+			eval = [&](number_t a, number_t b) {
+				int shift = (b >> 16) & 63;
+				cpu(shift * 2);
+				if (shift >= 32) return -1;
+				return a >> shift;
+			};
+		} else if (op.is<ALsrBinop>()) {
+			token = op.cast<ALsrBinop>().getLsr();
+			eval = [&](number_t a, number_t b) {
+				int shift = (b >> 16) & 63;
+				cpu(shift * 2);
+				if (shift >= 32) return 0;
+				return (number_t)((unsigned)a >> shift);
+			};
+		} else if (op.is<ARolBinop>()) {
+			token = op.cast<ARolBinop>().getRol();
+			eval = [&](number_t a, number_t b) {
+				int shift = (b >> 16) & 31;
+				cpu(shift * 2);
+				if (shift == 0) return a;
+				return (number_t)((a << shift) | ((unsigned)a >> (32 - shift)));
+			};
+		} else if (op.is<ARorBinop>()) {
+			token = op.cast<ARorBinop>().getRor();
+			eval = [&](number_t a, number_t b) {
+				int shift = (b >> 16) & 31;
+				cpu(shift * 2);
+				if (shift == 0) return a;
+				return (number_t)(((unsigned)a >> shift) | (a << (32 - shift)));
+			};
 		} else if (op.is<AEqBinop>()) {
-			eval = [&](number_t a, number_t b) { return a == b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };
 			token = op.cast<AEqBinop>().getEq();
+			eval = [&](number_t a, number_t b) { return a == b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };
 		} else if (op.is<ANeBinop>()) {
-			eval = [&](number_t a, number_t b) { return a != b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };
 			token = op.cast<ANeBinop>().getNe();
+			eval = [&](number_t a, number_t b) { return a != b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };
 		} else if (op.is<ALtBinop>()) {
-			eval = [&](number_t a, number_t b) { return a < b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };
 			token = op.cast<ALtBinop>().getLt();
+			eval = [&](number_t a, number_t b) { return a < b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };
 		} else if (op.is<ALeBinop>()) {
-			eval = [&](number_t a, number_t b) { return a <= b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };
 			token = op.cast<ALeBinop>().getLe();
+			eval = [&](number_t a, number_t b) { return a <= b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };
 		} else if (op.is<AGtBinop>()) {
-			eval = [&](number_t a, number_t b) { return a > b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };
 			token = op.cast<AGtBinop>().getGt();
+			eval = [&](number_t a, number_t b) { return a > b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };
 		} else if (op.is<AGeBinop>()) {
-			eval = [&](number_t a, number_t b) { return a >= b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };
 			token = op.cast<AGeBinop>().getGe();
+			eval = [&](number_t a, number_t b) { return a >= b ? MAKE_NUMBER(1) : MAKE_NUMBER(0); };
 		} else if (op.is<AAndBinop>()) {
-			eval = [&](number_t a, number_t b) { return a & b; };
 			token = op.cast<AAndBinop>().getAnd();
+			eval = [&](number_t a, number_t b) { return a & b; };
 		} else if (op.is<AOrBinop>()) {
-			eval = [&](number_t a, number_t b) { return a | b; };
 			token = op.cast<AOrBinop>().getOr();
+			eval = [&](number_t a, number_t b) { return a | b; };
 		}
 
 		if (left.kind != ValueKind::NUMBER) {

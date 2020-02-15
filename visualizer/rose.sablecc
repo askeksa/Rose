@@ -47,6 +47,11 @@ Tokens
 	minus = '-';
 	mul = '*';
 	div = '/';
+	asl = '<<';
+	asr = '>>';
+	lsr = '>>>';
+	rol = '><<';
+	ror = '>><';
 	eq = '==';
 	ne = '!=';
 	lt = '<';
@@ -183,12 +188,27 @@ Productions
 				;
 
 	addsubexp	{-> expression} =
+					{next}	shiftexp
+							{-> shiftexp.expression}
+				|	{plus}	addsubexp plus shiftexp
+							{-> New expression.binary(New binop.plus(plus), addsubexp.expression, shiftexp.expression)}
+				|	{minus}	addsubexp minus shiftexp
+							{-> New expression.binary(New binop.minus(minus), addsubexp.expression, shiftexp.expression)}
+				;
+
+	shiftexp	{-> expression} =
 					{next}	muldivexp
 							{-> muldivexp.expression}
-				|	{plus}	addsubexp plus muldivexp
-							{-> New expression.binary(New binop.plus(plus), addsubexp.expression, muldivexp.expression)}
-				|	{minus}	addsubexp minus muldivexp
-							{-> New expression.binary(New binop.minus(minus), addsubexp.expression, muldivexp.expression)}
+				|	{asl}	[left]:shiftexp asl [right]:muldivexp
+							{-> New expression.binary(New binop.asl(asl), left.expression, right.expression)}
+				|	{asr}	[left]:shiftexp asr [right]:muldivexp
+							{-> New expression.binary(New binop.asr(asr), left.expression, right.expression)}
+				|	{lsr}	[left]:shiftexp lsr [right]:muldivexp
+							{-> New expression.binary(New binop.lsr(lsr), left.expression, right.expression)}
+				|	{rol}	[left]:shiftexp rol [right]:muldivexp
+							{-> New expression.binary(New binop.rol(rol), left.expression, right.expression)}
+				|	{ror}	[left]:shiftexp ror [right]:muldivexp
+							{-> New expression.binary(New binop.ror(ror), left.expression, right.expression)}
 				;
 
 	muldivexp	{-> expression} =
@@ -269,6 +289,11 @@ Abstract Syntax Tree
 				|	{minus}		minus
 				|	{multiply}	mul
 				|	{divide}	div
+				|	{asl}		asl
+				|	{asr}		asr
+				|	{lsr}		lsr
+				|	{rol}		rol
+				|	{ror}		ror
 				|	{eq}		eq
 				|	{ne}		ne
 				|	{lt}		lt

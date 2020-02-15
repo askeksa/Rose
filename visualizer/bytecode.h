@@ -50,7 +50,17 @@ static inline int verify(int base, int v, int max, const char *what) {
 #define CMP_LE  14
 #define CMP_GT  15
 
-// Instruction high nibble (for OP)
+// Instruction nibble (for OP)
+// Shift/rotate opcodes go into bits 8,4,3
+// Other ops go into bits 15-12
+#define OP_ASR   0
+#define OP_LSR   1
+#define OP_ROXR  2
+#define OP_ROR   3
+#define OP_ASL   4
+#define OP_LSL   5
+#define OP_ROXL  6
+#define OP_ROL   7
 #define OP_OR    8
 #define OP_SUB   9
 #define OP_CMP  11

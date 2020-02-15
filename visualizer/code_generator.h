@@ -96,6 +96,11 @@ private:
 	void caseAMinusBinop(AMinusBinop)       override { op_code = BC_OP(OP_SUB); cmp_code = CMP_NE; }
 	void caseAMultiplyBinop(AMultiplyBinop) override { op_code = BC_MUL;        cmp_code = CMP_NE; }
 	void caseADivideBinop(ADivideBinop)     override { op_code = BC_DIV;        cmp_code = CMP_NE; }
+	void caseAAslBinop(AAslBinop)           override { op_code = BC_OP(OP_ASL); cmp_code = CMP_NE; }
+	void caseAAsrBinop(AAsrBinop)           override { op_code = BC_OP(OP_ASR); cmp_code = CMP_NE; }
+	void caseALsrBinop(ALsrBinop)           override { op_code = BC_OP(OP_LSR); cmp_code = CMP_NE; }
+	void caseARolBinop(ARolBinop)           override { op_code = BC_OP(OP_ROL); cmp_code = CMP_NE; }
+	void caseARorBinop(ARorBinop)           override { op_code = BC_OP(OP_ROR); cmp_code = CMP_NE; }
 	void caseAEqBinop(AEqBinop)             override { op_code = BC_OP(OP_CMP); cmp_code = CMP_EQ; }
 	void caseANeBinop(ANeBinop)             override { op_code = BC_OP(OP_CMP); cmp_code = CMP_NE; }
 	void caseALtBinop(ALtBinop)             override { op_code = BC_OP(OP_CMP); cmp_code = CMP_LT; }

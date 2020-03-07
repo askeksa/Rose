@@ -26,6 +26,7 @@ Tokens
 	fork = 'fork';
 	form = 'form';
 	jump = 'jump';
+	look = 'look';
 	move = 'move';
 	plan = 'plan';
 	plot = 'plot';
@@ -78,8 +79,8 @@ Ignored Tokens
 
 Productions
 
-	program		=			res? lay? script? decl*
-							{-> New program (res.resolution, lay.layers, [script.event], New proc_marker(), [decl.procedure])}
+	program		=			res? lay? lookdecl* script? decl*
+							{-> New program (res.resolution, lay.layers, [lookdecl.lookdef], [script.event], New proc_marker(), [decl.procedure])}
 				;
 
 	res			{-> resolution} =
@@ -92,6 +93,11 @@ Productions
 							{-> New layers (form, count.expression, depth.expression)}
 				;
 
+	lookdecl	{-> lookdef} =
+							look [name]:identifier ev*
+							{-> New lookdef (name, [ev.event])}
+				;
+
 	script		{-> event*} =
 							plan ev*
 							{-> [ev.event]}
@@ -102,6 +108,8 @@ Productions
 							{-> New event.wait(exp.expression)}
 				|	{color}	color
 							{-> New event.color(color)}
+				|	{ref} identifier
+							{-> New event.ref(identifier)}
 				;
 
 	decl		{-> procedure} =
@@ -237,7 +245,7 @@ Productions
 
 Abstract Syntax Tree
 
-	program		=			resolution? layers? event* proc_marker procedure*;
+	program		=			resolution? layers? lookdef* [plan]:event* proc_marker procedure*;
 
 	resolution	=			[width]:expression [height]:expression;
 
@@ -248,7 +256,10 @@ Abstract Syntax Tree
 	event		=	
 					{wait}	expression
 				|	{color}	color
+				|	{ref}	[name]:identifier
 				;
+
+	lookdef		=			[name]:identifier event*;
 
 	procedure	=			[name]:identifier [params]:local* [body]:statement*;
 

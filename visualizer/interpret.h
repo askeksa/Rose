@@ -72,6 +72,60 @@ class Interpreter : private ReturningAdapter<Value> {
 	RoseStatistics *stats;
 	bool forked_in_frame;
 
+	// Temp state for color script calculation
+	std::vector<TintColor> colors;
+	number_t time;
+	nodemap<bool> look_seen;
+
+	TintColor parse_color(Token color) {
+		const std::string& text = color.getText();
+		short tint = 0;
+		int i = 0;
+		while (text[i] >= '0' && text[i] <= '9') {
+			tint = tint * 10 + (text[i] - '0');
+			i++;
+		}
+		short rgb = 0;
+		for (int j = 0 ; j < 3 ; j++) {
+			rgb *= 16;
+			char h = text[i + 1 + j];
+			if (h >= '0' && h <= '9') {
+				rgb += h - '0';
+			} else {
+				rgb += 10 + (h & 0x5F) - 'A';
+			}
+		}
+		return {0, tint, rgb};
+	}
+
+	void process_color_events(List<PEvent>& events) {
+		for (PEvent event : events) {
+			if (event.is<AColorEvent>()) {
+				TintColor color = parse_color(event.cast<AColorEvent>().getColor());
+				color.t = NUMBER_TO_INT(time);
+				colors.push_back(color);
+			} else if (event.is<AWaitEvent>()) {
+				PExpression waitexp = event.cast<AWaitEvent>().getExpression();
+				Value wait = apply(waitexp);
+				time += wait.number;
+			} else if (event.is<ARefEvent>()) {
+				TIdentifier id = event.cast<ARefEvent>().getName();
+				const std::string& name = id.getText();
+				if (sym.look_map.count(name)) {
+					ALookdef look = sym.look_map[name];
+					if (look_seen[look]) {
+						throw CompileException(id, "Recursive look " + name);
+					}
+					look_seen[look] = true;
+					process_color_events(look.getEvent());
+					look_seen[look] = false;
+				} else {
+					throw CompileException(id, "Undefined look " + name);
+				}
+			}
+		}
+	}
+
 public:
 	Interpreter(SymbolLinking& sym, const char *filename)
 		: sym(sym), filename(filename), stats(nullptr) {}
@@ -115,34 +169,9 @@ public:
 	}
 
 	std::vector<TintColor> get_colors(AProgram program) {
-		std::vector<TintColor> colors;
-		number_t time = MAKE_NUMBER(0);
-		for (PEvent event : program.getEvent()) {
-			if (event.is<AColorEvent>()) {
-				std::string color = event.cast<AColorEvent>().getColor().getText();
-				short tint = 0;
-				int i = 0;
-				while (color[i] >= '0' && color[i] <= '9') {
-					tint = tint * 10 + (color[i] - '0');
-					i++;
-				}
-				short rgb = 0;
-				for (int j = 0 ; j < 3 ; j++) {
-					rgb *= 16;
-					char h = color[i + 1 + j];
-					if (h >= '0' && h <= '9') {
-						rgb += h - '0';
-					} else {
-						rgb += 10 + (h & 0x5F) - 'A';
-					}
-				}
-				colors.push_back({NUMBER_TO_INT(time), tint, rgb});
-			} else if (event.is<AWaitEvent>()) {
-				PExpression waitexp = event.cast<AWaitEvent>().getExpression();
-				Value wait = apply(waitexp);
-				time += wait.number;
-			}
-		}
+		colors.clear();
+		time = MAKE_NUMBER(0);
+		process_color_events(program.getPlan());
 		return colors;
 	}
 

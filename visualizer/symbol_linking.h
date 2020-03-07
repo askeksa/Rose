@@ -86,6 +86,7 @@ class SymbolLinking : public DepthFirstAdapter {
 
 public:
 	std::vector<AProcedure> procs;
+	std::unordered_map<std::string,ALookdef> look_map;
 	nodemap<VarRef> var_ref;
 	nodemap<int> literal_number;
 	nodemap<int> when_pop;
@@ -103,6 +104,14 @@ public:
 			printf("%s:%d:%d: Warning: %s\n", filename, token.getLine(), token.getPos(), message.c_str());
 			warning_nodes[token].insert(message);
 		}
+	}
+
+	void outALookdef(ALookdef look) override {
+		const std::string& name = look.getName().getText();
+		if (look_map.count(name)) {
+			throw CompileException(look.getName(), "Redefinition of look " + name);
+		}
+		look_map[name] = look;
 	}
 
 	void outAProcMarker(AProcMarker proc_marker) override {

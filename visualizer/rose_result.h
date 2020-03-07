@@ -19,6 +19,7 @@ struct RoseResult {
 	std::vector<Plot> plots;
 	std::vector<TintColor> colors;
 	std::unique_ptr<struct RoseStatistics> stats;
+	bool error;
 
 	bool empty() {
 		return plots.empty() && colors.empty();

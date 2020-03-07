@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Load code
-	RoseResult rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, LAYERS, DEPTH, true);
+	RoseResult rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, LAYERS, DEPTH);
 	int width = rose_result.width;
 	int height = rose_result.height;
 
@@ -108,11 +108,11 @@ int main(int argc, char *argv[]) {
 			// Reload code
 			printf("\nReloading at %s\n", rose_file.time_text());
 			if (project) delete project;
-			rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, LAYERS, DEPTH, false);
-			if (rose_result.empty()) {
+			rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, LAYERS, DEPTH);
+			if (rose_result.empty() && !rose_result.error) {
 				// Try again
 				usleep(100*1000);
-				rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, LAYERS, DEPTH, true);
+				rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, LAYERS, DEPTH);
 			}
 			fflush(stdout);
 			if (playing) {

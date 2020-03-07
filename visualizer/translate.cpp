@@ -28,13 +28,13 @@ void writefile(std::vector<T> data, const char *filename) {
 
 RoseResult translate(const char *filename, int max_time,
                      int width, int height,
-                     int layer_count, int layer_depth,
-                     bool print) {
+                     int layer_count, int layer_depth) {
 	RoseResult result;
 	result.width = width;
 	result.height = height;
 	result.layer_count = layer_count;
 	result.layer_depth = layer_depth;
+	result.error = false;
 	try {
 		Lexer lexer(filename);
 		Start ast = rose::Parser(&lexer).parse();
@@ -110,15 +110,13 @@ RoseResult translate(const char *filename, int max_time,
 		fflush(stdout);
 
 	} catch (const CompileException& exc) {
-		if (print) {
-			printf("%s:%d:%d: Error: %s\n", filename, exc.getToken().getLine(), exc.getToken().getPos(), exc.getMessage().c_str());
-			fflush(stdout);
-		}
+		printf("%s:%d:%d: Error: %s\n", filename, exc.getToken().getLine(), exc.getToken().getPos(), exc.getMessage().c_str());
+		fflush(stdout);
+		result.error = true;
 	} catch (const Exception& exc) {
-		if (print) {
-			printf("%s: Error: %s\n", filename, exc.getMessage().c_str());
-			fflush(stdout);
-		}
+		printf("%s: Error: %s\n", filename, exc.getMessage().c_str());
+		fflush(stdout);
+		result.error = true;
 	}
 
 	return result;

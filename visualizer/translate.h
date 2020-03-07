@@ -4,5 +4,4 @@
 
 RoseResult translate(const char *filename, int max_time,
                      int width, int height,
-                     int layer_count, int layer_depth,
-                     bool print);
+                     int layer_count, int layer_depth);

@@ -46,7 +46,12 @@ in the next layer and so on.
 
 If no layer configuration is specified, there is 1 layer with 4 colors.
 
-After this comes the color script, which has the syntax:
+After this comes the color script, which has two parts. First, any number of
+looks, each of which looks like:
+
+- look <identifier> <event>*
+
+and then the color script itself:
 
 - plan <event>*
 
@@ -54,8 +59,12 @@ where <event> is one of:
 
 - wait <expression>
   Wait a number of frames. The expression cannot contain variables.
+- fade <expression>
+  Fade over a number of frames. The expression cannot contain variables.
 - <tint>:<color>
   Set the given tint (integer) to the given color (three-digit hex value).
+- <identifier>
+  Insert the events from the look with the given name.
 
 The first tint in each layer except the first is transparent, showing the
 layers behind it. Thus, the colors for these tints are ignored.

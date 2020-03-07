@@ -13,6 +13,7 @@ enum class VarKind {
 	GLOBAL,
 	LOCAL,
 	WIRE,
+	FACT,
 	PROCEDURE
 };
 
@@ -92,6 +93,7 @@ public:
 	nodemap<int> when_pop;
 	nodemap<int> else_pop;
 	nodemap<int> wire_index;
+	std::vector<number_t> fact_values;
 	std::vector<number_t> constants;
 	std::unordered_map<number_t,int> constant_index;
 	std::unordered_map<number_t,int> constant_count;
@@ -114,13 +116,23 @@ public:
 		look_map[name] = look;
 	}
 
-	void outAProcMarker(AProcMarker proc_marker) override {
-		AProgram prog = proc_marker.parent().cast<AProgram>();
-		constants.clear();
+	void outAFactMarker(AFactMarker fact_marker) override {
+		AProgram prog = fact_marker.parent().cast<AProgram>();
 		global_scope = new Scope(nullptr, prog);
 		global_scope->add(TIdentifier::make("x"), VarKind::GLOBAL, GlobalKind::X);
 		global_scope->add(TIdentifier::make("y"), VarKind::GLOBAL, GlobalKind::Y);
 		global_scope->add(TIdentifier::make("dir"), VarKind::GLOBAL, GlobalKind::DIRECTION);
+		current_scope = global_scope;
+		int fact_index = 0;
+		for (auto f : prog.getFactdef()) {
+			AFactdef fact = f.cast<AFactdef>();
+			global_scope->add(fact.getName(), VarKind::FACT, fact_index++);
+		}
+	}
+
+	void outAProcMarker(AProcMarker proc_marker) override {
+		AProgram prog = proc_marker.parent().cast<AProgram>();
+		constants.clear();
 		int current_proc_index = 0;
 		for (auto p : prog.getProcedure()) {
 			AProcedure proc = p.cast<AProcedure>();
@@ -130,7 +142,6 @@ public:
 				throw CompileException(proc.getName(), "Too many procedures");
 			}
 		}
-		current_scope = global_scope;
 		procedure_phase = true;
 	}
 
@@ -175,10 +186,10 @@ public:
 	}
 
 	void inAVarExpression(AVarExpression var) override {
-		if (!procedure_phase) {
+		VarRef ref = current_scope->lookup(var.getName());
+		if (!procedure_phase && ref.kind != VarKind::FACT) {
 			throw CompileException(var.getName(), "Variable outside procedure");
 		}
-		VarRef ref = current_scope->lookup(var.getName());
 		var_ref[var] = ref;
 	}
 

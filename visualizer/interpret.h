@@ -188,6 +188,14 @@ public:
 	std::vector<Plot> interpret(AProcedure main, RoseStatistics *stats) {
 		this->stats = stats;
 
+		AProgram prog = main.parent().cast<AProgram>();
+		sym.fact_values.clear();
+		for (auto f : prog.getFactdef()) {
+			AFactdef fact = f.cast<AFactdef>();
+			Value fact_value = apply(fact.getExpression());
+			sym.fact_values.push_back(fact_value.number);
+		}
+
 		State initial;
 		initial.proc = main;
 		initial.time = MAKE_NUMBER(0);
@@ -469,6 +477,12 @@ private:
 				throw CompileException(exp.getName(), "Uninitialized wire");
 			}
 			result = state.wires[ref.index];
+			break;
+		case VarKind::FACT:
+			if (ref.index >= sym.fact_values.size()) {
+				throw CompileException(exp.getName(), "Facts can only refer to earlier facts");
+			}
+			result = Value(sym.fact_values[ref.index]);
 			break;
 		case VarKind::PROCEDURE:
 			result = Value(sym.procs[ref.index], true);

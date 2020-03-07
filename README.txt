@@ -46,6 +46,13 @@ in the next layer and so on.
 
 If no layer configuration is specified, there is 1 layer with 4 colors.
 
+Then, any number of global constants can be defined, called facts:
+
+- fact <identifier> = <expression>
+
+The expression cannot contain variables, but the defined fact can be used in
+all expressions in the program, even ones that cannot contain variables.
+
 After this comes the color script, which has two parts. First, any number of
 looks, each of which looks like:
 

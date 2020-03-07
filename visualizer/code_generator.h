@@ -154,6 +154,9 @@ private:
 				stats.wire_capacity = var.index + 1;
 			}
 			break;
+		case VarKind::FACT:
+			emit_constant(sym.fact_values[var.index]);
+			break;
 		case VarKind::PROCEDURE:
 			emit(BC_PROC);
 			out.push_back(var.index);

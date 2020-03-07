@@ -23,6 +23,7 @@ Tokens
 	draw = 'draw';
 	else = 'else';
 	face = 'face';
+	fact = 'fact';
 	fade = 'fade';
 	fork = 'fork';
 	form = 'form';
@@ -80,8 +81,8 @@ Ignored Tokens
 
 Productions
 
-	program		=			res? lay? lookdecl* script? decl*
-							{-> New program (res.resolution, lay.layers, [lookdecl.lookdef], [script.event], New proc_marker(), [decl.procedure])}
+	program		=			res? lay? factdecl* lookdecl* script? decl*
+							{-> New program (res.resolution, lay.layers, New fact_marker(), [factdecl.factdef], [lookdecl.lookdef], [script.event], New proc_marker(), [decl.procedure])}
 				;
 
 	res			{-> resolution} =
@@ -92,6 +93,11 @@ Productions
 	lay			{-> layers} =
 							form [count]:exp [depth]:exp
 							{-> New layers (form, count.expression, depth.expression)}
+				;
+
+	factdecl	{-> factdef} =
+							fact [name]:identifier assign exp
+							{-> New factdef (name, exp.expression)}
 				;
 
 	lookdecl	{-> lookdef} =
@@ -248,13 +254,17 @@ Productions
 
 Abstract Syntax Tree
 
-	program		=			resolution? layers? lookdef* [plan]:event* proc_marker procedure*;
+	program		=			resolution? layers? fact_marker factdef* lookdef* [plan]:event* proc_marker procedure*;
 
 	resolution	=			[width]:expression [height]:expression;
 
 	layers		=			[token]:form [count]:expression [depth]:expression;
 
+	fact_marker	=			;
+
 	proc_marker	=			;
+
+	factdef		=			[name]:identifier expression;
 
 	event		=	
 					{wait}	expression

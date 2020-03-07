@@ -76,6 +76,10 @@ class Interpreter : private ReturningAdapter<Value> {
 	std::vector<TintColor> colors;
 	number_t time;
 	nodemap<bool> look_seen;
+	std::vector<short> current_palette;
+	std::vector<short> fade_palette;
+	number_t fade_time;
+	bool is_fading;
 
 	TintColor parse_color(Token color) {
 		const std::string& text = color.getText();
@@ -98,14 +102,65 @@ class Interpreter : private ReturningAdapter<Value> {
 		return {0, tint, rgb};
 	}
 
+	void do_fade() {
+		is_fading = false;
+		while (fade_palette.size() < current_palette.size()) {
+			fade_palette.push_back(0x000);
+		}
+
+		int t0 = NUMBER_TO_INT(fade_time);
+		int t1 = NUMBER_TO_INT(time);
+		if (t1 <= t0) {
+			for (int i = 0; i < fade_palette.size(); i++) {
+				if (current_palette[i] != fade_palette[i]) {
+					colors.push_back({(short)t1, (short)i, current_palette[i]});
+				}
+			}
+			return;
+		}
+
+		std::vector<short> pal = fade_palette;
+		for (int t = t0 + 1; t <= t1; t++) {
+			int w = (t - t0) * (1 << 16) / (t1 - t0);
+			for (int i = 0; i < fade_palette.size(); i++) {
+				short rgb0 = fade_palette[i];
+				short rgb1 = current_palette[i];
+				int r0 = rgb0 >> 8, g0 = (rgb0 >> 4) & 0xf, b0 = rgb0 & 0xf;
+				int r1 = rgb1 >> 8, g1 = (rgb1 >> 4) & 0xf, b1 = rgb1 & 0xf;
+				int r = r0 + (((r1 - r0) * w + (1 << 15)) >> 16);
+				int g = g0 + (((g1 - g0) * w + (1 << 15)) >> 16);
+				int b = b0 + (((b1 - b0) * w + (1 << 15)) >> 16);
+				short rgb = (r << 8) + (g << 4) + b;
+				if (rgb != pal[i]) {
+					colors.push_back({(short)t, (short)i, rgb});
+					pal[i] = rgb;
+				}
+			}
+		}
+		current_palette = pal;
+	}
+
 	void process_color_events(List<PEvent>& events) {
 		for (PEvent event : events) {
 			if (event.is<AColorEvent>()) {
 				TintColor color = parse_color(event.cast<AColorEvent>().getColor());
 				color.t = NUMBER_TO_INT(time);
-				colors.push_back(color);
+				if (!is_fading) colors.push_back(color);
+				while (current_palette.size() <= color.i) {
+					current_palette.push_back(0x000);
+				}
+				current_palette[color.i] = color.rgb;
 			} else if (event.is<AWaitEvent>()) {
+				if (is_fading) do_fade();
 				PExpression waitexp = event.cast<AWaitEvent>().getExpression();
+				Value wait = apply(waitexp);
+				time += wait.number;
+			} else if (event.is<AFadeEvent>()) {
+				if (is_fading) do_fade();
+				fade_palette = current_palette;
+				fade_time = time;
+				is_fading = true;
+				PExpression waitexp = event.cast<AFadeEvent>().getExpression();
 				Value wait = apply(waitexp);
 				time += wait.number;
 			} else if (event.is<ARefEvent>()) {
@@ -171,7 +226,10 @@ public:
 	std::vector<TintColor> get_colors(AProgram program) {
 		colors.clear();
 		time = MAKE_NUMBER(0);
+		current_palette.clear();
+		is_fading = false;
 		process_color_events(program.getPlan());
+		if (is_fading) do_fade();
 		return colors;
 	}
 

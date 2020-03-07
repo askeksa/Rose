@@ -23,6 +23,7 @@ Tokens
 	draw = 'draw';
 	else = 'else';
 	face = 'face';
+	fade = 'fade';
 	fork = 'fork';
 	form = 'form';
 	jump = 'jump';
@@ -106,6 +107,8 @@ Productions
 	ev			{-> event} =
 					{wait}	wait exp
 							{-> New event.wait(exp.expression)}
+				|	{fade}	fade exp
+							{-> New event.fade(exp.expression)}
 				|	{color}	color
 							{-> New event.color(color)}
 				|	{ref} identifier
@@ -255,6 +258,7 @@ Abstract Syntax Tree
 
 	event		=	
 					{wait}	expression
+				|	{fade}	expression
 				|	{color}	color
 				|	{ref}	[name]:identifier
 				;

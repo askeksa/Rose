@@ -244,7 +244,7 @@ public:
 		current_scope = current_scope->pop();
 	}
 
-	void inADefyStatement(ADefyStatement defy) {
+	void inADefyStatement(ADefyStatement defy) override {
 		int line = defy.getToken().getLine();
 		defied_lines.insert(line);
 	}

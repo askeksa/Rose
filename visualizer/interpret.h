@@ -324,10 +324,10 @@ private:
 		} else if (op.is<AMultiplyBinop>()) {
 			token = op.cast<AMultiplyBinop>().getMul();
 			eval = [&](number_t a, number_t b) {
-				if (a >= 128 << 16 || a < -128 << 16) {
+				if (a >= (128 << 16) || a < -(128 << 16)) {
 					sym.warning(token, "Left operand overflows");
 				}
-				if (b >= 128 << 16 || b < -128 << 16) {
+				if (b >= (128 << 16) || b < -(128 << 16)) {
 					sym.warning(token, "Right operand overflows");
 				}
 				return (a << 8 >> 16) * (b << 8 >> 16);
@@ -336,7 +336,7 @@ private:
 		} else if (op.is<ADivideBinop>()) {
 			token = op.cast<ADivideBinop>().getDiv();
 			eval = [&](number_t a, number_t b) {
-				if (b >= 128 << 16 || b < -128 << 16) {
+				if (b >= (128 << 16) || b < -(128 << 16)) {
 					sym.warning(token, "Right operand overflows");
 				}
 				int divisor = b << 8 >> 16;
@@ -344,7 +344,7 @@ private:
 					throw CompileException(token, "Division by zero");
 				}
 				int div_result = a / divisor;
-				if (b >= 128 << 16 || b < -128 << 16) {
+				if (b >= (128 << 16) || b < -(128 << 16)) {
 					sym.warning(token, "Result overflows");
 				}
 				return div_result << 8;

@@ -11,8 +11,8 @@
 #include <algorithm>
 
 class CodeGenerator : private AnalysisAdapter {
+	Reporter& rep;
 	SymbolLinking& sym;
-	const char *filename;
 	std::vector<bytecode_t> out;
 	RoseStatistics& stats;
 
@@ -23,8 +23,8 @@ class CodeGenerator : private AnalysisAdapter {
 	nodemap<bool> tail_fork;
 
 public:
-	CodeGenerator(SymbolLinking& sym, const char *filename, RoseStatistics& stats)
-		: sym(sym), filename(filename), stats(stats) {}
+	CodeGenerator(Reporter& rep, SymbolLinking& sym, RoseStatistics& stats)
+		: rep(rep), sym(sym), stats(stats) {}
 
 	std::pair<std::vector<bytecode_t>,std::vector<number_t>> generate(AProgram program) {
 		program.getProcedure().apply(*this);
@@ -210,7 +210,7 @@ private:
 		if (tail_fork[s]) {
 			// Not enough space for arguments?
 			if (s.getArgs().size() > stack_height) {
-				//sym.warning(s.getToken(), "Tail fork not optimized because of too little stack space");
+				//rep.reportWarning(s.getToken(), "Tail fork not optimized because of too little stack space");
 				return false;
 			}
 

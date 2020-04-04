@@ -64,8 +64,8 @@ struct State {
 };
 
 class Interpreter : private ReturningAdapter<Value> {
+	Reporter& rep;
 	SymbolLinking& sym;
-	const char *filename;
 	State state;
 	std::queue<State> pending;
 	std::vector<Plot> output;
@@ -182,8 +182,8 @@ class Interpreter : private ReturningAdapter<Value> {
 	}
 
 public:
-	Interpreter(SymbolLinking& sym, const char *filename)
-		: sym(sym), filename(filename), stats(nullptr) {}
+	Interpreter(Reporter& rep, SymbolLinking& sym)
+		: rep(rep), sym(sym), stats(nullptr) {}
 
 	std::vector<Plot> interpret(AProcedure main, RoseStatistics *stats) {
 		this->stats = stats;
@@ -325,10 +325,10 @@ private:
 			token = op.cast<AMultiplyBinop>().getMul();
 			eval = [&](number_t a, number_t b) {
 				if (a >= (128 << 16) || a < -(128 << 16)) {
-					sym.warning(token, "Left operand overflows");
+					rep.reportWarning(token, "Left operand overflows");
 				}
 				if (b >= (128 << 16) || b < -(128 << 16)) {
-					sym.warning(token, "Right operand overflows");
+					rep.reportWarning(token, "Right operand overflows");
 				}
 				return (a << 8 >> 16) * (b << 8 >> 16);
 			};
@@ -337,7 +337,7 @@ private:
 			token = op.cast<ADivideBinop>().getDiv();
 			eval = [&](number_t a, number_t b) {
 				if (b >= (128 << 16) || b < -(128 << 16)) {
-					sym.warning(token, "Right operand overflows");
+					rep.reportWarning(token, "Right operand overflows");
 				}
 				int divisor = b << 8 >> 16;
 				if (divisor == 0) {
@@ -345,7 +345,7 @@ private:
 				}
 				int div_result = a / divisor;
 				if (b >= (128 << 16) || b < -(128 << 16)) {
-					sym.warning(token, "Result overflows");
+					rep.reportWarning(token, "Result overflows");
 				}
 				return div_result << 8;
 			};
@@ -571,7 +571,7 @@ private:
 			throw CompileException(s.getToken(), "Wait value is not a number");
 		}
 		if (wait.number < 0) {
-			sym.warning(s.getToken(), "Negative wait");
+			rep.reportWarning(s.getToken(), "Negative wait");
 			return;
 		}
 		int frame = NUMBER_TO_INT(state.time);
@@ -620,9 +620,9 @@ private:
 		cpu(16);
 		short tint_int = NUMBER_TO_INT(tint.number);
 		if (tint_int < 0) {
-			sym.warning(s.getToken(), "Negative tint");
+			rep.reportWarning(s.getToken(), "Negative tint");
 		} else if (tint_int >= stats->layer_count * stats->layer_depth) {
-			sym.warning(s.getToken(), "Tint value outside range");
+			rep.reportWarning(s.getToken(), "Tint value outside range");
 		}
 	}
 

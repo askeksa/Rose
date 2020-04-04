@@ -35,12 +35,13 @@ RoseResult translate(const char *filename, int max_time,
 	result.layer_count = layer_count;
 	result.layer_depth = layer_depth;
 	result.error = false;
+	Reporter rep(filename);
 	try {
 		Lexer lexer(filename);
 		Start ast = rose::Parser(&lexer).parse();
-		SymbolLinking sl(filename);
-		ast.apply(sl);
-		Interpreter in(sl, filename);
+		SymbolLinking sym(rep);
+		ast.apply(sym);
+		Interpreter in(rep, sym);
 		AProgram program = ast.getPProgram().cast<AProgram>();
 		int n_proc = program.getProcedure().size();
 		if (n_proc == 0) {
@@ -66,7 +67,7 @@ RoseResult translate(const char *filename, int max_time,
 		result.colors = in.get_colors(program);
 
 		// Output
-		CodeGenerator codegen(sl, filename, stats);
+		CodeGenerator codegen(rep, sym, stats);
 		auto bytecodes_and_constants = codegen.generate(program);
 		std::vector<bytecode_t> bytecodes = bytecodes_and_constants.first;
 		std::vector<number_t> constants = bytecodes_and_constants.second;
@@ -88,20 +89,20 @@ RoseResult translate(const char *filename, int max_time,
 		stats.print(stdout);
 
 		printf("\n");
-		int n = sl.constants.size();
+		int n = sym.constants.size();
 		int n_columns = 4;
 		int n_rows = (n - 1) / n_columns + 1;
 		for (int r = 0 ; r < n_rows ; r++) {
 			for (int c = 0 ; c < n_columns ; c++) {
 				int i = r + c * n_rows;
 				if (i < n) {
-					int value = sl.constants[i];
+					int value = sym.constants[i];
 					int frac = 16;
 					while (frac > 0 && ((value >> (16 - frac)) & 1) == 0) {
 						frac--;
 					}
 					int float_width = 6 + (frac > 0) + frac;
-					int count = sl.constant_count[value];
+					int count = sym.constant_count[value];
 					printf("%3d %08X%*.*f%*s", count, value, float_width, frac, value / 65536.0, 23 - float_width, "");
 				}
 			}
@@ -110,12 +111,10 @@ RoseResult translate(const char *filename, int max_time,
 		fflush(stdout);
 
 	} catch (const CompileException& exc) {
-		printf("%s:%d:%d: Error: %s\n", filename, exc.getToken().getLine(), exc.getToken().getPos(), exc.getMessage().c_str());
-		fflush(stdout);
+		rep.reportCompileError(exc);
 		result.error = true;
 	} catch (const Exception& exc) {
-		printf("%s: Error: %s\n", filename, exc.getMessage().c_str());
-		fflush(stdout);
+		rep.reportError(exc);
 		result.error = true;
 	}
 

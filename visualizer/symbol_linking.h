@@ -6,7 +6,6 @@
 #include <cstring>
 #include <string>
 #include <unordered_map>
-#include <unordered_set>
 #include <algorithm>
 
 enum class VarKind {
@@ -73,15 +72,13 @@ public:
 };
 
 class SymbolLinking : public DepthFirstAdapter {
-	const char *filename;
+	Reporter& rep;
 
 	int current_local_index;
 	Scope* global_scope;
 	Scope* current_scope;
 
 	nodemap<int> when_local_index;
-	std::unordered_set<int> defied_lines;
-	nodemap<std::unordered_set<std::string>> warning_nodes;
 
 	bool procedure_phase = false;
 
@@ -99,14 +96,7 @@ public:
 	std::unordered_map<number_t,int> constant_count;
 	int wire_count = 0;
 
-	SymbolLinking(const char *filename) : filename(filename) {}
-
-	void warning(Token token, std::string message) {
-		if (!defied_lines.count(token.getLine()) && !warning_nodes[token].count(message)) {
-			printf("%s:%d:%d: Warning: %s\n", filename, token.getLine(), token.getPos(), message.c_str());
-			warning_nodes[token].insert(message);
-		}
-	}
+	SymbolLinking(Reporter& rep) : rep(rep) {}
 
 	void outALookdef(ALookdef look) override {
 		const std::string& name = look.getName().getText();
@@ -208,7 +198,7 @@ public:
 				throw CompileException(lit.getNumber(), "Number too large");
 			}
 			if (fvalue >= 32768) {
-				warning(lit.getNumber(), "Number overflows to negative");
+				rep.reportWarning(lit.getNumber(), "Number overflows to negative");
 			}
 			value = int(fvalue * 65536);
 		}
@@ -245,8 +235,7 @@ public:
 	}
 
 	void inADefyStatement(ADefyStatement defy) override {
-		int line = defy.getToken().getLine();
-		defied_lines.insert(line);
+		rep.defy(defy.getToken());
 	}
 };
 

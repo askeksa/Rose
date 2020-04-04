@@ -9,6 +9,9 @@ Helpers
 	letter = ['A' .. 'Z'] | ['a' .. 'z'] | '_';
 	decnumber = digit+ ('.' digit+) ?;
 	hexnumber = '$' hexdigit+;
+	quote = '"';
+	all_ascii = [0x20 .. 0x7E];
+	not_quote = [all_ascii - quote];
 
 	tab = 9;
 	cr = 13;
@@ -30,6 +33,7 @@ Tokens
 	jump = 'jump';
 	look = 'look';
 	move = 'move';
+	part = 'part';
 	plan = 'plan';
 	plot = 'plot';
 	proc = 'proc';
@@ -71,6 +75,7 @@ Tokens
 	number = decnumber | hexnumber;
 	identifier = letter (letter | digit)*;
 	color = digit+ ':' hexdigit hexdigit hexdigit;
+	string = quote not_quote* quote;
 
 	blank = blank;
 	comment = '#' [all - [cr + lf]]* eol;
@@ -96,6 +101,8 @@ Productions
 							{-> New decl.look (name, [ev.event])}
 				|	{proc}	proc [name]:identifier param* stmt*
 							{-> New decl.proc(name, [param.local], [stmt.statement])}
+				|	{part}	part [file]:string
+							{-> New decl.part(file)}
 				;
 
 	ev			{-> event} =
@@ -244,6 +251,7 @@ Abstract Syntax Tree
 				|	{fact}	[name]:identifier expression
 				|	{look}	[name]:identifier event*
 				|	{proc}	[name]:identifier [params]:local* [body]:statement*
+				|	{part}	[file]:string
 				;
 
 	event		=	{wait}	expression

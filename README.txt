@@ -32,6 +32,14 @@ A Rose program consists of a number of top-level declarations. Except where
 noted, these are all optional and can appear in any order. The various kinds
 of declarations are described in the following:
 
+A part declaration includes the declarations from another file at the
+point of the part declaration. The path of the file to be included is
+relative to the file into which it is included.
+
+- part <filename>
+
+Where <filename> is the name of the file to be included, in double quotes.
+
 A form declaration has four numbers which specify the width and height in
 pixels, the number of layers, and the number of colors in each layer,
 respectively:

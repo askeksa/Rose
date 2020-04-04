@@ -6,7 +6,8 @@
 #include "interpret.h"
 #include "code_generator.h"
 
-#include <stdio.h>
+#include <cstdio>
+#include <fstream>
 
 using namespace rose;
 
@@ -26,6 +27,31 @@ void writefile(std::vector<T> data, const char *filename) {
 	fclose(out);
 }
 
+static AProgram loadProgram(const char *filename, std::string& current_filename,
+		nodemap<AProgram>& parts, nodemap<std::string>& part_path) {
+	current_filename = filename;
+	if (!std::ifstream(filename)) {
+		printf("File not found: %s\n", filename);
+	}
+	Lexer lexer(filename);
+	Start ast = rose::Parser(&lexer).parse();
+	AProgram program = ast.getPProgram().cast<AProgram>();
+	for (PDecl decl : program.getDecl()) {
+		if (decl.is<APartDecl>()) {
+			APartDecl part = decl.cast<APartDecl>();
+			const std::string& file_string = part.getFile().getText();
+			const std::string file = file_string.substr(1, file_string.size() - 2);
+			std::string path(filename);
+			path.resize(path.find_last_of("/\\") + 1);
+			path += file;
+			AProgram part_program = loadProgram(path.c_str(), current_filename, parts, part_path);
+			parts[part] = part_program;
+			part_path[part] = path;
+		}
+	}
+	return program;
+}
+
 RoseResult translate(const char *filename, int max_time,
                      int width, int height,
                      int layer_count, int layer_depth) {
@@ -35,90 +61,94 @@ RoseResult translate(const char *filename, int max_time,
 	result.layer_count = layer_count;
 	result.layer_depth = layer_depth;
 	result.error = false;
-	Reporter rep(filename);
+	std::string current_filename;
 	try {
-		Lexer lexer(filename);
-		Start ast = rose::Parser(&lexer).parse();
-		SymbolLinking sym(rep);
-		ast.apply(sym);
-		Interpreter in(rep, sym);
-		AProgram program = ast.getPProgram().cast<AProgram>();
-		AProcDecl mainproc;
-		int n_proc = 0;
-		sym.traverse<AProcDecl>(program, [&](AProcDecl proc) {
-			if (n_proc == 0) {
-				mainproc = proc;
-			}
-			n_proc++;
-		});
-		if (n_proc == 0) {
-			throw Exception("No procedures");
-		}
-		if (mainproc.getParams().size() != 0) {
-			throw CompileException(mainproc.getName(), "Entry procedure must not have any parameters");
-		}
-
-		in.get_form(program, &width, &height, &layer_count, &layer_depth);
-		result.width = width;
-		result.height = height;
-		result.layer_count = layer_count;
-		result.layer_depth = layer_depth;
-
-		result.stats.reset(new RoseStatistics(max_time, width, height, layer_count, layer_depth));
-		RoseStatistics& stats = *result.stats;
-
-		result.plots = in.interpret(mainproc, &stats);
-		result.colors = in.get_colors(program);
-
-		// Output
-		CodeGenerator codegen(rep, sym, stats);
-		auto bytecodes_and_constants = codegen.generate(program);
-		std::vector<bytecode_t> bytecodes = bytecodes_and_constants.first;
-		std::vector<number_t> constants = bytecodes_and_constants.second;
-		std::vector<unsigned short> colorscript;
-		int color_frame = -1;
-		for (auto c : result.colors) {
-			if (c.t != color_frame) {
-				int delta = c.t - color_frame;
-				color_frame = c.t;
-				colorscript.push_back(-delta);
-			}
-			colorscript.push_back(c.rgb | (c.i << 12));
-		}
-		colorscript.push_back(0x8000);
-		writefile(bytecodes, "bytecodes.bin");
-		writefile(constants, "constants.bin");
-		writefile(colorscript, "colorscript.bin");
-
-		stats.print(stdout);
-
-		printf("\n");
-		int n = sym.constants.size();
-		int n_columns = 4;
-		int n_rows = (n - 1) / n_columns + 1;
-		for (int r = 0 ; r < n_rows ; r++) {
-			for (int c = 0 ; c < n_columns ; c++) {
-				int i = r + c * n_rows;
-				if (i < n) {
-					int value = sym.constants[i];
-					int frac = 16;
-					while (frac > 0 && ((value >> (16 - frac)) & 1) == 0) {
-						frac--;
-					}
-					int float_width = 6 + (frac > 0) + frac;
-					int count = sym.constant_count[value];
-					printf("%3d %08X%*.*f%*s", count, value, float_width, frac, value / 65536.0, 23 - float_width, "");
+		nodemap<AProgram> parts;
+		nodemap<std::string> part_path;
+		AProgram program = loadProgram(filename, current_filename, parts, part_path);
+		Reporter rep(filename, program, parts, part_path);
+		try {
+			SymbolLinking sym(rep, parts);
+			program.apply(sym);
+			Interpreter in(rep, sym);
+			AProcDecl mainproc;
+			int n_proc = 0;
+			sym.traverse<AProcDecl>(program, [&](AProcDecl proc) {
+				if (n_proc == 0) {
+					mainproc = proc;
 				}
+				n_proc++;
+			});
+			if (n_proc == 0) {
+				throw Exception("No procedures");
 			}
-			printf("\n");
-		}
-		fflush(stdout);
+			if (mainproc.getParams().size() != 0) {
+				throw CompileException(mainproc.getName(), "Entry procedure must not have any parameters");
+			}
 
-	} catch (const CompileException& exc) {
-		rep.reportCompileError(exc);
-		result.error = true;
+			in.get_form(program, &width, &height, &layer_count, &layer_depth);
+			result.width = width;
+			result.height = height;
+			result.layer_count = layer_count;
+			result.layer_depth = layer_depth;
+
+			result.stats.reset(new RoseStatistics(max_time, width, height, layer_count, layer_depth));
+			RoseStatistics& stats = *result.stats;
+
+			result.plots = in.interpret(mainproc, &stats);
+			result.colors = in.get_colors(program);
+
+			// Output
+			CodeGenerator codegen(rep, parts, sym, stats);
+			auto bytecodes_and_constants = codegen.generate(program);
+			std::vector<bytecode_t> bytecodes = bytecodes_and_constants.first;
+			std::vector<number_t> constants = bytecodes_and_constants.second;
+			std::vector<unsigned short> colorscript;
+			int color_frame = -1;
+			for (auto c : result.colors) {
+				if (c.t != color_frame) {
+					int delta = c.t - color_frame;
+					color_frame = c.t;
+					colorscript.push_back(-delta);
+				}
+				colorscript.push_back(c.rgb | (c.i << 12));
+			}
+			colorscript.push_back(0x8000);
+			writefile(bytecodes, "bytecodes.bin");
+			writefile(constants, "constants.bin");
+			writefile(colorscript, "colorscript.bin");
+
+			stats.print(stdout);
+
+			printf("\n");
+			int n = sym.constants.size();
+			int n_columns = 4;
+			int n_rows = (n - 1) / n_columns + 1;
+			for (int r = 0 ; r < n_rows ; r++) {
+				for (int c = 0 ; c < n_columns ; c++) {
+					int i = r + c * n_rows;
+					if (i < n) {
+						int value = sym.constants[i];
+						int frac = 16;
+						while (frac > 0 && ((value >> (16 - frac)) & 1) == 0) {
+							frac--;
+						}
+						int float_width = 6 + (frac > 0) + frac;
+						int count = sym.constant_count[value];
+						printf("%3d %08X%*.*f%*s", count, value, float_width, frac, value / 65536.0, 23 - float_width, "");
+					}
+				}
+				printf("\n");
+			}
+			fflush(stdout);
+
+		} catch (const CompileException& exc) {
+			rep.reportError(exc);
+			result.error = true;
+		}
 	} catch (const Exception& exc) {
-		rep.reportError(exc);
+		printf("%s: %s\n", current_filename.c_str(), exc.getMessage().c_str());
+		fflush(stdout);
 		result.error = true;
 	}
 

@@ -22,8 +22,8 @@ class CodeGenerator : private ProgramAdapter {
 	nodemap<bool> tail_fork;
 
 public:
-	CodeGenerator(Reporter& rep, SymbolLinking& sym, RoseStatistics& stats)
-		: ProgramAdapter(rep), sym(sym), stats(stats) {}
+	CodeGenerator(Reporter& rep, nodemap<AProgram>& parts, SymbolLinking& sym, RoseStatistics& stats)
+		: ProgramAdapter(rep, parts), sym(sym), stats(stats) {}
 
 	std::pair<std::vector<bytecode_t>,std::vector<number_t>> generate(AProgram program) {
 		visit<AProcDecl>(program);

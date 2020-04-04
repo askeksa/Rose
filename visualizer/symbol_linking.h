@@ -95,7 +95,7 @@ public:
 	std::unordered_map<number_t,int> constant_count;
 	int wire_count = 0;
 
-	SymbolLinking(Reporter& rep) : ProgramAdapter(rep) {}
+	SymbolLinking(Reporter& rep, nodemap<AProgram>& parts) : ProgramAdapter(rep, parts) {}
 
 	void caseAProgram(AProgram prog) {
 		global_scope = new Scope(nullptr, prog);

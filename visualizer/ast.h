@@ -8,6 +8,7 @@
 
 using namespace rose;
 
+#include <functional>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -24,6 +25,35 @@ public:
 	T& operator[](N n) {
 		void* key = *(void**)(void*)&n;
 		return inner_map[key];
+	}
+};
+
+class Reporter;
+
+class ProgramAdapter : public DepthFirstAdapter {
+protected:
+	Reporter& rep;
+
+	ProgramAdapter(Reporter& rep) : rep(rep) {}
+
+	virtual ~ProgramAdapter() {}
+
+public:
+	template <typename N>
+	void traverse(AProgram program, std::function<void (N node)> fun) {
+		for (PDecl decl : program.getDecl()) {
+			if (decl.is<N>()) {
+				N node = decl.cast<N>();
+				fun(node);
+			}
+		}
+	}
+
+	template <typename N>
+	void visit(AProgram program) {
+		traverse<N>(program, [this](N node) {
+			node.apply(*this);
+		});
 	}
 };
 

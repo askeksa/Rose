@@ -10,8 +10,7 @@
 #include <string>
 #include <algorithm>
 
-class CodeGenerator : private AnalysisAdapter {
-	Reporter& rep;
+class CodeGenerator : private ProgramAdapter {
 	SymbolLinking& sym;
 	std::vector<bytecode_t> out;
 	RoseStatistics& stats;
@@ -24,10 +23,10 @@ class CodeGenerator : private AnalysisAdapter {
 
 public:
 	CodeGenerator(Reporter& rep, SymbolLinking& sym, RoseStatistics& stats)
-		: rep(rep), sym(sym), stats(stats) {}
+		: ProgramAdapter(rep), sym(sym), stats(stats) {}
 
 	std::pair<std::vector<bytecode_t>,std::vector<number_t>> generate(AProgram program) {
-		program.getProcedure().apply(*this);
+		visit<AProcDecl>(program);
 		out.push_back(END_OF_SCRIPT);
 
 		return make_pair(std::move(out), sym.constants);
@@ -84,7 +83,7 @@ private:
 		}
 	}
 
-	void caseAProcedure(AProcedure proc) override {
+	void caseAProcDecl(AProcDecl proc) override {
 		List<PStatement>& body = proc.getBody();
 		if (!body.empty()) mark_tail(body.back());
 		stack_height = proc.getParams().size();

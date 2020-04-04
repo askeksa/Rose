@@ -43,20 +43,24 @@ RoseResult translate(const char *filename, int max_time,
 		ast.apply(sym);
 		Interpreter in(rep, sym);
 		AProgram program = ast.getPProgram().cast<AProgram>();
-		int n_proc = program.getProcedure().size();
+		AProcDecl mainproc;
+		int n_proc = 0;
+		sym.traverse<AProcDecl>(program, [&](AProcDecl proc) {
+			if (n_proc == 0) {
+				mainproc = proc;
+			}
+			n_proc++;
+		});
 		if (n_proc == 0) {
 			throw Exception("No procedures");
 		}
-		AProcedure mainproc = program.getProcedure().front().cast<AProcedure>();
 		if (mainproc.getParams().size() != 0) {
 			throw CompileException(mainproc.getName(), "Entry procedure must not have any parameters");
 		}
 
-		in.get_resolution(program, &width, &height);
+		in.get_form(program, &width, &height, &layer_count, &layer_depth);
 		result.width = width;
 		result.height = height;
-
-		in.get_layers(program, &layer_count, &layer_depth);
 		result.layer_count = layer_count;
 		result.layer_depth = layer_depth;
 

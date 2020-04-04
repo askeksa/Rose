@@ -81,33 +81,21 @@ Ignored Tokens
 
 Productions
 
-	program		=			res? lay? factdecl* lookdecl* script? decl*
-							{-> New program (res.resolution, lay.layers, New fact_marker(), [factdecl.factdef], [lookdecl.lookdef], [script.event], New proc_marker(), [decl.procedure])}
+	program		=			toplevel*
+							{-> New program ([toplevel.decl])}
 				;
 
-	res			{-> resolution} =
-							size [width]:exp [height]:exp
-							{-> New resolution (width.expression, height.expression)}
-				;
-
-	lay			{-> layers} =
-							form [count]:exp [depth]:exp
-							{-> New layers (form, count.expression, depth.expression)}
-				;
-
-	factdecl	{-> factdef} =
-							fact [name]:identifier assign exp
-							{-> New factdef (name, exp.expression)}
-				;
-
-	lookdecl	{-> lookdef} =
-							look [name]:identifier ev*
-							{-> New lookdef (name, [ev.event])}
-				;
-
-	script		{-> event*} =
-							plan ev*
-							{-> [ev.event]}
+	toplevel	{-> decl} =
+					{form}	form [width]:exp [height]:exp [count]:exp [depth]:exp
+							{-> New decl.form (form, width.expression, height.expression, count.expression, depth.expression)}
+				|	{plan}	plan ev*
+							{-> New decl.plan ([ev.event])}
+				|	{fact}	fact [name]:identifier assign exp
+							{-> New decl.fact (name, exp.expression)}
+				|	{look}	look [name]:identifier ev*
+							{-> New decl.look (name, [ev.event])}
+				|	{proc}	proc [name]:identifier param* stmt*
+							{-> New decl.proc(name, [param.local], [stmt.statement])}
 				;
 
 	ev			{-> event} =
@@ -119,11 +107,6 @@ Productions
 							{-> New event.color(color)}
 				|	{ref} identifier
 							{-> New event.ref(identifier)}
-				;
-
-	decl		{-> procedure} =
-							proc [name]:identifier param* stmt*
-							{-> New procedure(name, [param.local], [stmt.statement])}
 				;
 
 	param		{-> local} =
@@ -254,33 +237,24 @@ Productions
 
 Abstract Syntax Tree
 
-	program		=			resolution? layers? fact_marker factdef* lookdef* [plan]:event* proc_marker procedure*;
+	program		=			decl*;
 
-	resolution	=			[width]:expression [height]:expression;
+	decl		=	{form}	[token]:form [width]:expression [height]:expression [count]:expression [depth]:expression
+				|	{plan}	event*
+				|	{fact}	[name]:identifier expression
+				|	{look}	[name]:identifier event*
+				|	{proc}	[name]:identifier [params]:local* [body]:statement*
+				;
 
-	layers		=			[token]:form [count]:expression [depth]:expression;
-
-	fact_marker	=			;
-
-	proc_marker	=			;
-
-	factdef		=			[name]:identifier expression;
-
-	event		=	
-					{wait}	expression
+	event		=	{wait}	expression
 				|	{fade}	expression
 				|	{color}	color
 				|	{ref}	[name]:identifier
 				;
 
-	lookdef		=			[name]:identifier event*;
-
-	procedure	=			[name]:identifier [params]:local* [body]:statement*;
-
 	local		=			[name]:identifier;
 
-	statement	=	
-					{defy}	[token]:defy
+	statement	=	{defy}	[token]:defy
 				|	{draw}	[token]:draw
 				|	{plot}	[token]:plot
 				|	{fork}	[token]:fork [proc]:expression [args]:expression*
@@ -299,8 +273,7 @@ Abstract Syntax Tree
 
 	else_marker	=			;
 
-	expression	=
-					{number}	number
+	expression	=	{number}	number
 				|	{var}		[name]:identifier
 				|	{binary}	[op]:binop [left]:expression [right]:expression
 				|	{neg}		[token]:neg expression
@@ -309,8 +282,7 @@ Abstract Syntax Tree
 				|	{cond}		[token]:question [cond]:expression [when]:expression [else]:expression
 				;
 
-	binop		=	
-					{plus}		plus
+	binop		=	{plus}		plus
 				|	{minus}		minus
 				|	{multiply}	mul
 				|	{divide}	div
@@ -328,5 +300,3 @@ Abstract Syntax Tree
 				|	{and}		and
 				|	{or}		or
 				;
-
-

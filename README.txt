@@ -28,39 +28,37 @@ Comments start with # and extend to the end of the line.
 Just for the fun of it, and because I enjoy using a thesaurus, all keywords
 in Rose have four letters.
 
-A Rose program starts with an optional size directive, specifying the width
-and height (respectively) in pixels:
+A Rose program consists of a number of top-level declarations. Except where
+noted, these are all optional and can appear in any order. The various kinds
+of declarations are described in the following:
 
-- size <expression> <expression>
+A form declaration has four numbers which specify the width and height in
+pixels, the number of layers, and the number of colors in each layer,
+respectively:
 
-If the size is not specified, the resolution will be 352x280 (full overscan).
-
-Next is an optional layer configuration, specifying the number of layers and
-the number of colors in each layer (respectively):
-
-- form <expression> <expression>
+- form <expression> <expression> <expression> <expression>
 
 The tints are distributed over the layers, so if, for instance, there are 4
 colors per layer, tints 0-3 are in the first (backmost) layer, tints 4-7 are
 in the next layer and so on.
 
-If no layer configuration is specified, there is 1 layer with 4 colors.
+A program can contain at most one form declaration. If no form declaration
+is given, the resolution will be 352x280 (full overscan), and there will be
+1 layer with 4 colors.
 
-Then, any number of global constants can be defined, called facts:
+A fact declaration defines a global constant:
 
 - fact <identifier> = <expression>
 
 The expression cannot contain variables, but the defined fact can be used in
-all expressions in the program, even ones that cannot contain variables.
+all expressions in the program, even ones that cannot contain variables. A
+fact can refer to other facts, but only ones declared earlier in the program.
 
-After this comes the color script, which has two parts. First, any number of
-looks, each of which looks like:
-
-- look <identifier> <event>*
-
-and then the color script itself:
+A plan declaration, along with any number of look declarations, define the
+color script:
 
 - plan <event>*
+- look <identifier> <event>*
 
 where <event> is one of:
 
@@ -76,8 +74,7 @@ where <event> is one of:
 The first tint in each layer except the first is transparent, showing the
 layers behind it. Thus, the colors for these tints are ignored.
 
-The rest of the program is a sequence of procedures. A procedure has the
-syntax:
+A procedure declaration defines executable code:
 
 - proc <name> <param>* <statement>*
 
@@ -155,6 +152,10 @@ An <expression> is one of:
 Procedures can be assigned to temporaries and passed as arguments to
 procedures. The procedure part of a fork statement can refer directly to
 a procedure or to a parameter or local variable containing a procedure.
+
+A Rose program must contain at least one procedure. The first procedure
+in the program is the main procedure, which is the entry point (a single
+turtle running this procedure is created at time 0).
 
 And just to mention it one more time, because this could be a common
 pitfall: Remember to use ~ and not - for negation, including for

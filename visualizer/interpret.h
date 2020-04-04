@@ -19,10 +19,10 @@ struct Value {
 	ValueKind kind;
 	union {
 		number_t number;
-		AProcedure proc;
+		AProcDecl proc;
 	};
 
-	explicit Value(AProcedure proc, bool is_procedure) : kind(ValueKind::PROCEDURE), proc(proc) {}
+	explicit Value(AProcDecl proc, bool is_procedure) : kind(ValueKind::PROCEDURE), proc(proc) {}
 	explicit Value(number_t number) : kind(ValueKind::NUMBER), number(number) {}
 	Value() : Value(0) {}
 	Value(const Value& value) {
@@ -35,7 +35,7 @@ struct Value {
 };
 
 struct State {
-	AProcedure proc;
+	AProcDecl proc;
 	number_t time;
 	number_t x,y;
 	number_t size;
@@ -47,7 +47,7 @@ struct State {
 	unsigned wire_mask;
 
 	State() {}
-	State(AProcedure proc, State& parent, std::vector<Value> stack)
+	State(AProcDecl proc, State& parent, std::vector<Value> stack)
 	: proc(proc), stack(std::move(stack)), wires(parent.wires) {
 		time = parent.time;
 		x = parent.x;
@@ -167,7 +167,7 @@ class Interpreter : private ReturningAdapter<Value> {
 				TIdentifier id = event.cast<ARefEvent>().getName();
 				const std::string& name = id.getText();
 				if (sym.look_map.count(name)) {
-					ALookdef look = sym.look_map[name];
+					ALookDecl look = sym.look_map[name];
 					if (look_seen[look]) {
 						throw CompileException(id, "Recursive look " + name);
 					}
@@ -185,16 +185,15 @@ public:
 	Interpreter(Reporter& rep, SymbolLinking& sym)
 		: rep(rep), sym(sym), stats(nullptr) {}
 
-	std::vector<Plot> interpret(AProcedure main, RoseStatistics *stats) {
+	std::vector<Plot> interpret(AProcDecl main, RoseStatistics *stats) {
 		this->stats = stats;
 
 		AProgram prog = main.parent().cast<AProgram>();
 		sym.fact_values.clear();
-		for (auto f : prog.getFactdef()) {
-			AFactdef fact = f.cast<AFactdef>();
+		sym.traverse<AFactDecl>(prog, [&](AFactDecl fact) {
 			Value fact_value = apply(fact.getExpression());
 			sym.fact_values.push_back(fact_value.number);
-		}
+		});
 
 		State initial;
 		initial.proc = main;
@@ -236,45 +235,40 @@ public:
 		time = MAKE_NUMBER(0);
 		current_palette.clear();
 		is_fading = false;
-		process_color_events(program.getPlan());
+		sym.traverse<APlanDecl>(program, [&](APlanDecl plan) {
+			process_color_events(plan.getEvent());
+		});
 		if (is_fading) do_fade();
 		return colors;
 	}
 
-	bool get_resolution(AProgram program, int *width_out, int *height_out) {
-		PResolution res = program.getResolution();
-		if (res) {
-			PExpression width_exp = res.cast<AResolution>().getWidth();
+	bool get_form(AProgram program, int *width_out, int *height_out, int *count_out, int *depth_out) {
+		bool found = false;
+		sym.traverse<AFormDecl>(program, [&](AFormDecl form) {
+			if (found) {
+				throw CompileException(form.getToken(), "A Rose program can have at most one form declaration");
+			}
+			PExpression width_exp = form.getWidth();
 			Value width_value = apply(width_exp);
-			PExpression height_exp = res.cast<AResolution>().getHeight();
+			PExpression height_exp = form.getHeight();
 			Value height_value = apply(height_exp);
+			PExpression count_exp = form.getCount();
+			Value count_value = apply(count_exp);
+			PExpression depth_exp = form.getDepth();
+			Value depth_value = apply(depth_exp);
 			*width_out = NUMBER_TO_INT(width_value.number);
 			*height_out = NUMBER_TO_INT(height_value.number);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	bool get_layers(AProgram program, int *count_out, int *depth_out) {
-		PLayers lay = program.getLayers();
-		if (lay) {
-			PExpression count_exp = lay.cast<ALayers>().getCount();
-			Value count_value = apply(count_exp);
-			PExpression depth_exp = lay.cast<ALayers>().getDepth();
-			Value depth_value = apply(depth_exp);
 			*count_out = NUMBER_TO_INT(count_value.number);
 			*depth_out = NUMBER_TO_INT(depth_value.number);
 			if (*count_out < 1) {
-				throw new CompileException(lay.cast<ALayers>().getToken(), "Layer count must be at least 1");
+				throw CompileException(form.getToken(), "Layer count must be at least 1");
 			}
 			if (*depth_out < 1) {
-				throw new CompileException(lay.cast<ALayers>().getToken(), "Layer depth must be at least 1");
+				throw CompileException(form.getToken(), "Layer depth must be at least 1");
 			}
-			return true;
-		} else {
-			return false;
-		}
+			found = true;
+		});
+		return found;
 	}
 
 private:

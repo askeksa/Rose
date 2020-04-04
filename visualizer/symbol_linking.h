@@ -71,10 +71,9 @@ public:
 	}
 };
 
-class SymbolLinking : public DepthFirstAdapter {
-	Reporter& rep;
-
+class SymbolLinking : public ProgramAdapter {
 	int current_local_index;
+	int current_fact_index;
 	Scope* global_scope;
 	Scope* current_scope;
 
@@ -83,8 +82,8 @@ class SymbolLinking : public DepthFirstAdapter {
 	bool procedure_phase = false;
 
 public:
-	std::vector<AProcedure> procs;
-	std::unordered_map<std::string,ALookdef> look_map;
+	std::vector<AProcDecl> procs;
+	std::unordered_map<std::string,ALookDecl> look_map;
 	nodemap<VarRef> var_ref;
 	nodemap<int> literal_number;
 	nodemap<int> when_pop;
@@ -96,46 +95,37 @@ public:
 	std::unordered_map<number_t,int> constant_count;
 	int wire_count = 0;
 
-	SymbolLinking(Reporter& rep) : rep(rep) {}
+	SymbolLinking(Reporter& rep) : ProgramAdapter(rep) {}
 
-	void outALookdef(ALookdef look) override {
-		const std::string& name = look.getName().getText();
-		if (look_map.count(name)) {
-			throw CompileException(look.getName(), "Redefinition of look " + name);
-		}
-		look_map[name] = look;
-	}
-
-	void outAFactMarker(AFactMarker fact_marker) override {
-		AProgram prog = fact_marker.parent().cast<AProgram>();
+	void caseAProgram(AProgram prog) {
 		global_scope = new Scope(nullptr, prog);
 		global_scope->add(TIdentifier::make("x"), VarKind::GLOBAL, GlobalKind::X);
 		global_scope->add(TIdentifier::make("y"), VarKind::GLOBAL, GlobalKind::Y);
 		global_scope->add(TIdentifier::make("dir"), VarKind::GLOBAL, GlobalKind::DIRECTION);
 		current_scope = global_scope;
 		int fact_index = 0;
-		for (auto f : prog.getFactdef()) {
-			AFactdef fact = f.cast<AFactdef>();
+		traverse<AFactDecl>(prog, [&](AFactDecl fact) {
 			global_scope->add(fact.getName(), VarKind::FACT, fact_index++);
-		}
-	}
+		});
 
-	void outAProcMarker(AProcMarker proc_marker) override {
-		AProgram prog = proc_marker.parent().cast<AProgram>();
+		visit<AFactDecl>(prog);
+		visit<AFormDecl>(prog);
+		visit<ALookDecl>(prog);
+		visit<APlanDecl>(prog);
+
 		constants.clear();
 		int current_proc_index = 0;
-		for (auto p : prog.getProcedure()) {
-			AProcedure proc = p.cast<AProcedure>();
+		traverse<AProcDecl>(prog, [&](AProcDecl proc) {
 			procs.push_back(proc);
 			global_scope->add(proc.getName(), VarKind::PROCEDURE, current_proc_index++);
 			if (current_proc_index > 256) {
 				throw CompileException(proc.getName(), "Too many procedures");
 			}
-		}
+		});
 		procedure_phase = true;
-	}
 
-	void outAProgram(AProgram prog) override {
+		visit<AProcDecl>(prog);
+
 		current_scope = current_scope->pop();
 
 		// Sort constants
@@ -147,7 +137,15 @@ public:
 		}
 	}
 
-	void inAProcedure(AProcedure proc) override {
+	void outALookDecl(ALookDecl look) override {
+		const std::string& name = look.getName().getText();
+		if (look_map.count(name)) {
+			throw CompileException(look.getName(), "Redefinition of look " + name);
+		}
+		look_map[name] = look;
+	}
+
+	void inAProcDecl(AProcDecl proc) override {
 		current_scope = new Scope(current_scope, proc);
 		current_local_index = 0;
 		for (auto p : proc.getParams()) {
@@ -171,7 +169,7 @@ public:
 		}
 	}
 
-	void outAProcedure(AProcedure proc) override {
+	void outAProcDecl(AProcDecl proc) override {
 		current_scope = current_scope->pop();
 	}
 

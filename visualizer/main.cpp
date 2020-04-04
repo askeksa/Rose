@@ -42,6 +42,32 @@ static RoseRenderer* make_renderer(RoseResult rose_data) {
 	return new RoseRenderer(std::move(rose_data), rose_data.width, rose_data.height);
 }
 
+class FileWatches {
+	std::vector<FileWatch> watches;
+	int index = 0;
+
+public:
+	FileWatches(const RoseResult& rose_result) {
+		for (const std::string& path : rose_result.paths) {
+			watches.emplace_back(path.c_str());
+		}
+	}
+
+	bool changed() {
+		for (int i = 0; i < watches.size(); i++) {
+			if (watches[i].changed()) {
+				index = i;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	const char* time_text() {
+		return watches[index].time_text();
+	}
+};
+
 int main(int argc, char *argv[]) {
 	if (argc < 2) {
 		printf("Usage: rose <filename> [<framerate> [<music>]]\n");
@@ -49,7 +75,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	int arg = 1;
-	FileWatch rose_file(argv[arg++]);
+	const char* main_filename = argv[arg++];
 
 	int window_scale = WINDOW_SCALE;
 	if (argc > arg && argv[arg][0] == 'x') {
@@ -69,7 +95,8 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Load code
-	RoseResult rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, LAYERS, DEPTH);
+	RoseResult rose_result = translate(main_filename, frames, WIDTH, HEIGHT, LAYERS, DEPTH);
+	std::unique_ptr<FileWatches> watches(new FileWatches(rose_result));
 	int width = rose_result.width;
 	int height = rose_result.height;
 
@@ -104,16 +131,17 @@ int main(int argc, char *argv[]) {
 		bool frame_set = false;
 
 		// Reload if changed
-		if (rose_file.changed()) {
+		if (watches->changed()) {
 			// Reload code
-			printf("\nReloading at %s\n", rose_file.time_text());
+			printf("\nReloading at %s\n", watches->time_text());
 			if (project) delete project;
-			rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, LAYERS, DEPTH);
+			rose_result = translate(main_filename, frames, WIDTH, HEIGHT, LAYERS, DEPTH);
 			if (rose_result.empty() && !rose_result.error) {
 				// Try again
 				usleep(100*1000);
-				rose_result = translate(rose_file.name(), frames, WIDTH, HEIGHT, LAYERS, DEPTH);
+				rose_result = translate(main_filename, frames, WIDTH, HEIGHT, LAYERS, DEPTH);
 			}
+			watches.reset(new FileWatches(rose_result));
 			fflush(stdout);
 			if (playing) {
 				frame = startframe;

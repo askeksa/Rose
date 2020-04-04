@@ -28,11 +28,13 @@ void writefile(std::vector<T> data, const char *filename) {
 }
 
 static AProgram loadProgram(const char *filename, std::string& current_filename,
-		nodemap<AProgram>& parts, nodemap<std::string>& part_path) {
+		nodemap<AProgram>& parts, nodemap<std::string>& part_path,
+		std::vector<std::string>& paths) {
 	current_filename = filename;
 	if (!std::ifstream(filename)) {
 		printf("File not found: %s\n", filename);
 	}
+	paths.emplace_back(filename);
 	Lexer lexer(filename);
 	Start ast = rose::Parser(&lexer).parse();
 	AProgram program = ast.getPProgram().cast<AProgram>();
@@ -44,7 +46,7 @@ static AProgram loadProgram(const char *filename, std::string& current_filename,
 			std::string path(filename);
 			path.resize(path.find_last_of("/\\") + 1);
 			path += file;
-			AProgram part_program = loadProgram(path.c_str(), current_filename, parts, part_path);
+			AProgram part_program = loadProgram(path.c_str(), current_filename, parts, part_path, paths);
 			parts[part] = part_program;
 			part_path[part] = path;
 		}
@@ -65,7 +67,7 @@ RoseResult translate(const char *filename, int max_time,
 	try {
 		nodemap<AProgram> parts;
 		nodemap<std::string> part_path;
-		AProgram program = loadProgram(filename, current_filename, parts, part_path);
+		AProgram program = loadProgram(filename, current_filename, parts, part_path, result.paths);
 		Reporter rep(filename, program, parts, part_path);
 		try {
 			SymbolLinking sym(rep, parts);

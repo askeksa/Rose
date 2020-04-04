@@ -14,6 +14,7 @@ struct TintColor {
 };
 
 struct RoseResult {
+	std::vector<std::string> paths;
 	int width, height;
 	int layer_count, layer_depth;
 	std::vector<Plot> plots;

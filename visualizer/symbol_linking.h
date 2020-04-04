@@ -97,7 +97,7 @@ public:
 
 	SymbolLinking(Reporter& rep, nodemap<AProgram>& parts) : ProgramAdapter(rep, parts) {}
 
-	void caseAProgram(AProgram prog) {
+	void caseAProgram(AProgram prog) override {
 		global_scope = new Scope(nullptr, prog);
 		global_scope->add(TIdentifier::make("x"), VarKind::GLOBAL, GlobalKind::X);
 		global_scope->add(TIdentifier::make("y"), VarKind::GLOBAL, GlobalKind::Y);

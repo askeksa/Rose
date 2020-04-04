@@ -4,6 +4,7 @@
 #include <utility>
 #include <cstdio>
 #include <memory>
+#include <string>
 
 struct Plot {
 	short t,x,y,r,c;

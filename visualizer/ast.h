@@ -50,7 +50,9 @@ public:
 			if (decl.is<APartDecl>()) {
 				APartDecl part = decl.cast<APartDecl>();
 				AProgram part_program = parts[part];
-				traverse(part_program, fun);
+				if (part_program) {
+					traverse(part_program, fun);
+				}
 			}
 		}
 	}

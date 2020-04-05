@@ -6,6 +6,7 @@
 #include "interpret.h"
 #include "code_generator.h"
 
+#include <algorithm>
 #include <cstdio>
 #include <fstream>
 
@@ -46,9 +47,11 @@ static AProgram loadProgram(const char *filename, std::string& current_filename,
 			std::string path(filename);
 			path.resize(path.find_last_of("/\\") + 1);
 			path += file;
-			AProgram part_program = loadProgram(path.c_str(), current_filename, parts, part_path, paths);
-			parts[part] = part_program;
-			part_path[part] = path;
+			if (!std::count(paths.begin(), paths.end(), path)) {
+				AProgram part_program = loadProgram(path.c_str(), current_filename, parts, part_path, paths);
+				parts[part] = part_program;
+				part_path[part] = path;
+			}
 		}
 	}
 	return program;

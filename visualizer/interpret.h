@@ -245,27 +245,25 @@ public:
 	bool get_form(AProgram program, int *width_out, int *height_out, int *count_out, int *depth_out) {
 		bool found = false;
 		sym.traverse<AFormDecl>(program, [&](AFormDecl form) {
-			if (found) {
-				throw CompileException(form.getToken(), "A Rose program can have at most one form declaration");
-			}
-			PExpression width_exp = form.getWidth();
-			Value width_value = apply(width_exp);
-			PExpression height_exp = form.getHeight();
-			Value height_value = apply(height_exp);
-			PExpression count_exp = form.getCount();
-			Value count_value = apply(count_exp);
-			PExpression depth_exp = form.getDepth();
-			Value depth_value = apply(depth_exp);
-			*width_out = NUMBER_TO_INT(width_value.number);
-			*height_out = NUMBER_TO_INT(height_value.number);
-			*count_out = NUMBER_TO_INT(count_value.number);
-			*depth_out = NUMBER_TO_INT(depth_value.number);
-			if (*count_out < 1) {
+			short width = NUMBER_TO_INT(apply(form.getWidth()).number);
+			short height = NUMBER_TO_INT(apply(form.getHeight()).number);
+			short count = NUMBER_TO_INT(apply(form.getCount()).number);
+			short depth = NUMBER_TO_INT(apply(form.getDepth()).number);
+			if (count < 1) {
 				throw CompileException(form.getToken(), "Layer count must be at least 1");
 			}
-			if (*depth_out < 1) {
+			if (depth < 1) {
 				throw CompileException(form.getToken(), "Layer depth must be at least 1");
 			}
+			if (found) {
+				if (width != *width_out || height != *height_out || count != *count_out || depth != *depth_out) {
+					throw CompileException(form.getToken(), "This form declaration conflicts with an earlier one");
+				}
+			}
+			*width_out = width;
+			*height_out = height;
+			*count_out = count;
+			*depth_out = depth;
 			found = true;
 		});
 		return found;

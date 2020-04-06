@@ -139,7 +139,7 @@ RoseResult translate(const char *filename, int max_time,
 							frac--;
 						}
 						int float_width = 6 + (frac > 0) + frac;
-						int count = sym.constant_count[value];
+						int count = sym.constant_nodes[value].size();
 						printf("%3d %08X%*.*f%*s", count, value, float_width, frac, value / 65536.0, 23 - float_width, "");
 					}
 				}

@@ -92,10 +92,27 @@ public:
 	std::vector<number_t> fact_values;
 	std::vector<number_t> constants;
 	std::unordered_map<number_t,int> constant_index;
-	std::unordered_map<number_t,int> constant_count;
+	std::unordered_map<number_t,nodemap<bool>> constant_nodes;
 	int wire_count = 0;
 
 	SymbolLinking(Reporter& rep, nodemap<AProgram>& parts) : ProgramAdapter(rep, parts) {}
+
+	void registerConstant(Node node, int value) {
+		if (constant_index.count(value) == 0) {
+			constant_index[value] = constants.size();
+			constants.push_back(value);
+		}
+		constant_nodes[value][node] = true;
+	}
+
+	void sortConstants() {
+		std::sort(constants.begin(), constants.end(), [](int a, int b) {
+			return (unsigned)a < (unsigned)b;
+		});
+		for (int i = 0 ; i < constants.size() ; i++) {
+			constant_index[constants[i]] = i;
+		}
+	}
 
 	void caseAProgram(AProgram prog) override {
 		global_scope = new Scope(nullptr, prog);
@@ -127,14 +144,6 @@ public:
 		visit<AProcDecl>(prog);
 
 		current_scope = current_scope->pop();
-
-		// Sort constants
-		std::sort(constants.begin(), constants.end(), [](int a, int b) {
-			return (unsigned)a < (unsigned)b;
-		});
-		for (int i = 0 ; i < constants.size() ; i++) {
-			constant_index[constants[i]] = i;
-		}
 	}
 
 	void outALookDecl(ALookDecl look) override {
@@ -204,14 +213,6 @@ public:
 			throw CompileException(lit.getNumber(), "Number format error");
 		}
 		literal_number[lit] = value;
-
-		if (procedure_phase) {
-			if (constant_index.count(value) == 0) {
-				constant_index[value] = constants.size();
-				constants.push_back(value);
-			}
-			constant_count[value]++;
-		}
 	}
 
 	void inAWhenStatement(AWhenStatement when) override {

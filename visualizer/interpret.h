@@ -226,6 +226,8 @@ public:
 			}
 		}
 
+		sym.sortConstants();
+
 		this->stats = nullptr;
 		return output;
 	}
@@ -475,6 +477,7 @@ private:
 				throw CompileException(exp.getName(), "Facts can only refer to earlier facts");
 			}
 			result = Value(sym.fact_values[ref.index]);
+			sym.registerConstant(exp, result.number);
 			break;
 		case VarKind::PROCEDURE:
 			result = Value(sym.procs[ref.index], true);
@@ -485,6 +488,7 @@ private:
 
 	void caseANumberExpression(ANumberExpression exp) override {
 		result = Value(sym.literal_number[exp]);
+		sym.registerConstant(exp, result.number);
 		cpu(12 + 16);
 	}
 

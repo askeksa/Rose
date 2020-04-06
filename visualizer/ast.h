@@ -26,6 +26,8 @@ public:
 		void* key = *(void**)(void*)&n;
 		return inner_map[key];
 	}
+
+	size_t size() { return inner_map.size(); }
 };
 
 class Reporter;

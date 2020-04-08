@@ -20,6 +20,7 @@ MIN_INPUT	=	$08
 MAX_INPUT	=	$5F
 SINGLE_SNIP	=	6
 END_OF_SCRIPT	=	$FF
+BIG_CONSTANT_BASE =	126
 
 
 	section	Code,code
@@ -159,6 +160,12 @@ TranslateBytecode:
 .const:
 	moveq.l	#127,d1
 	and.b	d0,d1
+	if	USEBIGCONSTANT
+	cmp.b	#BIG_CONSTANT_BASE,d1
+	bne.b	.small
+	move.b	(a0)+,d0
+	add.w	d0,d1
+.small:	endc
 	moveq.l	#1,d0
 	move.w	#$202C,(a1)+	; move.l x(a4),d0
 .longword:

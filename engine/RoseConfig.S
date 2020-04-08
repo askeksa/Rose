@@ -5,16 +5,17 @@
 MAX_FRAMES	=	10000	; Length of Rose animation
 MAX_CIRCLES	=	200	; Max circles drawn in a frame
 
-MAX_TURTLES	=	300	; Max turtles alive at the same time
+MAX_TURTLES	=	500	; Max turtles alive at the same time
 MAX_STACK	=	20	; Max depth of execution stack
 MAX_WAIT	=	1000	; Max wait beyond end of program
-WIRE_CAPACITY	=	0	; Number of wire slots
+WIRE_CAPACITY	=	8	; Number of wire slots
 
 CODEBUFFER	=	150000	; Space set aside for translated code
 COPPERBUFFER	=	32000	; Space set aside for coppers
 
 USERANDOM	=	1
 USEBIGMOVE	=	1
+USEBIGCONSTANT	=	1
 
 CLEARMEM	=	0
 

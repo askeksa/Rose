@@ -38,10 +38,13 @@ DosName:
 
 ColorScript:
 	ds.w	10000
+ColorScript_End:
 Bytecode:
 	ds.b	20000
+Bytecode_End:
 Constants:
-	ds.l	128
+	ds.l	382
+Constants_End:
 
 
 	section	Fast,bss
@@ -93,17 +96,17 @@ _Precalc:
 	lea.l	Bytecode,a3
 	lea.l	BytecodeName,a2
 	move.l	a3,d4
-	move.l	#20000,d3
+	move.l	#Bytecode_End-Bytecode,d3
 	bsr	LoadFile
 
 	lea.l	ConstantsName,a2
 	move.l	#Constants,d4
-	move.l	#128*4,d3
+	move.l	#Constants_End-Constants,d3
 	bsr	LoadFile
 
 	lea.l	ColorScriptName,a2
 	move.l	#ColorScript,d4
-	move.l	#10000*2,d3
+	move.l	#ColorScript_End-ColorScript,d3
 	bsr	LoadFile
 	lea.l	ColorScript,a1
 

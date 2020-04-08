@@ -41,6 +41,7 @@ static inline int verify(int base, int v, int max, const char *what) {
 #define BC_CONST(i)    (verify(0x80, i,    126, "CONST"))  //  o
 
 #define END_OF_SCRIPT 0xFF
+#define BIG_CONSTANT_BASE 126
 
 // Negated condition branch nibble (for WHEN)
 #define CMP_EQ   6

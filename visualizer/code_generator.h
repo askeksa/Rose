@@ -67,7 +67,13 @@ private:
 	}
 
 	void emit_constant(int value) {
-		emit(BC_CONST(sym.constant_index[value]));
+		int index = sym.constant_index[value];
+		if (index < BIG_CONSTANT_BASE) {
+			emit(BC_CONST(index));
+		} else {
+			emit(BC_CONST(BIG_CONSTANT_BASE));
+			out.push_back(index - BIG_CONSTANT_BASE);
+		}
 	}
 
 	void mark_tail(PStatement s) {

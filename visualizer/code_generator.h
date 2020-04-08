@@ -12,6 +12,7 @@
 
 class CodeGenerator : private ProgramAdapter {
 	SymbolLinking& sym;
+	std::vector<int> wire_assignment;
 	std::vector<bytecode_t> out;
 	RoseStatistics& stats;
 
@@ -22,8 +23,8 @@ class CodeGenerator : private ProgramAdapter {
 	nodemap<bool> tail_fork;
 
 public:
-	CodeGenerator(Reporter& rep, nodemap<AProgram>& parts, SymbolLinking& sym, RoseStatistics& stats)
-		: ProgramAdapter(rep, parts), sym(sym), stats(stats) {}
+	CodeGenerator(Reporter& rep, nodemap<AProgram>& parts, SymbolLinking& sym, std::vector<int> wire_assignment, RoseStatistics& stats)
+		: ProgramAdapter(rep, parts), sym(sym), wire_assignment(wire_assignment), stats(stats) {}
 
 	std::pair<std::vector<bytecode_t>,std::vector<number_t>> generate(AProgram program) {
 		visit<AProcDecl>(program);
@@ -147,12 +148,11 @@ private:
 		case VarKind::LOCAL:
 			emit(BC_RLOCAL(var.index));
 			break;
-		case VarKind::WIRE:
-			emit(BC_RSTATE(ST_WIRE0 + var.index));
-			if (var.index >= stats.wire_capacity) {
-				stats.wire_capacity = var.index + 1;
-			}
+		case VarKind::WIRE: {
+			int index = wire_assignment[var.index];
+			emit(BC_RSTATE(ST_WIRE0 + index));
 			break;
+		}
 		case VarKind::FACT:
 			emit_constant(sym.fact_values[var.index]);
 			break;
@@ -261,12 +261,9 @@ private:
 	}
 
 	void caseAWireStatement(AWireStatement s) override {
-		int index = sym.wire_index[s];
+		int index = wire_assignment[sym.wire_index[s]];
 		s.getExpression().apply(*this);
 		emit(BC_WSTATE(ST_WIRE0 + index));
-		if (index >= stats.wire_capacity) {
-			stats.wire_capacity = index + 1;
-		}
 	}
 
 	void caseAWaitStatement(AWaitStatement s) override {

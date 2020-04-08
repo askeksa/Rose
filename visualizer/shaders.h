@@ -73,6 +73,7 @@ void main() {
 const char *overlay_pshader = R"--(
 
 uniform float cpu_compute_cycles;
+uniform float cpu_wire_cycles;
 uniform float cpu_draw_cycles;
 uniform float copper_cycles;
 uniform float blitter_cycles;
@@ -98,9 +99,11 @@ void main() {
 		if (x > 0.84 && x < 0.85) {
 			// CPU bar
 			float c1 = cpu_compute_cycles;
-			float c2 = c1 + cpu_draw_cycles;
+			float c2 = c1 + cpu_wire_cycles;
+			float c3 = c2 + cpu_draw_cycles;
 			if (c < c1) bar = vec4(0.0, 0.5, 0.5, 1);
-			else if (c < c2) bar = vec4(0.5, 1.0, 0.5, 1);
+			else if (c < c2) bar = vec4(0.5, 0.5, 0.5, 1);
+			else if (c < c3) bar = vec4(0.5, 1.0, 0.5, 1);
 		}
 		if (x > 0.89 && x < 0.9) {
 			// Copper / blitter bar

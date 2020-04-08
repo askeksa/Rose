@@ -302,6 +302,8 @@ bool RoseRenderer::draw(int frame, bool overlay_enabled) {
 		glUniform1f(blitter_cycles_loc, stats.blitter_cycles);
 		GLuint cpu_compute_cycles_loc = glGetUniformLocation(overlay_program, "cpu_compute_cycles");
 		glUniform1f(cpu_compute_cycles_loc, stats.cpu_compute_cycles);
+		GLuint cpu_wire_cycles_loc = glGetUniformLocation(overlay_program, "cpu_wire_cycles");
+		glUniform1f(cpu_wire_cycles_loc, stats.per_wire_cycles * rose_data.stats->wire_capacity);
 		GLuint cpu_draw_cycles_loc = glGetUniformLocation(overlay_program, "cpu_draw_cycles");
 		glUniform1f(cpu_draw_cycles_loc, stats.cpu_draw_cycles);
 

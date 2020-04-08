@@ -94,6 +94,7 @@ public:
 	std::unordered_map<number_t,int> constant_index;
 	std::unordered_map<number_t,nodemap<bool>> constant_nodes;
 	int wire_count = 0;
+	std::vector<std::string> wire_names;
 
 	SymbolLinking(Reporter& rep, nodemap<AProgram>& parts) : ProgramAdapter(rep, parts) {}
 
@@ -170,11 +171,13 @@ public:
 
 	void outAWireStatement(AWireStatement wire) override {
 		ALocal local = wire.getVar().cast<ALocal>();
-		if (global_scope->defined(local.getName(), VarKind::WIRE)) {
-			wire_index[wire] = global_scope->lookup(local.getName()).index;
+		TIdentifier name = local.getName();
+		if (global_scope->defined(name, VarKind::WIRE)) {
+			wire_index[wire] = global_scope->lookup(name).index;
 		} else {
 			wire_index[wire] = wire_count;
-			global_scope->add(local.getName(), VarKind::WIRE, wire_count++);
+			global_scope->add(name, VarKind::WIRE, wire_count++);
+			wire_names.push_back(name.getText());
 		}
 	}
 

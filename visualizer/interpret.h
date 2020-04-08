@@ -10,6 +10,8 @@
 #include <unordered_set>
 #include <utility>
 
+typedef uint64_t wire_mask_t;
+
 enum class ValueKind {
 	NUMBER,
 	PROCEDURE
@@ -43,12 +45,13 @@ struct State {
 	number_t tint;
 	number_t seed;
 	std::vector<Value> stack;
-	std::vector<Value> wires;
-	unsigned wire_mask;
+	std::vector<Value> wire_values;
+	wire_mask_t wires_set;
+	std::vector<wire_mask_t> wires_written_since;
 
 	State() {}
 	State(AProcDecl proc, State& parent, std::vector<Value> stack)
-	: proc(proc), stack(std::move(stack)), wires(parent.wires) {
+	: proc(proc), stack(std::move(stack)), wire_values(parent.wire_values) {
 		time = parent.time;
 		x = parent.x;
 		y = parent.y;
@@ -56,7 +59,8 @@ struct State {
 		direction = parent.direction;
 		tint = parent.tint;
 		seed = parent.seed;
-		wire_mask = parent.wire_mask;
+		wires_set = parent.wires_set;
+		wires_written_since = parent.wires_written_since;
 	}
 
 	State(State&& state) = default;
@@ -182,8 +186,10 @@ class Interpreter : private ReturningAdapter<Value> {
 	}
 
 public:
+	std::vector<wire_mask_t> wire_conflicts;
+
 	Interpreter(Reporter& rep, SymbolLinking& sym)
-		: rep(rep), sym(sym), stats(nullptr) {}
+		: rep(rep), sym(sym), stats(nullptr), wire_conflicts(sym.wire_count) {}
 
 	std::vector<Plot> interpret(AProcDecl main, RoseStatistics *stats) {
 		this->stats = stats;
@@ -204,8 +210,9 @@ public:
 		initial.direction = MAKE_NUMBER(0);
 		initial.tint = MAKE_NUMBER(1);
 		initial.seed = 0xBABEFEED;
-		initial.wires.resize(sym.wire_count);
-		initial.wire_mask = 0;
+		initial.wire_values.resize(sym.wire_count);
+		initial.wires_set = 0;
+		initial.wires_written_since.resize(sym.wire_count);
 		pending.push(std::move(initial));
 
 		while (!pending.empty()) {
@@ -227,6 +234,16 @@ public:
 		}
 
 		sym.sortConstants();
+
+		// Symmetric closure of wire conflicts
+		for (int i = 0; i < sym.wire_count; i++) {
+			wire_mask_t mask = wire_conflicts[i];
+			for (int j = 0; j < sym.wire_count; j++) {
+				if (mask & ((wire_mask_t)1 << j)) {
+					wire_conflicts[j] |= (wire_mask_t)1 << i;
+				}
+			}
+		}
 
 		this->stats = nullptr;
 		return output;
@@ -273,11 +290,12 @@ public:
 
 private:
 	// Count CPU cycles
-	void cpu(int cycles) {
+	void cpu(int cycles, int per_wire_cycles = 0) {
 		if (stats != nullptr) {
 			short f = NUMBER_TO_INT(state.time);
 			if (f >= 0 && f < stats->frames) {
 				stats->frame[f].cpu_compute_cycles += cycles;
+				stats->frame[f].per_wire_cycles += per_wire_cycles;
 			}
 		}
 	}
@@ -467,10 +485,11 @@ private:
 			result = state.stack[ref.index];
 			break;
 		case VarKind::WIRE:
-			if ((state.wire_mask & (1 << ref.index)) == 0) {
+			if ((state.wires_set & ((wire_mask_t)1 << ref.index)) == 0) {
 				throw CompileException(exp.getName(), "Uninitialized wire");
 			}
-			result = state.wires[ref.index];
+			result = state.wire_values[ref.index];
+			wire_conflicts[ref.index] |= state.wires_written_since[ref.index];
 			break;
 		case VarKind::FACT:
 			if (ref.index >= sym.fact_values.size()) {
@@ -547,7 +566,7 @@ private:
 			// Assume tail fork. Negate dispatch overhead.
 			cpu(20 + n_args * 28 - 140);
 		} else {
-			cpu(344 + n_args * 34 + sym.wire_count * 20);
+			cpu(344 + n_args * 34, 20);
 		}
 	}
 
@@ -557,8 +576,12 @@ private:
 
 	void caseAWireStatement(AWireStatement s) override {
 		int index = sym.wire_index[s];
-		state.wires[index] = apply(s.getExpression());
-		state.wire_mask |= 1 << index;
+		state.wire_values[index] = apply(s.getExpression());
+		state.wires_set |= (wire_mask_t)1 << index;
+		for (int i = 0; i < sym.wire_count; i++) {
+			state.wires_written_since[i] |= (wire_mask_t)1 << index;
+		}
+		state.wires_written_since[index] = 0;
 	}
 
 	void caseAWaitStatement(AWaitStatement s) override {

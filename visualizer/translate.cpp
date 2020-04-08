@@ -57,6 +57,61 @@ static AProgram loadProgram(const char *filename, std::string& current_filename,
 	return program;
 }
 
+std::vector<int> assignWires(std::vector<wire_mask_t> wire_conflicts, int* slots_out) {
+	int n = wire_conflicts.size();
+	std::vector<bool> stacked(n, false);
+	std::vector<int> assign_stack;
+	while (assign_stack.size() < n) {
+		std::vector<int> conflict_count(n);
+		int min_count = n;
+		for (int i = 0; i < n; i++) {
+			if (!stacked[i]) {
+				wire_mask_t mask = wire_conflicts[i];
+				for (int j = 0; j < n; j++) {
+					if ((mask & ((wire_mask_t)1 << j)) && !stacked[j]) {
+						conflict_count[i]++;
+					}
+				}
+				if (conflict_count[i] < min_count) min_count = conflict_count[i];
+			}
+		}
+
+		for (int i = 0; i < n; i++) {
+			if (!stacked[i] && conflict_count[i] == min_count) {
+				assign_stack.push_back(i);
+				stacked[i] = true;
+			}
+		}
+	}
+
+	std::vector<int> assignment(n, -1);
+	int slots = 0;
+	while (assign_stack.size() > 0) {
+		int i = assign_stack.back();
+		assign_stack.pop_back();
+		wire_mask_t mask = wire_conflicts[i];
+		for (int s = 0; s < slots; s++) {
+			bool conflict = false;
+			for (int j = 0; j < n; j++) {
+				if ((mask & ((wire_mask_t)1 << j)) && assignment[j] == s) {
+					conflict = true;
+					break;
+				}
+			}
+			if (!conflict) {
+				assignment[i] = s;
+				break;
+			}
+		}
+		if (assignment[i] == -1) {
+			assignment[i] = slots++;
+		}
+	}
+
+	*slots_out = slots;
+	return assignment;
+}
+
 RoseResult translate(const char *filename, int max_time,
                      int width, int height,
                      int layer_count, int layer_depth) {
@@ -104,7 +159,8 @@ RoseResult translate(const char *filename, int max_time,
 			result.colors = in.get_colors(program);
 
 			// Output
-			CodeGenerator codegen(rep, parts, sym, stats);
+			std::vector<int> wire_assignment = assignWires(in.wire_conflicts, &stats.wire_capacity);
+			CodeGenerator codegen(rep, parts, sym, wire_assignment, stats);
 			auto bytecodes_and_constants = codegen.generate(program);
 			std::vector<bytecode_t> bytecodes = bytecodes_and_constants.first;
 			std::vector<number_t> constants = bytecodes_and_constants.second;
@@ -124,6 +180,17 @@ RoseResult translate(const char *filename, int max_time,
 			writefile(colorscript, "colorscript.bin");
 
 			stats.print(stdout);
+
+			printf("\n");
+			for (int s = 0; s < stats.wire_capacity; s++) {
+				printf("Wire slot %d:", s);
+				for (int i = 0; i < sym.wire_count; i++) {
+					if (wire_assignment[i] == s) {
+						printf(" %s", sym.wire_names[i].c_str());
+					}
+				}
+				printf("\n");
+			}
 
 			printf("\n");
 			int n = sym.constants.size();

@@ -35,6 +35,7 @@ struct FrameStatistics {
 
 	int cpu_compute_cycles = 0;
 	int cpu_draw_cycles = 0;
+	int per_wire_cycles = 0;
 
 	int copper_cycles = 0;
 	int blitter_cycles = 0;

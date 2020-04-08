@@ -180,6 +180,7 @@ RoseResult translate(const char *filename, int max_time,
 			writefile(colorscript, "colorscript.bin");
 
 			// Print various statistics
+			stats.number_of_procedures = n_proc;
 			stats.number_of_constants = sym.constants.size();
 			stats.print(stdout);
 

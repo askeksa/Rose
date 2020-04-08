@@ -75,6 +75,7 @@ class Interpreter : private ReturningAdapter<Value> {
 	std::vector<Plot> output;
 	RoseStatistics *stats;
 	bool forked_in_frame;
+	bool procedure_phase;
 
 	// Temp state for color script calculation
 	std::vector<TintColor> colors;
@@ -194,6 +195,7 @@ public:
 	std::vector<Plot> interpret(AProcDecl main, RoseStatistics *stats) {
 		this->stats = stats;
 
+		procedure_phase = false;
 		AProgram prog = main.parent().cast<AProgram>();
 		sym.fact_values.clear();
 		sym.traverse<AFactDecl>(prog, [&](AFactDecl fact) {
@@ -215,6 +217,7 @@ public:
 		initial.wires_written_since.resize(sym.wire_count);
 		pending.push(std::move(initial));
 
+		procedure_phase = true;
 		while (!pending.empty()) {
 			state = std::move(pending.front());
 			pending.pop();
@@ -496,7 +499,9 @@ private:
 				throw CompileException(exp.getName(), "Facts can only refer to earlier facts");
 			}
 			result = Value(sym.fact_values[ref.index]);
-			sym.registerConstant(exp, result.number);
+			if (procedure_phase) {
+				sym.registerConstant(exp, result.number);
+			}
 			break;
 		case VarKind::PROCEDURE:
 			result = Value(sym.procs[ref.index], true);
@@ -507,7 +512,9 @@ private:
 
 	void caseANumberExpression(ANumberExpression exp) override {
 		result = Value(sym.literal_number[exp]);
-		sym.registerConstant(exp, result.number);
+		if (procedure_phase) {
+			sym.registerConstant(exp, result.number);
+		}
 		cpu(12 + 16);
 	}
 

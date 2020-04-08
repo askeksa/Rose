@@ -48,6 +48,7 @@ struct RoseStatistics {
 	int max_overwait = 0;
 	int max_stack_height = 0;
 	int wire_capacity = 0;
+	int number_of_constants = 0;
 	std::vector<FrameStatistics> frame;
 
 	RoseStatistics(int frames, int width, int height, int layer_count, int layer_depth)
@@ -104,6 +105,7 @@ struct RoseStatistics {
 		fprintf(out, "Max turtles alive:    %5d\n", max_turtles);
 		fprintf(out, "Max stack height:     %5d\n", max_stack_height);
 		fprintf(out, "Wire capacity:        %5d\n", wire_capacity);
+		fprintf(out, "Number of constants:  %5d\n", number_of_constants);
 		fflush(out);
 	}
 };

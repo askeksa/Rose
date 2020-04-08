@@ -179,6 +179,8 @@ RoseResult translate(const char *filename, int max_time,
 			writefile(constants, "constants.bin");
 			writefile(colorscript, "colorscript.bin");
 
+			// Print various statistics
+			stats.number_of_constants = sym.constants.size();
 			stats.print(stdout);
 
 			printf("\n");
@@ -194,7 +196,7 @@ RoseResult translate(const char *filename, int max_time,
 
 			printf("\n");
 			int n = sym.constants.size();
-			int n_columns = 4;
+			int n_columns = 5;
 			int n_rows = (n - 1) / n_columns + 1;
 			for (int r = 0 ; r < n_rows ; r++) {
 				for (int c = 0 ; c < n_columns ; c++) {
@@ -207,7 +209,7 @@ RoseResult translate(const char *filename, int max_time,
 						}
 						int float_width = 6 + (frac > 0) + frac;
 						int count = sym.constant_nodes[value].size();
-						printf("%3d %08X%*.*f%*s", count, value, float_width, frac, value / 65536.0, 23 - float_width, "");
+						printf("%4d %08X %*.*f%*s", count, value, float_width, frac, value / 65536.0, 23 - float_width, "");
 					}
 				}
 				printf("\n");

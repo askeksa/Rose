@@ -669,16 +669,16 @@ private:
 		number_t m = move.number;
 		int sa = sin(state.direction >> 10);
 		int ca = sin((state.direction >> 10) + 4096);
-		if (m < MAKE_NUMBER(32)) {
+		if (m < MAKE_NUMBER(32) && m > -MAKE_NUMBER(32)) {
 			// High precision move
 			state.x += ((m << 10 >> 16) * ca) >> 8;
 			state.y += ((m << 10 >> 16) * sa) >> 8;
-			cpu(402);
+			cpu(424);
 		} else {
 			// High distance move
 			state.x += (m << 2 >> 16) * ca;
 			state.y += (m << 2 >> 16) * sa;
-			cpu(346);
+			cpu(m >= MAKE_NUMBER(32) ? 348 : 366);
 		}
 	}
 

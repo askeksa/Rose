@@ -370,8 +370,10 @@ Snip_move:
 	move.w	(a0,d0.w),d0	; Cosine
 	if	USEBIGMOVE
 	cmp.l	#32<<16,d2
-	blt.b	.small
-	asl.l	#2,d2
+	bge.b	.big
+	cmp.l	#-32<<16,d2
+	bgt.b	.small
+.big:	asl.l	#2,d2
 	swap.w	d2
 	muls.w	d2,d0
 	muls.w	d2,d1

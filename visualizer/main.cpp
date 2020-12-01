@@ -235,10 +235,12 @@ int main(int argc, char *argv[]) {
 
 		if (playing && project) {
 			int prev_frame = frame;
-			do {
-				usleep(1000);
-				frame = (int)(player.get_time() * framerate);
-			} while (frame == prev_frame);
+			//do {
+			//	usleep(1000);
+			//	frame = (int)(player.get_time() * framerate);
+			//} while (frame == prev_frame);
+                        frame++;
+                        usleep(20);
 		} else {
 			usleep(100000);
 		}

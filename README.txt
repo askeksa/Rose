@@ -200,3 +200,15 @@ Keyboard shortcuts:
 Clicking or holding the left mouse button sets the time proportionally to
 the mouse X position within the window, up to the total number of frames.
 
+
+
+
+COMPILING
+
+
+Example: on Ubuntu 20.04
+
+    apt install libglfw3-dev portaudio19-dev
+
+    make -j -k && for a in ../examples/*rose ; do echo $a ; ./build/rose  $a ; done
+
